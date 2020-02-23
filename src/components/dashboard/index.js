@@ -13,19 +13,16 @@ class Dashboard extends React.Component {
   setupGame = gameMode => {
     this.props.setGameMode(gameMode);
     this.props.toggleDashboard(false);
-  };
-
-  hideDashboard = () => {
-    this.props.toggleDashboard(false);
+    this.props.toggleGame(true);
   };
 
   handleNav = gameType => {
-    this.props.setGameMode(gameType);
+    this.props.setGameType(gameType);
   };
 
   render() {
     // val = redux store key. (needs at least 4 for some reason else ReactSwipe breaks)
-    let games = [
+    let gameTypes = [
       { val: "standard", pretty: "Standard Chess" },
       { val: "trapdoor", pretty: "Trapdoor Chess" },
       { val: "trivia", pretty: "Trivia Chess" },
@@ -36,9 +33,9 @@ class Dashboard extends React.Component {
 
     return (
       <div>
-        <Swiper options={games} handleNav={this.handleNav} />
+        <Swiper options={gameTypes} handleNav={this.handleNav} />
 
-        <div className="flex">
+        <div>
           <DashboardButton
             displayText={"One Player"}
             handleOnClick={() => this.setupGame(GAME_TYPES.ONE_PLAYER)}
@@ -49,8 +46,8 @@ class Dashboard extends React.Component {
           />
           <DashboardButton
             displayText={"Online Play"}
-            classNames={this.props.gameType === "onlinePlay" ? " selected" : ""}
-            handleOnClick={() => this.props.setGameType(GAME_TYPES.ONLINE_PLAY)}
+            classNames={this.props.gameMode === "onlinePlay" ? " selected" : ""}
+            handleOnClick={() => this.props.setGameMode(GAME_TYPES.ONLINE_PLAY)}
           />
         </div>
       </div>

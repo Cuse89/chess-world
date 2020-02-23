@@ -1,11 +1,12 @@
-@import 'styles/base/variables';
+@import 'src/styles/base/variables';
 
-.dashboard-button {
+.dashboardButton {
   width: 82px;
   border: 1px $dark-grey solid;
   padding: 5px;
   margin: 10px 0 0 30px;
   cursor: pointer;
+  border-radius: 4px;
 
   &:hover,
   &.selected {
@@ -14,12 +15,12 @@
   }
 }
 
-#game-ready {
+.game-ready {
   width: 194px;
   line-height: 1.4;
   padding-right: 20px;
 }
 
-#join-game-button {
+.join-game-button {
   padding-right: 10px;
 }

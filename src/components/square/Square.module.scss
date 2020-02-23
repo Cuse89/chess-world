@@ -1,0 +1,44 @@
+@import 'src/styles/base/variables';
+
+.square {
+  text-align: center;
+  width: 40px;
+  height: 40px;
+  border: 1px black solid;
+  width: 40px;
+}
+
+.selected {
+  &.white {
+    background-color: $player-white-color;
+  }
+  &.black {
+    background-color: $player-black-color;
+  }
+}
+
+.odd-row:nth-child(odd) {
+  background-color: $board-color;
+
+  &.selected {
+    &.white {
+      background-color: $player-white-color;
+    }
+    &.black {
+      background-color: $player-black-color;
+    }
+  }
+}
+
+.even-row:nth-child(even) {
+  background-color: $board-color;
+
+  &.selected {
+    &.white {
+      background-color: $player-white-color;
+    }
+    &.black {
+      background-color: $player-black-color;
+    }
+  }
+}

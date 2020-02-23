@@ -1,0 +1,15 @@
+@import 'src/styles/base/variables';
+
+.board {
+  display: grid;
+  grid-gap: 0;
+  grid-template-columns: $square-width $square-width $square-width $square-width $square-width $square-width $square-width $square-width;
+  width: fit-content;
+  border: 1px #325a53 solid;
+  //&.white {
+  //  border-bottom: 1px $player-white-color solid;
+  //}
+  //&.black {
+  //  border-top: 1px $player-black-color solid;
+  //}
+}

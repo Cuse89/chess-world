@@ -1,13 +1,4 @@
-@import 'styles/base/variables';
-
-header {
-  width: fit-content;
-  margin-left: 130px;
-  color: $dark-grey;
-  h3 {
-    cursor: pointer;
-  }
-}
+@import 'src/styles/base/variables';
 
 .waiting-message {
   width: 190px;
@@ -31,5 +22,9 @@ header {
   margin-left: 35px;
   color: green;
   font-weight: bold;
+}
+
+.ddd {
+  background: yellow;
 }
 
