@@ -1,0 +1,25 @@
+@import 'styles/base/variables';
+
+.dashboard-button {
+  width: 82px;
+  border: 1px $dark-grey solid;
+  padding: 5px;
+  margin: 10px 0 0 30px;
+  cursor: pointer;
+
+  &:hover,
+  &.selected {
+    background: $dark-grey;
+    color: white;
+  }
+}
+
+#game-ready {
+  width: 194px;
+  line-height: 1.4;
+  padding-right: 20px;
+}
+
+#join-game-button {
+  padding-right: 10px;
+}
