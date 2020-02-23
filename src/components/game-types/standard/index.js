@@ -8,14 +8,32 @@ import {
   getSquareDetails,
   performValidation
 } from "../../../utils/helpers";
+import { decideBotMove, getBotMoves } from "../../../utils/onePlayerHelpers";
 
 class Standard extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      board: defaultBoard
+      board: defaultBoard,
+      turn: "white"
     };
+  }
+
+  componentDidUpdate(prevProps, prevState, snapshot) {
+    if (prevState.turn !== this.state.turn) {
+      this.handleNextTurn();
+    }
+  }
+
+  handleNextTurn() {
+    if (this.props.gameMode === "onePlayer") {
+      const selectedMove = decideBotMove(getBotMoves(this.state.board));
+      console.log("selected move", selectedMove);
+      this.setState({
+        board: getNextBoard(selectedMove.begin.coords, selectedMove.end.coords)
+      });
+    }
   }
 
   getStandardSquaresChild = coords => {
@@ -37,7 +55,6 @@ class Standard extends Component {
     const { board } = this.state;
     const nextCoords = a.destination.droppableId;
     const prevCoords = a.source.droppableId;
-    console.log(a);
     if (
       performValidation({ board, prevCoords, nextCoords, ownColor: "white" })
     ) {
@@ -47,8 +64,12 @@ class Standard extends Component {
   };
 
   performMove = (board, prevCoords, nextCoords) => {
+    const { turn } = this.state;
     const nextBoard = getNextBoard(board, prevCoords, nextCoords);
-    this.setState({ board: nextBoard });
+    this.setState({
+      board: nextBoard,
+      turn: turn === "white" ? "black" : "white"
+    });
   };
 
   render() {

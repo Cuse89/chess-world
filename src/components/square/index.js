@@ -29,7 +29,7 @@ Square.defaultProps = {
 };
 
 Square.propTypes = {
-  coords: PropTypes.object.isRequired,
+  coords: PropTypes.string.isRequired,
   handleOnClick: PropTypes.func
 };
 

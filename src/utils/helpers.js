@@ -103,3 +103,12 @@ export const performValidation = ({
     return true;
   }
 };
+
+export const loopBoard = (board, func) => {
+  return board.forEach((row, rowIdx) => {
+    row.forEach((square, squareIdx) => {
+      const params = {row, rowIdx, square, squareIdx}
+      func(params)
+    })
+  })
+}

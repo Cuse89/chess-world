@@ -22,10 +22,6 @@ const Board = ({ board, boardWidth, getSquaresChild, onDragEnd }) => {
   }
   return (
     <DragDropContext
-      // onBeforeCapture={this.onBeforeCapture}
-      // onBeforeDragStart={this.onBeforeDragStart}
-      // onDragStart={this.onDragStart}
-      // onDragUpdate={this.onDragUpdate}
       onDragEnd={onDragEnd}
     >
       <div className={styles.board}>{rows}</div>
