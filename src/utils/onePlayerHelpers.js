@@ -1,4 +1,12 @@
-import { getNextBoard, getPieceProps, loopBoard, performValidation } from "./helpers";
+import {
+  checkmateOpponent,
+  checkmateYou,
+  getNextBoard,
+  getPieceProps,
+  loopBoard,
+  performValidation
+} from "./helpers";
+import { checkmate } from "../rules/checkmate";
 
 export const getThreats = (threatenedPlayer, nextCoords, board) => {
   let threats = [];
@@ -26,49 +34,51 @@ export const getBotMoves = board => {
   loopBoard(board, ({ rowIdx, square: prevSquare, squareIdx }) => {
     if (prevSquare.player === "black") {
       // got black piece
-      const prevCoords = rowIdx.toString().concat(squareIdx);
+      const sourceCoords = rowIdx.toString().concat(squareIdx);
 
       // loop through board and see if this piece can move there
       loopBoard(board, ({ rowIdx, squareIdx, square: nextSquare }) => {
-        const nextCoords = rowIdx.toString().concat(squareIdx);
-        // console.log('next coords', nextCoords)
+        const destinationCoords = rowIdx.toString().concat(squareIdx);
+        // console.log('next coords', destinationCoords)
 
         if (
           performValidation({
             board,
             ownColor: "black",
-            prevCoords,
-            nextCoords
+            sourceCoords,
+            destinationCoords
           })
         ) {
-          const nextBoard = getNextBoard(board, prevCoords, nextCoords);
+          const nextBoard = getNextBoard(
+            board,
+            sourceCoords,
+            destinationCoords
+          );
 
           let move = {
-            begin: {
+            source: {
               pieceId: prevSquare.pieceId,
-              coords: prevCoords,
+              coords: sourceCoords,
               strength: getPieceProps(prevSquare.pieceId).strength,
-              checkmateYou: this.game.current.checkmateYou(this.props.board),
-              checkmateOpponent: this.game.current.checkmateOpponent(
-                this.props.board
-              ),
-              threats: getThreats("black", prevCoords, board)
+              checkmateYou: checkmateYou(board),
+              checkmateOpponent: checkmateOpponent(board),
+              threats: getThreats("black", sourceCoords, board)
             },
-            end: {
+            destination: {
               pieceId: nextSquare.pieceId && nextSquare.pieceId,
-              coords: nextCoords,
+              coords: destinationCoords,
               strength:
                 nextSquare.pieceId &&
                 getPieceProps(nextSquare.pieceId).strength,
-              checkmateYou: this.game.current.checkmateYou(nextBoard),
-              checkmateOpponent: this.game.current.checkmateOpponent(nextBoard),
-              threats: getThreats("black", nextCoords, nextBoard),
-              defenders: getThreats("white", nextCoords, nextBoard)
+              checkmateYou: checkmateYou(nextBoard, "black"),
+              checkmateOpponent: checkmateOpponent(nextBoard, "black"),
+              threats: getThreats("black", destinationCoords, nextBoard),
+              defenders: getThreats("white", destinationCoords, nextBoard)
             }
           };
 
           // console.log('bot move handlePerformMove returned true', square && square.player)
-          if (move.end.strength > 0 || move.end.checkmate) {
+          if (move.destination.strength > 0 || move.destination.checkmate) {
             moves.push(move);
           } else if (!nextSquare.player) {
             moves.push(move);
@@ -86,71 +96,79 @@ export const decideBotMove = moves => {
   let selectedMove = { score: -100 };
 
   moves.forEach(move => {
-    let score = move.end.strength || 0;
-    const targetIsThreatened = move.end.threats.length > 0;
-    const targetIsDefended = move.end.defenders.length > 0;
+    let score = move.destination.strength || 0;
+    const targetIsThreatened = move.destination.threats.length > 0;
+    const targetIsDefended = move.destination.defenders.length > 0;
     let scoreLog = [];
 
     // if the black piece is currently threatened, add points to escape threat
-    if (move.begin.threats.length > 0) {
-      score += move.begin.strength;
+    if (move.source.threats.length > 0) {
+      score += move.source.strength;
       scoreLog.push(
-        ` +${move.begin.strength} (own strength score) to escape threat`
+        ` +${move.source.strength} (own strength score) to escape threat`
       );
       console.log(
         `${
-          move.begin.pieceId
-        } is currently threatened by ${move.begin.threats.join()}`
+          move.source.pieceId
+        } is currently threatened by ${move.source.threats.join()}`
       );
     }
 
-    if (move.end.checkmateOpponent === "checkmate") {
+    if (move.destination.checkmateOpponent === "checkmate") {
       score = "checkmate";
       scoreLog.push(" checkmate");
     }
 
-    if (move.end.checkmateOpponent === "check") {
+    if (move.destination.checkmateOpponent === "check") {
       // the weaker the player, the higher the score (less to sacrifice)
       // To do: decide on score
       // score += 3
       console.log(
-        `${move.begin.pieceId} can put king in check move this piece`
+        `${move.source.pieceId} can put king in check move this piece`
       );
     }
 
     if (targetIsThreatened) {
-      score -= move.begin.strength;
+      score -= move.source.strength;
       scoreLog.push(
         ` -${
-          move.begin.strength
-        } (own strength score) target square is threatened by ${move.end.threats.join()}`
+          move.source.strength
+        } (own strength score) target square is threatened by ${move.destination.threats.join()}`
       );
 
       // only add points for targetIsDefended if also targetIsThreatened
       if (targetIsDefended) {
-        score += move.begin.strength;
+        score += move.source.strength;
         scoreLog.push(
-          ` +${move.begin.strength} (own strength score) target square is defended`
+          ` +${move.source.strength} (own strength score) target square is defended`
         );
       }
     }
 
-    if (move.begin.checkmateYou === "check" && !move.end.checkmateYou) {
+    if (
+      move.source.checkmateYou === "check" &&
+      !move.destination.checkmateYou
+    ) {
       move.wouldEscapeCheck = true;
     }
 
-    if (!move.begin.checkmateYou && move.end.checkmateYou === "check") {
+    if (
+      !move.source.checkmateYou &&
+      move.destination.checkmateYou === "check"
+    ) {
       move.wouldMoveIntoCheck = true;
     }
 
     move.score = score;
     move.scoreLog = scoreLog.join();
-    console.log(`${move.begin.pieceId} to ${move.end.coords}, score ${score}`);
+    console.log(
+      `${move.source.pieceId} to ${move.destination.coords}, score ${score}`
+    );
   });
 
   const moveIsValid = move => {
     return (
-      (this.state.inCheck === "black" ? move.wouldEscapeCheck : true) &&
+      // (this.state.inCheck === "black" ? move.wouldEscapeCheck : true) &&
       !move.wouldMoveIntoCheck
     );
   };

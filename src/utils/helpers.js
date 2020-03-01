@@ -11,6 +11,7 @@ import { rookValidation } from "../rules/rookValidation";
 import { bishopValidation } from "../rules/bishopValidation";
 import { knightValidation } from "../rules/knightValidation";
 import { kingValidation } from "../rules/kingValidation";
+import { checkmate } from "../rules/checkmate";
 
 export const getPieceProps = pieceId => {
   switch (pieceId && pieceId.split("-")[0]) {
@@ -67,25 +68,26 @@ export const getSquareDetails = (coords, board) => {
   return board[coords[0]][coords[1]];
 };
 
-export const getNextBoard = (board, prevCoords, nextCoords) => {
+export const getNextBoard = (board, sourceCoords, destinationCoords) => {
+  console.log("get next board", sourceCoords, destinationCoords)
   let boardCopy = JSON.parse(JSON.stringify(board));
   // new square is taken over
-  boardCopy[nextCoords[0]][nextCoords[1]] =
-    boardCopy[prevCoords[0]][prevCoords[1]];
+  boardCopy[destinationCoords[0]][destinationCoords[1]] =
+    boardCopy[sourceCoords[0]][sourceCoords[1]];
   // old square is emptied
-  boardCopy[prevCoords[0]][prevCoords[1]] = { player: "", pieceId: "" };
+  boardCopy[sourceCoords[0]][sourceCoords[1]] = { player: "", pieceId: "" };
   return boardCopy;
 };
 
 export const performValidation = ({
   board,
   ownColor,
-  prevCoords,
-  nextCoords
+  sourceCoords,
+  destinationCoords
 }) => {
   // work out if valid square has been selected, or another of mine
-  const prevSquare = getSquareDetails(prevCoords, board)
-  const nextSquare = getSquareDetails(nextCoords, board);
+  const prevSquare = getSquareDetails(sourceCoords, board)
+  const nextSquare = getSquareDetails(destinationCoords, board);
   // if clicked on own piece again
   if (nextSquare.player === ownColor) {
     return false;
@@ -94,8 +96,8 @@ export const performValidation = ({
   } else if (
     getPieceProps(prevSquare.pieceId).validateMove(
       false,
-      prevCoords,
-      nextCoords,
+      sourceCoords,
+      destinationCoords,
       board,
       ownColor
     )
@@ -111,4 +113,13 @@ export const loopBoard = (board, func) => {
       func(params)
     })
   })
+}
+
+export const checkmateOpponent = (nextBoard, turn) => {
+  const opponent = turn === "white" ? "black" : "white";
+  return checkmate(opponent, nextBoard);
+}
+
+export const checkmateYou = (nextBoard, turn) => {
+  return checkmate(turn, nextBoard);
 }

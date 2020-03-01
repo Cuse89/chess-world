@@ -31,7 +31,11 @@ class Standard extends Component {
       const selectedMove = decideBotMove(getBotMoves(this.state.board));
       console.log("selected move", selectedMove);
       this.setState({
-        board: getNextBoard(selectedMove.begin.coords, selectedMove.end.coords)
+        board: getNextBoard(
+          this.state.board,
+          selectedMove.source.coords,
+          selectedMove.destination.coords
+        )
       });
     }
   }
@@ -53,19 +57,19 @@ class Standard extends Component {
 
   handlePerformMove = a => {
     const { board } = this.state;
-    const nextCoords = a.destination.droppableId;
-    const prevCoords = a.source.droppableId;
+    const destinationCoords = a.destination.droppableId;
+    const sourceCoords = a.source.droppableId;
     if (
-      performValidation({ board, prevCoords, nextCoords, ownColor: "white" })
+      performValidation({ board, sourceCoords, destinationCoords, ownColor: "white" })
     ) {
       // and check for checkmate
-      this.performMove(board, prevCoords, nextCoords);
+      this.performMove(board, sourceCoords, destinationCoords);
     }
   };
 
-  performMove = (board, prevCoords, nextCoords) => {
+  performMove = (board, sourceCoords, destinationCoords) => {
     const { turn } = this.state;
-    const nextBoard = getNextBoard(board, prevCoords, nextCoords);
+    const nextBoard = getNextBoard(board, sourceCoords, destinationCoords);
     this.setState({
       board: nextBoard,
       turn: turn === "white" ? "black" : "white"

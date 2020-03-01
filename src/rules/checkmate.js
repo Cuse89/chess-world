@@ -1,7 +1,6 @@
-import { getPieceProps } from "../globalFunctions/getPieceProps";
-import { loopBoard } from "../globalFunctions/loopBoard";
-
+import { getPieceProps, loopBoard } from "../utils/helpers";
 // kingPlayer is the players colour that controls the king in question
+
 export const checkmate = (kingPlayer, board) => {
   // console.log("checkmate function for king player", kingPlayer)
   let inCheck = false;
@@ -17,8 +16,8 @@ export const checkmate = (kingPlayer, board) => {
   loopBoard(board, ({ rowIdx, square, squareIdx }) => {
     if (
       square.player &&
-      square.player == kingPlayer &&
-      square.pieceId.split("-") == "king"
+      square.player === kingPlayer &&
+      square.pieceId.split("-") === "king"
     ) {
       kingPos = rowIdx.toString().concat(squareIdx);
     }
@@ -39,7 +38,7 @@ export const checkmate = (kingPlayer, board) => {
     // if its a minus number, its off the board therefore not a potential coord or above 77 is below board
     if (potentialCoord > 0 && potentialCoord < 78) {
       // convert 1 to 01
-      if (potentialCoord.length == 1) {
+      if (potentialCoord.length === 1) {
         potentialCoord = "0" + potentialCoord;
       }
       const square = board[potentialCoord[0]][potentialCoord[1]];
@@ -48,7 +47,7 @@ export const checkmate = (kingPlayer, board) => {
       if (
         !squareTaken ||
         squareTaken !== kingPlayer ||
-        square.pieceId.split("-")[0] == "king"
+        square.pieceId.split("-")[0] === "king"
       ) {
         potentialCoords.push(potentialCoord);
       }
@@ -71,7 +70,7 @@ export const checkmate = (kingPlayer, board) => {
           validation(true, threatCoord, potentialCoord, board, square.player)
         ) {
           // console.log("this piece can land on this square", potentialCoord, piece)
-          if (potentialCoord == kingPos) {
+          if (potentialCoord === kingPos) {
             directThreats.push(square.pieceId);
             directThreatCoords.push(threatCoord);
           }
@@ -107,7 +106,7 @@ export const checkmate = (kingPlayer, board) => {
 
       directThreatCoords.forEach(directThreatCoord => {
         loopBoard(board, ({ rowIdx, square, squareIdx }) => {
-          if (square.player && square.player == kingPlayer) {
+          if (square.player && square.player === kingPlayer) {
             const validation = getPieceProps(square.pieceId).validateMove;
             const threatCoord = rowIdx.toString().concat(squareIdx);
             if (

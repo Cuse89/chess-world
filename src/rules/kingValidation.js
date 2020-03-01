@@ -1,4 +1,4 @@
-export const kingValidation = (checkmate, prevCoords, nextCoords) => {
+export const kingValidation = (checkmate, sourceCoords, destinationCoords) => {
   const availableCoords = [11, -11, 10, -10, 9, -9, 1, -1];
-  return availableCoords.includes(parseInt(prevCoords) - parseInt(nextCoords));
+  return availableCoords.includes(parseInt(sourceCoords) - parseInt(destinationCoords));
 };
