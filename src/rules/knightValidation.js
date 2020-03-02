@@ -1,5 +1,4 @@
 export const knightValidation = (
-  checkmate,
   sourceCoords,
   destinationCoords,
   board,

@@ -1,5 +1,4 @@
 export const rookValidation = (
-  checkmate,
   sourceCoords,
   destinationCoords,
   board,
@@ -34,19 +33,13 @@ export const rookValidation = (
         // if piece is on this square
         if (piece.player) {
           // if its checkmate validation and its a king, allow the opponents king to be the obstruction
-          validMove =
-            checkmate &&
-            piece.pieceId.split("-")[0] === "king" &&
-            piece.player !== player;
+          validMove = false
         }
         // else if horizontally and if piece is on this square
       } else {
         piece = board[destinationCoords[0]][start];
         if (piece.player) {
-          validMove =
-            checkmate &&
-            piece.pieceId.split("-")[0] === "king" &&
-            piece.player !== player;
+          validMove = false
         }
       }
     }

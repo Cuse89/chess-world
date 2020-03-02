@@ -1,12 +1,11 @@
 import {
-  checkmateOpponent,
-  checkmateYou,
+  kingStatusOpponent,
+  kingStatusSelf,
   getNextBoard,
   getPieceProps,
   loopBoard,
   performValidation
 } from "./helpers";
-import { checkmate } from "../rules/checkmate";
 
 export const getThreats = (threatenedPlayer, nextCoords, board) => {
   let threats = [];
@@ -60,8 +59,8 @@ export const getBotMoves = board => {
               pieceId: prevSquare.pieceId,
               coords: sourceCoords,
               strength: getPieceProps(prevSquare.pieceId).strength,
-              checkmateYou: checkmateYou(board),
-              checkmateOpponent: checkmateOpponent(board),
+              checkmateYou: kingStatusSelf(board, "black"),
+              checkmateOpponent: kingStatusOpponent(board),
               threats: getThreats("black", sourceCoords, board)
             },
             destination: {
@@ -70,8 +69,8 @@ export const getBotMoves = board => {
               strength:
                 nextSquare.pieceId &&
                 getPieceProps(nextSquare.pieceId).strength,
-              checkmateYou: checkmateYou(nextBoard, "black"),
-              checkmateOpponent: checkmateOpponent(nextBoard, "black"),
+              checkmateYou: kingStatusSelf(nextBoard, "black"),
+              checkmateOpponent: kingStatusOpponent(nextBoard, "black"),
               threats: getThreats("black", destinationCoords, nextBoard),
               defenders: getThreats("white", destinationCoords, nextBoard)
             }

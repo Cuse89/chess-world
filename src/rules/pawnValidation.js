@@ -1,5 +1,4 @@
 export const pawnValidation = (
-  checkmate,
   sourceCoords,
   destinationCoords,
   board,
@@ -15,7 +14,7 @@ export const pawnValidation = (
     parseInt(sourceCoords) - parseInt(destinationCoords) ===
     (player === "white" ? 10 : -10)
   ) {
-    return !targetSquareOccupied && !checkmate;
+    return !targetSquareOccupied
     // moved 2 spaces forward
   } else if (
     parseInt(sourceCoords) - parseInt(destinationCoords) ===
@@ -27,7 +26,7 @@ export const pawnValidation = (
     // Todo: Dont allow pawn to jump over piece when moving 2 squares
 
     return (
-      sourceCoords[0] === eligibleColumn && !targetSquareOccupied && !checkmate
+      sourceCoords[0] === eligibleColumn && !targetSquareOccupied
     );
     // pawn moved diagonally
   } else if (
@@ -37,7 +36,7 @@ export const pawnValidation = (
       (player === "white" ? 11 : -11)
   ) {
     // was diagonal move eligible?
-    return checkmate ? true : targetSquareOccupied;
+    return targetSquareOccupied;
   } else {
     return false;
   }

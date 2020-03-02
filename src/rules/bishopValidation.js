@@ -1,5 +1,4 @@
 export const bishopValidation = (
-  checkmate,
   sourceCoords,
   destinationCoords,
   board,
@@ -42,10 +41,7 @@ export const bishopValidation = (
         const piece = board[coords[0]][coords[1]];
         // if piece is on this square
         if (piece.player) {
-          // if its checkmate validation and its a king, allow the oponents king to obstruct
           return (
-            checkmate &&
-            piece.pieceId.split("-")[0] === "king" &&
             piece.player !== player
           );
         }

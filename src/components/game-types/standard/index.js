@@ -2,13 +2,20 @@ import React, { Component } from "react";
 import Board from "../../board";
 import { Piece } from "../../piece";
 import defaultBoard from "../../../lineups/defaultBoard";
+
 import {
+  kingStatusOpponent,
+  kingStatusSelf,
   getNextBoard,
+  getOpponent,
   getPieceProps,
   getSquareDetails,
+  getTargetPiece,
+  getUpdatedFallen,
   performValidation
 } from "../../../utils/helpers";
 import { decideBotMove, getBotMoves } from "../../../utils/onePlayerHelpers";
+
 
 class Standard extends Component {
   constructor(props) {
@@ -16,7 +23,12 @@ class Standard extends Component {
 
     this.state = {
       board: defaultBoard,
-      turn: "white"
+      turn: "white",
+      fallen: {
+        white: [],
+        black: []
+      },
+      inCheck: ""
     };
   }
 
@@ -56,24 +68,34 @@ class Standard extends Component {
   };
 
   handlePerformMove = a => {
-    const { board } = this.state;
-    const destinationCoords = a.destination.droppableId;
+    const { board, turn } = this.state;
     const sourceCoords = a.source.droppableId;
-    if (
-      performValidation({ board, sourceCoords, destinationCoords, ownColor: "white" })
-    ) {
-      // and check for checkmate
-      this.performMove(board, sourceCoords, destinationCoords);
-    }
-  };
-
-  performMove = (board, sourceCoords, destinationCoords) => {
-    const { turn } = this.state;
-    const nextBoard = getNextBoard(board, sourceCoords, destinationCoords);
-    this.setState({
-      board: nextBoard,
-      turn: turn === "white" ? "black" : "white"
+    const destinationCoords = a.destination.droppableId;
+    const validMove = performValidation({
+      board,
+      sourceCoords,
+      destinationCoords,
+      ownColor: "white"
     });
+    const nextBoard = getNextBoard(board, sourceCoords, destinationCoords);
+    const movedSelfIntoCheck = kingStatusSelf(nextBoard, turn) === "check";
+    const opponent = getOpponent(turn);
+    const opponentKingStatus = kingStatusOpponent(nextBoard, turn);
+    if (validMove && !movedSelfIntoCheck) {
+      this.setState(({ board, fallen, inCheck, inCheckmate }) => {
+        return {
+          board: nextBoard,
+          turn: opponent,
+          // fallen: getUpdatedFallen(
+          //   getTargetPiece(board, destinationCoords),
+          //   fallen
+          // ),
+          inCheck: opponentKingStatus === "check" ? opponent : inCheck,
+          inCheckmate:
+            opponentKingStatus === "checkmate" ? opponent : inCheckmate
+        };
+      });
+    }
   };
 
   render() {

@@ -11,7 +11,7 @@ import { rookValidation } from "../rules/rookValidation";
 import { bishopValidation } from "../rules/bishopValidation";
 import { knightValidation } from "../rules/knightValidation";
 import { kingValidation } from "../rules/kingValidation";
-import { checkmate } from "../rules/checkmate";
+import { getKingStatus } from "../rules/getKingStatus";
 
 export const getPieceProps = pieceId => {
   switch (pieceId && pieceId.split("-")[0]) {
@@ -69,7 +69,7 @@ export const getSquareDetails = (coords, board) => {
 };
 
 export const getNextBoard = (board, sourceCoords, destinationCoords) => {
-  console.log("get next board", sourceCoords, destinationCoords)
+  console.log("get next board", sourceCoords, destinationCoords);
   let boardCopy = JSON.parse(JSON.stringify(board));
   // new square is taken over
   boardCopy[destinationCoords[0]][destinationCoords[1]] =
@@ -86,16 +86,14 @@ export const performValidation = ({
   destinationCoords
 }) => {
   // work out if valid square has been selected, or another of mine
-  const prevSquare = getSquareDetails(sourceCoords, board)
+  const prevSquare = getSquareDetails(sourceCoords, board);
   const nextSquare = getSquareDetails(destinationCoords, board);
   // if clicked on own piece again
   if (nextSquare.player === ownColor) {
     return false;
     // else perform validation
-
   } else if (
     getPieceProps(prevSquare.pieceId).validateMove(
-      false,
       sourceCoords,
       destinationCoords,
       board,
@@ -106,20 +104,30 @@ export const performValidation = ({
   }
 };
 
-export const loopBoard = (board, func) => {
-  return board.forEach((row, rowIdx) => {
+export const loopBoard = (board, func) =>
+  board.forEach((row, rowIdx) => {
     row.forEach((square, squareIdx) => {
-      const params = {row, rowIdx, square, squareIdx}
-      func(params)
-    })
-  })
-}
+      const params = { row, rowIdx, square, squareIdx };
+      func(params);
+    });
+  });
 
-export const checkmateOpponent = (nextBoard, turn) => {
+export const kingStatusOpponent = (nextBoard, turn) => {
   const opponent = turn === "white" ? "black" : "white";
-  return checkmate(opponent, nextBoard);
-}
+  return getKingStatus(opponent, nextBoard);
+};
 
-export const checkmateYou = (nextBoard, turn) => {
-  return checkmate(turn, nextBoard);
-}
+export const kingStatusSelf = (nextBoard, turn) => getKingStatus(turn, nextBoard);
+
+export const getOpponent = turn => (turn === "white" ? "black" : "white");
+
+export const getUpdatedFallen = (targetPiece, fallen) => {
+  const { player, pieceId } = targetPiece;
+  return {
+    ...fallen,
+    [player]: pieceId ? [...fallen[player], targetPiece] : [...fallen[player]]
+  };
+};
+
+export const getTargetPiece = (board, destinationCoords) =>
+  board[destinationCoords[0]][destinationCoords[1]];
