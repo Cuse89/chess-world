@@ -11,13 +11,12 @@ export const bishopValidation = (
     Number.isInteger((sourceCoords - destinationCoords) / 11) ||
     Number.isInteger((sourceCoords - destinationCoords) / 9)
   ) {
-    // is the path unobstructed
     const sWnE = Number.isInteger((sourceCoords - destinationCoords) / 9);
     const up = sourceCoords > destinationCoords;
 
     for (
       let i = sourceCoords;
-      up ? i > destinationCoords : i < destinationCoords;
+      up ? i >= destinationCoords : i <= destinationCoords;
       up
         ? sWnE
           ? (i = i - 9)
@@ -41,9 +40,8 @@ export const bishopValidation = (
         const piece = board[coords[0]][coords[1]];
         // if piece is on this square
         if (piece.player) {
-          return (
-            piece.player !== player
-          );
+          // can only be opposition and on final square
+          return piece.player !== player && i === destinationCoords;
         }
       }
     }

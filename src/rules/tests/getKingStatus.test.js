@@ -24,7 +24,4 @@ describe("getKingStatus", () => {
       expect(getKingStatus("black", inCheckmateBoard2)).toBe("checkmate");
     });
   });
-
-
-
 });

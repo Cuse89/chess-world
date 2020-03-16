@@ -123,6 +123,9 @@ export const getOpponent = turn => (turn === "white" ? "black" : "white");
 
 export const getUpdatedFallen = (targetPiece, fallen) => {
   const { player, pieceId } = targetPiece;
+  if (!player) {
+    return fallen
+  }
   return {
     ...fallen,
     [player]: pieceId ? [...fallen[player], targetPiece] : [...fallen[player]]

@@ -71,7 +71,6 @@ export default [
     { player: "white", pieceId: "pawn-6" },
     { player: "white", pieceId: "pawn-7" }
   ],
-
   [
     { player: "white", pieceId: "rook-0" },
     { player: "white", pieceId: "knight-0" },

@@ -15,6 +15,7 @@ import {
   performValidation
 } from "../../../utils/helpers";
 import { decideBotMove, getBotMoves } from "../../../utils/onePlayerHelpers";
+import { testBoard } from "../../../rules/tests/mockData";
 
 
 class Standard extends Component {
@@ -22,7 +23,7 @@ class Standard extends Component {
     super(props);
 
     this.state = {
-      board: defaultBoard,
+      board: testBoard("white", "king", 5),
       turn: "white",
       fallen: {
         white: [],
@@ -86,10 +87,10 @@ class Standard extends Component {
         return {
           board: nextBoard,
           turn: opponent,
-          // fallen: getUpdatedFallen(
-          //   getTargetPiece(board, destinationCoords),
-          //   fallen
-          // ),
+          fallen: getUpdatedFallen(
+            getTargetPiece(board, destinationCoords),
+            fallen
+          ),
           inCheck: opponentKingStatus === "check" ? opponent : inCheck,
           inCheckmate:
             opponentKingStatus === "checkmate" ? opponent : inCheckmate

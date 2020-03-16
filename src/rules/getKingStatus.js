@@ -3,77 +3,69 @@ import { getPieceProps, loopBoard } from "../utils/helpers";
 
 export const getKingStatus = (kingPlayer, board) => {
   let inCheck = false;
-  const availableCoords = [11, -11, 10, -10, 9, -9, 1, -1, 0];
-  let potentialCoords = [];
+  const potentialCoords = [11, -11, 10, -10, 9, -9, 1, -1, 0];
+  let availableCoords = [];
   let kingPos = "";
 
   const getKingPos = ({ rowIdx, square, squareIdx }) => {
-    if (
-      square.player &&
-      square.player === kingPlayer &&
-      square.pieceId === "king"
-    ) {
+    if (square.player === kingPlayer && square.pieceId === "king") {
       kingPos = rowIdx.toString().concat(squareIdx);
     }
   };
 
   loopBoard(board, getKingPos);
 
-  // determine whether the available coords are potential coords (could the king move there?)
-  availableCoords.forEach(coord => {
-    let potentialCoord = (kingPos - coord).toString();
+  potentialCoords.forEach(coord => {
+    let availableCoord = (kingPos - coord).toString();
     if (
-      potentialCoord[0] > 7 ||
-      potentialCoord[0] < 0 ||
-      potentialCoord[1] > 7 ||
-      potentialCoord[1] < 0
+      availableCoord[0] > 7 ||
+      availableCoord[0] < 0 ||
+      availableCoord[1] > 7 ||
+      availableCoord[1] < 0
     ) {
       // square is outside of board boundary
       return false;
     }
     // if its a minus number, its off the board therefore not a potential coord or above 77 is below board
-    if (potentialCoord >= 0 && potentialCoord < 78) {
+    if (availableCoord >= 0 && availableCoord < 78) {
       // convert 1 to 01
-      if (potentialCoord.length === 1) {
-        potentialCoord = "0" + potentialCoord;
+      if (availableCoord.length === 1) {
+        availableCoord = "0" + availableCoord;
       }
-      const square = board[potentialCoord[0]][potentialCoord[1]];
-      // only include as a potential coord if the square is empty, or is opponent or the space is the king itself
+      const square = board[availableCoord[0]][availableCoord[1]];
+      // only include as a available coord if the square is empty, or is opponent or the space is the king itself
       if (
         !square.player ||
         square.player !== kingPlayer ||
         square.pieceId.split("-")[0] === "king"
       ) {
-        potentialCoords.push(potentialCoord);
+        availableCoords.push(availableCoord);
       }
     }
   });
-  console.log("potential coords before", potentialCoords);
 
-  // filter potential coords and take away any that could be threatened if landed on by king
-  potentialCoords = potentialCoords.filter(potentialCoord => {
+  // filter available coords and take away any that could be threatened if landed on by king
+  availableCoords = availableCoords.filter(availableCoord => {
     let isSafe = true;
     loopBoard(board, ({ rowIdx, square, squareIdx }) => {
-      //
       if (square.player && square.player !== kingPlayer && isSafe) {
-        // find all potential target squares
+        // find all available target squares
         const validation = getPieceProps(square.pieceId).validateMove;
         const threatCoord = rowIdx.toString().concat(squareIdx);
-        const potentialCoordCouldBeTaken = validation(
+        const availableCoordCouldBeTaken = validation(
           threatCoord,
-          potentialCoord,
+          availableCoord,
           board,
           square.player
         );
-        isSafe = !potentialCoordCouldBeTaken;
+        isSafe = !availableCoordCouldBeTaken;
       }
     });
     return isSafe;
   });
 
-  console.log("potential coords after", potentialCoords);
-
-  if (potentialCoords.length < 1) {
+  if (availableCoords.length < 1) {
+    console.log("checkmate");
     return "checkmate";
   }
 
@@ -82,11 +74,16 @@ export const getKingStatus = (kingPlayer, board) => {
     if (square.player && square.player !== kingPlayer) {
       const validation = getPieceProps(square.pieceId).validateMove;
       const threatCoord = rowIdx.toString().concat(squareIdx);
-      // is this piece is able to land on kings potential target?
+      // is this piece is able to land on kings available target?
       if (validation(threatCoord, kingPos, board, square.player)) {
         inCheck = true;
       }
     }
   });
-  return inCheck ? "check" : false;
+  if (inCheck) {
+    console.log(inCheck);
+    return "check";
+  }
+
+  return false;
 };
