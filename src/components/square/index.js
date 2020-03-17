@@ -1,20 +1,14 @@
-import React from "react";
+import React, { memo } from "react";
 import PropTypes from "prop-types";
 import { Droppable } from "react-beautiful-dnd";
 import cx from "classnames";
 
 import styles from "./Square.module.scss";
 
-const Square = ({ children, coords, handleOnClick }) => {
-  const isGreen = () => {
-    const isEven = n => n % 2 === 0;
-    const evenRow = isEven(Number(coords[0]));
-    const evenSquare = isEven(Number(coords[1]));
-    return evenRow ? !evenSquare : evenSquare;
-  };
+const Square = memo(({ children, coords, handleOnClick, isGreen }) => {
   const className = cx({
     [styles.square]: true,
-    [styles.green]: isGreen()
+    [styles.green]: isGreen
   });
   return (
     <Droppable droppableId={coords}>
@@ -30,7 +24,7 @@ const Square = ({ children, coords, handleOnClick }) => {
       }}
     </Droppable>
   );
-};
+});
 
 Square.defaultProps = {
   handleOnClick: () => {}
