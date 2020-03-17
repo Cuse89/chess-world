@@ -1,5 +1,5 @@
-import { kingValidation } from "../kingValidation";
-import { inCheckmateBoard2, testBoard } from "./mockData";
+import { kingValidation } from "rules/kingValidation";
+import { inCheckmateBoard2, testBoard } from "rules/tests/mockData";
 
 const testBoardRow3 = testBoard("white", "king", 3);
 const testBoardRow2 = testBoard("white", "king", 2);

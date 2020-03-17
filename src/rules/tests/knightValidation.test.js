@@ -1,5 +1,5 @@
-import { knightValidation } from "../knightValidation";
-import { testBoard } from "./mockData";
+import { knightValidation } from "rules/knightValidation";
+import { testBoard } from "rules/tests/mockData";
 
 const testBoardRow3 = testBoard("white", "knight", 3);
 

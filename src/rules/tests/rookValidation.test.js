@@ -1,5 +1,5 @@
-import { rookValidation } from "../rookValidation";
-import { testBoard } from "./mockData";
+import { rookValidation } from "rules/rookValidation";
+import { testBoard } from "rules/tests/mockData";
 
 
 const testBoardRow3 = testBoard("white", "rook", 3);

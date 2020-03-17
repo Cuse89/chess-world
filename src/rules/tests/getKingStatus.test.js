@@ -1,6 +1,6 @@
-import { getKingStatus } from "../getKingStatus";
-import board from "../../lineups/defaultBoard";
-import { inCheckBoard, inCheckmateBoard, inCheckCanTakeThreatBoard, inCheckmateBoard2 } from "./mockData";
+import { getKingStatus } from "rules/getKingStatus";
+import board from "lineups/defaultBoard";
+import { inCheckBoard, inCheckmateBoard, inCheckCanTakeThreatBoard, inCheckmateBoard2 } from "rules/tests/mockData";
 
 describe("getKingStatus", () => {
   describe("it should return false", () => {

@@ -14,13 +14,11 @@ export const getThreats = (threatenedPlayer, destinationCoords, board) => {
     if (square.player && square.player !== threatenedPlayer) {
       const sourceCoords = rowIdx.toString().concat(squareIdx);
       const validateMove = getPieceProps(square.pieceId).validateMove;
-
       // threat cant come from that square itself
       if (
         sourceCoords !== destinationCoords &&
         validateMove(sourceCoords, destinationCoords, board, square.player, true)
       ) {
-        // console.log(piece.player, piece.pieceId, "is a threat to", threatenedPlayer, threatenedPiece)
         threats.push(square.pieceId);
       }
     }

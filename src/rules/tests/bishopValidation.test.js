@@ -1,7 +1,5 @@
-import { bishopValidation } from "../bishopValidation";
-import {
-  testBoard
-} from "./mockData";
+import { bishopValidation } from "rules/bishopValidation";
+import { testBoard } from "rules/tests/mockData";
 
 const testBoardRow3 = testBoard("white", "bishop", 3);
 const testBoardRow4 = testBoard("white", "bishop", 4);
