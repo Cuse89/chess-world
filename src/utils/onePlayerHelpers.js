@@ -7,17 +7,18 @@ import {
   performValidation
 } from "./helpers";
 
-export const getThreats = (threatenedPlayer, nextCoords, board) => {
+export const getThreats = (threatenedPlayer, destinationCoords, board) => {
   let threats = [];
+
   loopBoard(board, ({ rowIdx, square, squareIdx }) => {
     if (square.player && square.player !== threatenedPlayer) {
-      const prevCoords = rowIdx.toString().concat(squareIdx);
+      const sourceCoords = rowIdx.toString().concat(squareIdx);
       const validateMove = getPieceProps(square.pieceId).validateMove;
 
       // threat cant come from that square itself
       if (
-        prevCoords !== nextCoords &&
-        validateMove(false, prevCoords, nextCoords, board, square.player, true)
+        sourceCoords !== destinationCoords &&
+        validateMove(sourceCoords, destinationCoords, board, square.player, true)
       ) {
         // console.log(piece.player, piece.pieceId, "is a threat to", threatenedPlayer, threatenedPiece)
         threats.push(square.pieceId);

@@ -69,7 +69,6 @@ export const getSquareDetails = (coords, board) => {
 };
 
 export const getNextBoard = (board, sourceCoords, destinationCoords) => {
-  console.log("get next board", sourceCoords, destinationCoords);
   let boardCopy = JSON.parse(JSON.stringify(board));
   // new square is taken over
   boardCopy[destinationCoords[0]][destinationCoords[1]] =
