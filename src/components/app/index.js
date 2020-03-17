@@ -1,7 +1,7 @@
+import Dashboard from "components/dashboard";
+import Standard from "components/game-types/standard";
 import React, { Component } from "react";
-
-import Dashboard from "../dashboard";
-import Standard from "../game-types/standard";
+import { GAME_MODES, GAME_TYPES } from "utils/contants";
 
 import "../../styles/styles.scss";
 import styles from "./App.module.scss";
@@ -11,8 +11,8 @@ class App extends Component {
     super(props);
 
     this.state = {
-      gameMode: "onePlayer",
-      gameType: "standard",
+      gameMode: GAME_MODES.ONE_PLAYER,
+      gameType: GAME_TYPES.STANDARD,
       showDashboard: true,
       showGame: false
     };
@@ -38,7 +38,7 @@ class App extends Component {
             toggleGame={this.toggleGame}
           />
         )}
-        {showGame && gameType === "standard" && (
+        {showGame && gameType === GAME_TYPES.STANDARD && (
           <Standard gameMode={gameMode} />
         )}
         {/*  game types below, each receives the gameMode (string) as a prop and all gameMode logic is in GameType comp*/}

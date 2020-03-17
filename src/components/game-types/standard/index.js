@@ -23,7 +23,7 @@ class Standard extends Component {
     super(props);
 
     this.state = {
-      board: testBoard("white", "king", 5),
+      board: testBoard("white", "knight", 3),
       turn: "white",
       fallen: {
         white: [],

@@ -13,11 +13,11 @@ export const testBoard = (player, piece, row) => {
   const rowWithPiece = [
     { player: "", pieceId: "" },
     { player: "", pieceId: "" },
-    { player: "black", pieceId: "knight-0" },
+    { player: "black", pieceId: "pawn-8" },
     { player: "", pieceId: "" },
     { player, pieceId: `${piece}-0` },
     { player: "", pieceId: "" },
-    { player: "black", pieceId: "knight-1" },
+    { player: "black", pieceId: "pawn-9" },
     { player: "", pieceId: "" }
   ];
   return [

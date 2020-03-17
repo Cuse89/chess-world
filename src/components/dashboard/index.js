@@ -1,7 +1,8 @@
 import React from "react";
+import { GAME_MODES, GAME_TYPES } from "utils/contants";
 
 import { DashboardButton } from "../dashboard-button/index.js";
-import { GAME_TYPES } from "../../utils/contants";
+
 
 import Swiper from "../Swiper";
 
@@ -38,16 +39,16 @@ class Dashboard extends React.Component {
         <div>
           <DashboardButton
             displayText={"One Player"}
-            handleOnClick={() => this.setupGame(GAME_TYPES.ONE_PLAYER.TECHNICAL_NAME)}
+            handleOnClick={() => this.setupGame(GAME_MODES.ONE_PLAYER.TECHNICAL_NAME)}
           />
           <DashboardButton
             displayText={"Two Player"}
-            handleOnClick={() => this.setupGame(GAME_TYPES.TWO_PLAYER.TECHNICAL_NAME)}
+            handleOnClick={() => this.setupGame(GAME_MODES.TWO_PLAYER.TECHNICAL_NAME)}
           />
           <DashboardButton
             displayText={"Online Play"}
             classNames={this.props.gameMode === "onlinePlay" ? " selected" : ""}
-            handleOnClick={() => this.props.setGameMode(GAME_TYPES.ONLINE_PLAY.TECHNICAL_NAME)}
+            handleOnClick={() => this.props.setGameMode(GAME_MODES.ONLINE_PLAY.TECHNICAL_NAME)}
           />
         </div>
       </div>
