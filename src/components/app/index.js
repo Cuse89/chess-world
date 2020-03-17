@@ -12,7 +12,7 @@ class App extends Component {
 
     this.state = {
       gameMode: GAME_MODES.ONE_PLAYER,
-      gameType: GAME_TYPES.STANDARD,
+      gameType: GAME_TYPES.STANDARD.TECHNICAL_NAME,
       showDashboard: true,
       showGame: false
     };
@@ -38,7 +38,7 @@ class App extends Component {
             toggleGame={this.toggleGame}
           />
         )}
-        {showGame && gameType === GAME_TYPES.STANDARD && (
+        {showGame && gameType === GAME_TYPES.STANDARD.TECHNICAL_NAME && (
           <Standard gameMode={gameMode} />
         )}
         {/*  game types below, each receives the gameMode (string) as a prop and all gameMode logic is in GameType comp*/}

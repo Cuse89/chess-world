@@ -1,8 +1,6 @@
 import React, { Component } from "react";
-import Board from "../../board";
-import { Piece } from "../../piece";
-import defaultBoard from "../../../lineups/defaultBoard";
-
+import Board from "components/board";
+import { Piece } from "components/piece";
 import {
   kingStatusOpponent,
   kingStatusSelf,
@@ -13,17 +11,16 @@ import {
   getTargetPiece,
   getUpdatedFallen,
   performValidation
-} from "../../../utils/helpers";
-import { decideBotMove, getBotMoves } from "../../../utils/onePlayerHelpers";
-import { testBoard } from "../../../rules/tests/mockData";
-
+} from "utils/helpers";
+import defaultBoard from "lineups/defaultBoard";
+import { decideBotMove, getBotMoves } from "utils/onePlayerHelpers";
 
 class Standard extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      board: testBoard("white", "knight", 3),
+      board: defaultBoard,
       turn: "white",
       fallen: {
         white: [],

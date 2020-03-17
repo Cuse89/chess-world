@@ -1,9 +1,8 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { DragDropContext } from "react-beautiful-dnd";
-import { getCoords } from "../../utils/helpers";
-import Square from "../square";
-
+import { getCoords } from "utils/helpers";
+import Square from "components/square";
 import styles from "./Board.module.scss";
 
 const Board = ({ board, boardWidth, getSquaresChild, onDragEnd }) => {

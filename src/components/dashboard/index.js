@@ -1,10 +1,7 @@
 import React from "react";
+import { DashboardButton } from "components/dashboard-button";
+import Swiper from "components/Swiper";
 import { GAME_MODES, GAME_TYPES } from "utils/contants";
-
-import { DashboardButton } from "../dashboard-button/index.js";
-
-
-import Swiper from "../Swiper";
 
 class Dashboard extends React.Component {
   constructor(props) {
@@ -22,15 +19,20 @@ class Dashboard extends React.Component {
   };
 
   render() {
-    // val = redux store key. (needs at least 4 for some reason else ReactSwipe breaks)
-    let gameTypes = [
-      { val: "standard", pretty: "Standard Chess" },
-      { val: "trapdoor", pretty: "Trapdoor Chess" },
-      { val: "trivia", pretty: "Trivia Chess" },
-      { val: "standard", pretty: "Standard Chess" },
-      { val: "trapdoor", pretty: "Trapdoor Chess" },
-      { val: "trivia", pretty: "Trivia Chess" }
-    ];
+    const standard = {
+      val: GAME_TYPES.STANDARD.TECHNICAL_NAME,
+      pretty: GAME_TYPES.STANDARD.PRETTY
+    };
+    const trapdoor = {
+      val: GAME_TYPES.TRAPDOOR.TECHNICAL_NAME,
+      pretty: GAME_TYPES.TRAPDOOR.PRETTY
+    };
+    const trivia = {
+      val: GAME_TYPES.TRIVIA.TECHNICAL_NAME,
+      pretty: GAME_TYPES.TRIVIA.PRETTY
+    };
+    // needs at least 4 for some reason else ReactSwipe breaks
+    let gameTypes = [standard, trapdoor, trivia, standard, trapdoor, trivia];
 
     return (
       <div>
@@ -38,17 +40,22 @@ class Dashboard extends React.Component {
 
         <div>
           <DashboardButton
-            displayText={"One Player"}
-            handleOnClick={() => this.setupGame(GAME_MODES.ONE_PLAYER.TECHNICAL_NAME)}
+            displayText={GAME_MODES.ONE_PLAYER.PRETTY}
+            handleOnClick={() =>
+              this.setupGame(GAME_MODES.ONE_PLAYER.TECHNICAL_NAME)
+            }
           />
           <DashboardButton
-            displayText={"Two Player"}
-            handleOnClick={() => this.setupGame(GAME_MODES.TWO_PLAYER.TECHNICAL_NAME)}
+            displayText={GAME_MODES.TWO_PLAYER.PRETTY}
+            handleOnClick={() =>
+              this.setupGame(GAME_MODES.TWO_PLAYER.TECHNICAL_NAME)
+            }
           />
           <DashboardButton
-            displayText={"Online Play"}
-            classNames={this.props.gameMode === "onlinePlay" ? " selected" : ""}
-            handleOnClick={() => this.props.setGameMode(GAME_MODES.ONLINE_PLAY.TECHNICAL_NAME)}
+            displayText={GAME_MODES.ONLINE_PLAY.PRETTY}
+            handleOnClick={() =>
+              this.props.setGameMode(GAME_MODES.ONLINE_PLAY.TECHNICAL_NAME)
+            }
           />
         </div>
       </div>
