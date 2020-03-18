@@ -36,6 +36,7 @@ class App extends Component {
             setGameMode={this.setGameMode}
             toggleDashboard={this.toggleDashboard}
             toggleGame={this.toggleGame}
+            gameMode={this.state.gameMode}
           />
         )}
         {showGame && gameType === GAME_TYPES.STANDARD.TECHNICAL_NAME && (

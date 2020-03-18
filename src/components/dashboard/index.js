@@ -1,7 +1,8 @@
 import React from "react";
-import { DashboardButton } from "components/dashboard-button";
+import DashboardButton from "components/dashboard-button";
 import Swiper from "components/Swiper";
 import { GAME_MODES, GAME_TYPES } from "utils/contants";
+import DashboardOnline from "components/dashboard-online";
 
 class Dashboard extends React.Component {
   constructor(props) {
@@ -57,6 +58,7 @@ class Dashboard extends React.Component {
               this.props.setGameMode(GAME_MODES.ONLINE_PLAY.TECHNICAL_NAME)
             }
           />
+          {this.props.gameMode === GAME_MODES.ONLINE_PLAY.TECHNICAL_NAME && <DashboardOnline />}
         </div>
       </div>
     );
