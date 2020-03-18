@@ -1,0 +1,15 @@
+@import "src/styles/base/variables";
+
+.root {
+  width: fit-content;
+  margin-left: 130px;
+  color: $dark-grey;
+
+  a {
+    text-decoration: none;
+
+    h3 {
+      cursor: pointer;
+    }
+  }
+}

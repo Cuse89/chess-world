@@ -1,51 +1,32 @@
+import React from "react";
+import { BrowserRouter, Switch, Route, Redirect } from "react-router-dom";
+
 import Dashboard from "components/dashboard";
 import Standard from "components/game-types/standard";
-import React, { Component } from "react";
-import { GAME_MODES, GAME_TYPES } from "utils/contants";
+import Header from "components/header";
+import useGameMode from "hooks/useGameMode";
 
-import "../../styles/styles.scss";
+import "styles/styles.scss";
 import styles from "./App.module.scss";
 
-class App extends Component {
-  constructor(props) {
-    super(props);
+const Context = React.createContext(null);
 
-    this.state = {
-      gameMode: GAME_MODES.ONE_PLAYER,
-      gameType: GAME_TYPES.STANDARD.TECHNICAL_NAME,
-      showDashboard: true,
-      showGame: false
-    };
-  }
-
-  toggleDashboard = show => this.setState({ showDashboard: show });
-  toggleGame = show => this.setState({ showGame: show });
-  setGameType = gameType => this.setState({ gameType });
-  setGameMode = gameMode => this.setState({ gameMode });
-
-  render() {
-    const { showDashboard, showGame, gameType, gameMode } = this.state;
-    return (
-      <div className={styles.root}>
-        <header className={styles.header}>
-          <h3 onClick={() => this.toggleDashboard(true)}>Chess World</h3>
-        </header>
-        {showDashboard && (
-          <Dashboard
-            setGameType={this.setGameType}
-            setGameMode={this.setGameMode}
-            toggleDashboard={this.toggleDashboard}
-            toggleGame={this.toggleGame}
-            gameMode={this.state.gameMode}
-          />
-        )}
-        {showGame && gameType === GAME_TYPES.STANDARD.TECHNICAL_NAME && (
-          <Standard gameMode={gameMode} />
-        )}
-        {/*  game types below, each receives the gameMode (string) as a prop and all gameMode logic is in GameType comp*/}
-      </div>
-    );
-  }
-}
+const App = () => {
+  const { gameMode } = useGameMode();
+  return (
+    <BrowserRouter>
+      <Context.Provider value={{ gameMode }}>
+        <div className={styles.root}>
+          <Header />
+          <Switch>
+            <Route exact path="/" render={() => <Redirect to="/dashboard" />} />
+            <Route path="/dashboard" component={Dashboard} />
+            <Route path="/standard" component={Standard} />
+          </Switch>
+        </div>
+      </Context.Provider>
+    </BrowserRouter>
+  );
+};
 
 export default App;
