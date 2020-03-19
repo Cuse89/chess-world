@@ -1,14 +1,14 @@
 import React, { useState } from "react";
 
+import styles from "./InputForm.module.scss";
+
 const InputForm = ({
-  id,
   inputType,
   placeholder,
   autoComplete,
   submit,
   submitText,
   validateInput,
-  label
 }) => {
   const [inputValue, setInputValue] = useState("");
   const onChange = e => setInputValue(e.target.value);
@@ -18,31 +18,20 @@ const InputForm = ({
     setInputValue("");
   };
   return (
-    <form
-      className="form-wrapper"
-      id={`${id}-form-wrapper`}
-      onSubmit={onSubmit}
-    >
-      {label && <label className="form-label">{label}</label>}
-      <div className="form-inputs" id={`${id}-form-inputs`}>
-        <input
-          className="input-text"
-          id={`${id}-input-text`}
-          type={inputType}
-          onChange={onChange}
-          placeholder={placeholder}
-          value={inputValue}
-          autoComplete={autoComplete}
-        />
-
-        <input
-          className="input-submit pointer"
-          id={`${id}-input-submit`}
-          type="submit"
-          value={submitText}
-          disabled={!validateInput(inputValue)}
-        />
-      </div>
+    <form className={styles.root} onSubmit={onSubmit}>
+      <input
+        type={inputType}
+        onChange={onChange}
+        placeholder={placeholder}
+        value={inputValue}
+        autoComplete={autoComplete}
+      />
+      <input
+        className={styles.submit}
+        type="submit"
+        value={submitText}
+        disabled={!validateInput(inputValue)}
+      />
     </form>
   );
 };

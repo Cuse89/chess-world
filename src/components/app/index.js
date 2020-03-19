@@ -5,14 +5,16 @@ import Dashboard from "components/dashboard";
 import Standard from "components/game-types/standard";
 import Header from "components/header";
 import useGameMode from "hooks/useGameMode";
+import DashboardOnline from "components/dashboard-online";
 
 import "styles/styles.scss";
 import styles from "./App.module.scss";
 
-const Context = React.createContext(null);
+export const Context = React.createContext(null);
 
 const App = () => {
   const { gameMode } = useGameMode();
+  // const user = useUser();
   return (
     <BrowserRouter>
       <Context.Provider value={{ gameMode }}>

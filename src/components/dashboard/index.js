@@ -29,6 +29,10 @@ const Dashboard = ({ history }) => {
     history.push(`/${gameType}`);
   };
 
+  const onOnlinePlayClick = () => {
+    setGameMode(GAME_MODES.ONLINE_PLAY.TECHNICAL_NAME)
+  }
+
   return (
     <div>
       <Swiper options={gameTypes} handleNav={setGameType} />
@@ -44,9 +48,7 @@ const Dashboard = ({ history }) => {
         />
         <DashboardButton
           displayText={GAME_MODES.ONLINE_PLAY.PRETTY}
-          handleOnClick={() =>
-            setGameMode(GAME_MODES.ONLINE_PLAY.TECHNICAL_NAME)
-          }
+          handleOnClick={onOnlinePlayClick}
         />
         {gameMode === GAME_MODES.ONLINE_PLAY.TECHNICAL_NAME && (
           <DashboardOnline />
