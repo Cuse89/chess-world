@@ -1,16 +1,16 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import firebase from "../firebase";
 
 const useUser = () => {
   const [user, setUser] = useState(null);
 
-  React.useEffect(() => {
+  useEffect(() => {
     firebase.auth().onAuthStateChanged(user => {
       if (user) {
         firebase.database
-          .ref(`users/user-${user.uid}`)
+          .ref(`users/${user.uid}`)
           .on("value", snapshot =>
-            setUser({ uid: user.uid, ...snapshot.val() })
+            setUser({ id: user.uid, ...snapshot.val() })
           );
       } else {
         setUser(null);

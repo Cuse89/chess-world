@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-
+import PropTypes from "prop-types";
 import styles from "./InputForm.module.scss";
 
 const InputForm = ({
@@ -9,6 +9,7 @@ const InputForm = ({
   submit,
   submitText,
   validateInput,
+  label
 }) => {
   const [inputValue, setInputValue] = useState("");
   const onChange = e => setInputValue(e.target.value);
@@ -19,6 +20,7 @@ const InputForm = ({
   };
   return (
     <form className={styles.root} onSubmit={onSubmit}>
+      {label && <label>{label}</label>}
       <input
         type={inputType}
         onChange={onChange}
@@ -34,6 +36,14 @@ const InputForm = ({
       />
     </form>
   );
+};
+
+InputForm.defaultProps = {
+  validateInput: () => true
+};
+
+InputForm.propTypes = {
+  validateInput: PropTypes.func
 };
 
 export default InputForm;

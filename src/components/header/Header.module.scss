@@ -1,11 +1,12 @@
 @import "src/styles/base/variables";
 
 .root {
-  width: fit-content;
-  margin-left: 130px;
+  display: flex;
+  flex-direction: column;
   color: $dark-grey;
 
   a {
+    align-self: center;
     text-decoration: none;
 
     h3 {

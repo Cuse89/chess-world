@@ -1,10 +1,20 @@
 @import 'src/styles/base/variables';
 
-.input-text {
-  height: 30px;
-}
+.root {
+  margin-top: 10px;
 
-.enter-name {
-  width: 195px;
-  font-size: 17px;
+  .message {
+    text-align: center;
+
+    .available {
+      color: green;
+      cursor: pointer;
+    }
+    .unavailable {
+      color: red;
+      cursor: pointer;
+    }
+  }
+
+
 }

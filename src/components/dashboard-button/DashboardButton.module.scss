@@ -1,12 +1,15 @@
-@import 'src/styles/base/variables';
+@import "src/styles/base/variables";
 
-.dashboardButton {
+.root {
   width: 82px;
-  border: 1px $dark-grey solid;
   padding: 5px;
-  margin-top: 10px;
   cursor: pointer;
   border-radius: 4px;
+}
+
+.default {
+  border: 1px $dark-grey solid;
+  color: $dark-grey;
 
   &:hover,
   &.selected {
@@ -15,12 +18,35 @@
   }
 }
 
-.game-ready {
-  width: 194px;
-  line-height: 1.4;
-  padding-right: 20px;
+.error {
+  border: 1px $red-50 solid;
+  color: $red-50;
+
+  &:hover,
+  &.selected {
+    background: $red-50;
+    color: white;
+  }
 }
 
-.join-game-button {
-  padding-right: 10px;
+.warning {
+  border: 1px $orange-50 solid;
+  color: $orange-50;
+
+  &:hover,
+  &.selected {
+    background: $orange-50;
+    color: white;
+  }
+}
+
+.accept {
+  border: 1px $green-50 solid;
+  color: $green-50;
+
+  &:hover,
+  &.selected {
+    background: $green-50;
+    color: white;
+  }
 }

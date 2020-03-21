@@ -6,23 +6,26 @@ import Standard from "components/game-types/standard";
 import Header from "components/header";
 import useGameMode from "hooks/useGameMode";
 import DashboardOnline from "components/dashboard-online";
+import useUser from "hooks/useUser";
 
 import "styles/styles.scss";
 import styles from "./App.module.scss";
+
 
 export const Context = React.createContext(null);
 
 const App = () => {
   const { gameMode } = useGameMode();
-  // const user = useUser();
+  const user = useUser();
   return (
     <BrowserRouter>
-      <Context.Provider value={{ gameMode }}>
+      <Context.Provider value={{ gameMode, user }}>
         <div className={styles.root}>
           <Header />
           <Switch>
             <Route exact path="/" render={() => <Redirect to="/dashboard" />} />
-            <Route path="/dashboard" component={Dashboard} />
+            <Route exact path="/dashboard" component={Dashboard} />
+            <Route exact path="/dashboard/online" component={DashboardOnline} />
             <Route path="/standard" component={Standard} />
           </Switch>
         </div>

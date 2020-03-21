@@ -3,15 +3,26 @@ import { v4 as uuid } from "uuid";
 import InputForm from "components/input-form";
 import DashboardButton from "components/dashboard-button";
 import firebase from "../../firebase";
-import StartGame from "components/dashboard-online/start-game";
+import ChallengePlayer from "components/dashboard-online/challenge-player";
 import NameInput from "components/dashboard-online/name-input";
-import useUser from "hooks/useUser";
+import { Context } from "components/app";
+import useAvailableUsers from "hooks/useAvailableUsers";
 
 const DashboardOnline = () => {
-  const user = useUser();
+  const { user } = useContext(Context);
+  const { getUserAvailability } = useAvailableUsers();
+
+  const login = async () => {
+    try {
+      await firebase.login();
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   useEffect(() => {
     if (!user) {
-      firebase.login();
+      login();
     }
   }, [user]);
 
@@ -19,7 +30,9 @@ const DashboardOnline = () => {
     return (
       <div>
         <NameInput user={user} />
-        <StartGame user={user} />
+        {user.name && getUserAvailability(user.id) && (
+          <ChallengePlayer user={user} />
+        )}
       </div>
     );
   }

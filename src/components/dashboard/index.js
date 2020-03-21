@@ -30,8 +30,9 @@ const Dashboard = ({ history }) => {
   };
 
   const onOnlinePlayClick = () => {
-    setGameMode(GAME_MODES.ONLINE_PLAY.TECHNICAL_NAME)
-  }
+    setGameMode(GAME_MODES.ONLINE_PLAY.TECHNICAL_NAME);
+    history.push("/dashboard/online");
+  };
 
   return (
     <div>
@@ -40,15 +41,15 @@ const Dashboard = ({ history }) => {
       <div>
         <DashboardButton
           displayText={GAME_MODES.ONE_PLAYER.PRETTY}
-          handleOnClick={() => startGame(GAME_MODES.ONE_PLAYER.TECHNICAL_NAME)}
+          onClick={() => startGame(GAME_MODES.ONE_PLAYER.TECHNICAL_NAME)}
         />
         <DashboardButton
           displayText={GAME_MODES.TWO_PLAYER.PRETTY}
-          handleOnClick={() => startGame(GAME_MODES.TWO_PLAYER.TECHNICAL_NAME)}
+          onClick={() => startGame(GAME_MODES.TWO_PLAYER.TECHNICAL_NAME)}
         />
         <DashboardButton
           displayText={GAME_MODES.ONLINE_PLAY.PRETTY}
-          handleOnClick={onOnlinePlayClick}
+          onClick={onOnlinePlayClick}
         />
         {gameMode === GAME_MODES.ONLINE_PLAY.TECHNICAL_NAME && (
           <DashboardOnline />

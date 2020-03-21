@@ -12,21 +12,22 @@ class Firebase {
     this.database = firebaseApp.database();
   }
 
-  login() {
-    this.auth().signInWithPopup(new firebase.auth.GoogleAuthProvider());
+  async login() {
+    await this.auth().signInWithPopup(new firebase.auth.GoogleAuthProvider());
   }
 
   logout() {
     this.auth().signOut();
   }
 
-  setDb() {}
-
-  updateDb() {}
-
-  async setUser(userUid, key, value) {
-    await this.database.ref(`users/user-${userUid}/${key}`).set(value);
+  async setUser(userId, key, value) {
+    await this.database.ref(`users/${userId}/${key}`).set(value);
   }
+
+  async updateUser(userId, key, value) {
+    await this.database.ref(`users/${userId}/${key}`).update(value);
+  }
+
 }
 
 const firebase = new Firebase();
