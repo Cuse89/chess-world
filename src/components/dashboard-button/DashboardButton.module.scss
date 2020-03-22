@@ -7,6 +7,10 @@
   border-radius: 4px;
 }
 
+.fullLength {
+  width: 100%;
+}
+
 .default {
   border: 1px $dark-grey solid;
   color: $dark-grey;
@@ -50,3 +54,4 @@
     color: white;
   }
 }
+

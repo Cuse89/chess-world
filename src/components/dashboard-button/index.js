@@ -3,13 +3,14 @@ import PropTypes from "prop-types";
 import cx from "classnames";
 import styles from "./DashboardButton.module.scss";
 
-const DashboardButton = ({ displayText, onClick, type }) => {
+const DashboardButton = ({ displayText, onClick, type, fullLength }) => {
   const className = cx({
     [styles.root]: true,
     [styles.default]: type === "default",
     [styles.error]: type === "error",
     [styles.warning]: type === "warning",
-    [styles.accept]: type === "accept"
+    [styles.accept]: type === "accept",
+    [styles.fullLength]: fullLength
   });
   return (
     <div className={className} onClick={onClick}>

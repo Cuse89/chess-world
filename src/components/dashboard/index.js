@@ -3,11 +3,10 @@ import DashboardButton from "components/dashboard-button";
 import Swiper from "components/Swiper";
 import { GAME_MODES, GAME_TYPES } from "utils/contants";
 import DashboardOnline from "components/dashboard-online";
-import useGameMode from "hooks/useGameMode";
+import useGameSettings from "hooks/useGameSettings";
 
 const Dashboard = ({ history }) => {
-  const { gameMode, setGameMode } = useGameMode();
-  const [gameType, setGameType] = useState(GAME_TYPES.STANDARD.TECHNICAL_NAME);
+  const { gameMode, setGameMode, gameType, setGameType } = useGameSettings();
 
   const standard = {
     val: GAME_TYPES.STANDARD.TECHNICAL_NAME,

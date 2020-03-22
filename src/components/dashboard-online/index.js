@@ -1,15 +1,12 @@
-import React, { Component, useContext, useEffect } from "react";
-import { v4 as uuid } from "uuid";
-import InputForm from "components/input-form";
-import DashboardButton from "components/dashboard-button";
+import React, { useContext, useEffect } from "react";
 import firebase from "../../firebase";
 import ChallengePlayer from "components/dashboard-online/challenge-player";
 import NameInput from "components/dashboard-online/name-input";
 import { Context } from "components/app";
 import useAvailableUsers from "hooks/useAvailableUsers";
 
-const DashboardOnline = () => {
-  const { user } = useContext(Context);
+const DashboardOnline = ({ history }) => {
+  const { user, settings } = useContext(Context);
   const { getUserAvailability } = useAvailableUsers();
 
   const login = async () => {
@@ -26,12 +23,21 @@ const DashboardOnline = () => {
     }
   }, [user]);
 
+  const handleStartNewGame = (opponentId) => {
+
+    history.push(`/${settings.gameType}`)
+  };
+
   if (user) {
     return (
       <div>
         <NameInput user={user} />
         {user.name && getUserAvailability(user.id) && (
-          <ChallengePlayer user={user} />
+          <ChallengePlayer
+            user={user}
+            history={history}
+            handleStartNewGame={handleStartNewGame}
+          />
         )}
       </div>
     );

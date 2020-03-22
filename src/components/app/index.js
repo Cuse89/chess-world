@@ -4,22 +4,21 @@ import { BrowserRouter, Switch, Route, Redirect } from "react-router-dom";
 import Dashboard from "components/dashboard";
 import Standard from "components/game-types/standard";
 import Header from "components/header";
-import useGameMode from "hooks/useGameMode";
+import useGameSettings from "hooks/useGameSettings";
 import DashboardOnline from "components/dashboard-online";
 import useUser from "hooks/useUser";
 
 import "styles/styles.scss";
 import styles from "./App.module.scss";
 
-
 export const Context = React.createContext(null);
 
 const App = () => {
-  const { gameMode } = useGameMode();
+  const settings = useGameSettings();
   const user = useUser();
   return (
     <BrowserRouter>
-      <Context.Provider value={{ gameMode, user }}>
+      <Context.Provider value={{ settings, user }}>
         <div className={styles.root}>
           <Header />
           <Switch>

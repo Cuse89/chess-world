@@ -3,21 +3,22 @@ import firebase from "../firebase";
 
 const useAvailableUsers = userId => {
   const [availableUsers, setAvailableUsers] = useState([]);
-  const getAvailableUsers = () =>
-    firebase.database.ref("availableUsers").on("value", allAvailableUsers => {
-      const users = [];
-      firebase.database
-        .ref("users")
-        .once("value")
-        .then(allUsers => {
-          allAvailableUsers.val() &&
-            Object.keys(allAvailableUsers.val()).forEach(user => {
-              if (!userId || userId !== user) {
-                users.push({ ...allUsers.val()[user], id: user });
-              }
-            });
-          setAvailableUsers(users);
-        });
+  const getAvailableUsersIds = () =>
+    firebase.database.ref("availableUsers").on("value", async (allAvailableUsers) => {
+      const getAvailableUsersFromIds = async () => {
+        const filterOwnUser = id => userId !== id;
+        const users = await firebase.getUsersFromIds(
+          allAvailableUsers,
+          filterOwnUser
+        );
+        setAvailableUsers(users);
+      };
+
+      try {
+        await getAvailableUsersFromIds();
+      } catch (err) {
+        console.log(err);
+      }
     });
   const updateAvailableUser = async (userId, value) => {
     await firebase.database.ref("availableUsers").update({ [userId]: value });
@@ -26,7 +27,7 @@ const useAvailableUsers = userId => {
     availableUsers.map(user => user.id).includes(userId);
 
   useEffect(() => {
-    getAvailableUsers();
+    getAvailableUsersIds();
   }, []);
   return { availableUsers, updateAvailableUser, getUserAvailability };
 };
