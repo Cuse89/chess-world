@@ -4,6 +4,8 @@ import ChallengePlayer from "components/dashboard-online/challenge-player";
 import NameInput from "components/dashboard-online/name-input";
 import { Context } from "components/app";
 import useAvailableUsers from "hooks/useAvailableUsers";
+import { v4 as uuid } from "uuid";
+import defaultBoard from "lineups/defaultBoard";
 
 const DashboardOnline = ({ history }) => {
   const { user, settings } = useContext(Context);
@@ -23,9 +25,41 @@ const DashboardOnline = ({ history }) => {
     }
   }, [user]);
 
-  const handleStartNewGame = (opponentId) => {
+  const updateGameRequest = async (outgoingUserId, incomingUserId, value) => {
+    try {
+      await firebase.updateUser(incomingUserId, "requestsIncoming", {
+        [outgoingUserId]: value
+      });
+      await firebase.updateUser(outgoingUserId, "requestsOutgoing", {
+        [incomingUserId]: value
+      });
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
-    history.push(`/${settings.gameType}`)
+  const joinGame = gameId => {
+    history.push(`/${settings.gameType}/${gameId}`);
+  };
+
+  const handleStartNewGame = async opponentId => {
+    const newGameId = `game-${uuid().split("-")[0]}`;
+    try {
+      await firebase.updateGame(newGameId, {
+        users: { white: user.id, black: opponentId },
+        board: defaultBoard,
+        turn: user.id,
+        gameType: settings.gameType
+      });
+      await updateGameRequest(opponentId, user.id, null);
+      await firebase.updateUser(user.id, "games", { [opponentId]: newGameId });
+      console.log("1")
+      await firebase.updateUser(opponentId, "games", { [user.id]: newGameId });
+    } catch (err) {
+      console.log(err);
+    }
+
+    joinGame(newGameId);
   };
 
   if (user) {
@@ -37,6 +71,8 @@ const DashboardOnline = ({ history }) => {
             user={user}
             history={history}
             handleStartNewGame={handleStartNewGame}
+            updateGameRequest={updateGameRequest}
+            joinGame={joinGame}
           />
         )}
       </div>

@@ -16,8 +16,8 @@ class Firebase {
     await this.auth().signInWithPopup(new firebase.auth.GoogleAuthProvider());
   }
 
-  logout() {
-    this.auth().signOut();
+  async logout() {
+    await this.auth().signOut();
   }
 
   async setUser(userId, key, value) {
@@ -25,6 +25,7 @@ class Firebase {
   }
 
   async updateUser(userId, key, value) {
+    console.log("udpateUser", userId, key, value)
     await this.database.ref(`users/${userId}/${key}`).update(value);
   }
 
@@ -42,6 +43,10 @@ class Firebase {
           });
         return users;
       });
+  }
+
+  async updateGame(gameId, value) {
+    await this.database.ref(`games/${gameId}`).update(value)
   }
 }
 
