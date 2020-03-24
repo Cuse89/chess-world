@@ -25,7 +25,6 @@ class Firebase {
   }
 
   async updateUser(userId, key, value) {
-    console.log("udpateUser", userId, key, value)
     await this.database.ref(`users/${userId}/${key}`).update(value);
   }
 
@@ -49,9 +48,6 @@ class Firebase {
     await this.database.ref(`games/${gameId}`).update(value)
   }
 
-  async getGame(gameId) {
-    return await this.database.ref(`games/${gameId}`).once("value").then((game) => game.val())
-  }
 }
 
 const firebase = new Firebase();

@@ -141,3 +141,9 @@ export const getPrettyFromTechnicalName = (obj, technicalName) => {
   );
   return obj[key].PRETTY
 }
+
+export const getUrlParam = (key) => {
+  const queryString = window.location.search;
+  const urlParams = new URLSearchParams(queryString);
+  return urlParams.get(key)
+}

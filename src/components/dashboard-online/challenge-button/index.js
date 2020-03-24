@@ -6,6 +6,7 @@ import Context from "context";
 import { v4 as uuid } from "uuid";
 import firebase from "../../../firebase";
 import defaultBoard from "lineups/defaultBoard";
+import useGameState from "hooks/useGameState";
 
 const ChallengeButton = ({
   opponentId,
@@ -13,19 +14,23 @@ const ChallengeButton = ({
   joinGame,
   toggleShowCreateGame
 }) => {
-  const { user } = useContext(Context);
-  const [currentGame, setCurrentGame] = useState(null);
+  const { user, settings } = useContext(Context);
+  const {gameState} = useGameState({
+    gameMode: settings.gameMode,
+    isOnline: true,
+    gameId: user.games[opponentId]
+  });
 
-  const handleCurrentGame = async () => {
-    if (user.games && user.games[opponentId]) {
-      const game = await firebase.getGame(user.games[opponentId]);
-      setCurrentGame(game);
-    }
-  };
-
-  useEffect(() => {
-    handleCurrentGame();
-  }, []);
+  // const handleCurrentGame = async () => {
+  //   if (user.games && user.games[opponentId]) {
+  //     const game = await firebase.getGame(user.games[opponentId]);
+  //     setCurrentGame(game);
+  //   }
+  // };
+  //
+  // useEffect(() => {
+  //   handleCurrentGame();
+  // }, []);
 
   const handleStartNewGame = async (opponentId, gameSettings) => {
     const newGameId = `game-${uuid().split("-")[0]}`;
@@ -75,9 +80,9 @@ const ChallengeButton = ({
         />
       );
     }
-    if (currentGame) {
+    if (gameState) {
       // Todo: fetch gametype from game object
-      const gameType = currentGame.gameType;
+      const gameType = gameState.gameType;
       button = (
         <DashboardButton
           displayText={"Game in progress. Join Game"}

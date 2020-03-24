@@ -7,7 +7,7 @@ import styles from "./Square.module.scss";
 
 const Square = memo(({ children, coords, handleOnClick, isGreen }) => {
   const className = cx({
-    [styles.square]: true,
+    [styles.root]: true,
     [styles.green]: isGreen
   });
   return (

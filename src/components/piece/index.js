@@ -4,7 +4,7 @@ import { Draggable } from "react-beautiful-dnd";
 
 export const Piece = memo(
   ({ className, icon, available, pieceColour, inCheck }) => (
-    <Draggable draggableId={className} index={0}>
+    <Draggable isDragDisabled={!available} draggableId={className} index={0}>
       {(provided, snapshot) => {
         return (
           <div

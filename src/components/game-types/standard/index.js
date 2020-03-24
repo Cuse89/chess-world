@@ -1,20 +1,34 @@
 import React, { useContext, useEffect } from "react";
 import Board from "components/board";
 import { Piece } from "components/piece";
-import { getPieceProps, getSquareDetails } from "utils/helpers";
+import { getPieceProps, getSquareDetails, getUrlParam } from "utils/helpers";
 import useGameState from "hooks/useGameState";
 import Context from "context";
+import { GAME_MODES } from "utils/constants";
 
 const Standard = () => {
   const { user, settings } = useContext(Context);
-  const { gameState, performMove, performBotMove } = useGameState();
+  console.log({ user });
+
+  const { gameState, performMove, performBotMove, isUsersTurn } = useGameState({
+    gameMode: settings.gameMode,
+    userId: user && user.id,
+    gameId: getUrlParam("game")
+  });
+  console.log("is users turn", isUsersTurn());
+  const isOnePlayer =
+    settings.gameMode === GAME_MODES.ONE_PLAYER.TECHNICAL_NAME;
+  const isTwoPlayer =
+    settings.gameMode === GAME_MODES.TWO_PLAYER.TECHNICAL_NAME;
+  const isOnlinePlay =
+    settings.gameMode === GAME_MODES.ONLINE_PLAY.TECHNICAL_NAME;
 
   useEffect(() => {
     handleNextTurn();
   }, [gameState.turn]);
 
   function handleNextTurn() {
-    if (settings.gameMode === "onePlayer") {
+    if (isOnePlayer) {
       performBotMove();
     }
   }
@@ -30,6 +44,7 @@ const Standard = () => {
         icon={getPieceProps(pieceId).icon}
         pieceColour={player}
         inCheck={inCheck}
+        available={isUsersTurn()}
       />
     ) : null;
   }
