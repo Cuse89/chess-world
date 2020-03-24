@@ -12,6 +12,7 @@ import { bishopValidation } from "../rules/bishopValidation";
 import { knightValidation } from "../rules/knightValidation";
 import { kingValidation } from "../rules/kingValidation";
 import { getKingStatus } from "../rules/getKingStatus";
+import { GAME_TYPES } from "utils/constants";
 
 export const getPieceProps = pieceId => {
   switch (pieceId && pieceId.split("-")[0]) {
@@ -133,3 +134,10 @@ export const getUpdatedFallen = (targetPiece, fallen) => {
 
 export const getTargetPiece = (board, destinationCoords) =>
   board[destinationCoords[0]][destinationCoords[1]];
+
+export const getPrettyFromTechnicalName = (obj, technicalName) => {
+  const key =  Object.keys(obj, technicalName).filter(
+    key => obj[key].TECHNICAL_NAME === technicalName
+  );
+  return obj[key].PRETTY
+}

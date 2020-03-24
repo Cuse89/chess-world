@@ -1,16 +1,23 @@
 import React from "react";
 import PropTypes from "prop-types";
 import cx from "classnames";
-import styles from "./DashboardButton.module.scss";
+import styles from "components/dashboard-button/DashboardButton.module.scss";
 
-const DashboardButton = ({ displayText, onClick, type, fullLength }) => {
+const DashboardButton = ({
+  displayText,
+  onClick,
+  type,
+  fullLength,
+  selected
+}) => {
   const className = cx({
     [styles.root]: true,
     [styles.default]: type === "default",
     [styles.error]: type === "error",
     [styles.warning]: type === "warning",
     [styles.accept]: type === "accept",
-    [styles.fullLength]: fullLength
+    [styles.fullLength]: fullLength,
+    [styles.selected]: selected
   });
   return (
     <div className={className} onClick={onClick}>

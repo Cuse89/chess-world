@@ -2,4 +2,16 @@
 
 .root {
   display: flex;
+  margin-top: 10px;
+
+  .content {
+    display: flex;
+    flex-direction: row;
+    margin-left: 10px;
+    align-items: baseline;
+
+    p {
+      margin-right: 10px;
+    }
+  }
 }

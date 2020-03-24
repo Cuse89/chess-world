@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { GAME_MODES, GAME_TYPES } from "utils/contants";
+import { GAME_MODES, GAME_TYPES } from "utils/constants";
 
 const useGameSettings = () => {
   const [gameMode, setGameMode] = useState(

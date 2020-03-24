@@ -1,59 +1,36 @@
-import React, { useState } from "react";
-import DashboardButton from "components/dashboard-button";
-import Swiper from "components/Swiper";
-import { GAME_MODES, GAME_TYPES } from "utils/contants";
-import DashboardOnline from "components/dashboard-online";
-import useGameSettings from "hooks/useGameSettings";
+import React, { useContext, useState } from "react";
+
+import SelectGameMode from "components/select-game-mode";
+import CreateGame from "components/create-game";
+import { GAME_MODES } from "utils/constants";
+import { Context } from "components/app";
 
 const Dashboard = ({ history }) => {
-  const { gameMode, setGameMode, gameType, setGameType } = useGameSettings();
+  const { settings } = useContext(Context);
+  const { setGameMode, gameType } = settings;
+  const [showSelectGameMode, toggleShowSelectGameMode] = useState(true);
+  const [showCreateGame, toggleShowCreateGame] = useState(false);
 
-  const standard = {
-    val: GAME_TYPES.STANDARD.TECHNICAL_NAME,
-    pretty: GAME_TYPES.STANDARD.PRETTY
-  };
-  const trapdoor = {
-    val: GAME_TYPES.TRAPDOOR.TECHNICAL_NAME,
-    pretty: GAME_TYPES.TRAPDOOR.PRETTY
-  };
-  const trivia = {
-    val: GAME_TYPES.TRIVIA.TECHNICAL_NAME,
-    pretty: GAME_TYPES.TRIVIA.PRETTY
-  };
-  // needs at least 4 for some reason else ReactSwipe breaks
-  let gameTypes = [standard, trapdoor, trivia, standard, trapdoor, trivia];
-
-  const startGame = gameMode => {
+  const onGameModeClick = gameMode => {
     setGameMode(gameMode);
+
+    if (gameMode === GAME_MODES.ONLINE_PLAY.TECHNICAL_NAME) {
+      history.push("/dashboard/online");
+    } else {
+      toggleShowCreateGame(prevState => !prevState);
+      toggleShowSelectGameMode(prevState => !prevState);
+    }
+  };
+
+  const joinGame = () => {
     history.push(`/${gameType}`);
   };
-
-  const onOnlinePlayClick = () => {
-    setGameMode(GAME_MODES.ONLINE_PLAY.TECHNICAL_NAME);
-    history.push("/dashboard/online");
-  };
-
   return (
     <div>
-      <Swiper options={gameTypes} handleNav={setGameType} />
-
-      <div>
-        <DashboardButton
-          displayText={GAME_MODES.ONE_PLAYER.PRETTY}
-          onClick={() => startGame(GAME_MODES.ONE_PLAYER.TECHNICAL_NAME)}
-        />
-        <DashboardButton
-          displayText={GAME_MODES.TWO_PLAYER.PRETTY}
-          onClick={() => startGame(GAME_MODES.TWO_PLAYER.TECHNICAL_NAME)}
-        />
-        <DashboardButton
-          displayText={GAME_MODES.ONLINE_PLAY.PRETTY}
-          onClick={onOnlinePlayClick}
-        />
-        {gameMode === GAME_MODES.ONLINE_PLAY.TECHNICAL_NAME && (
-          <DashboardOnline />
-        )}
-      </div>
+      {showSelectGameMode && (
+        <SelectGameMode history={history} onGameModeClick={onGameModeClick} />
+      )}
+      {showCreateGame && <CreateGame onSubmit={joinGame} />}
     </div>
   );
 };

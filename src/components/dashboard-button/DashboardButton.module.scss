@@ -1,7 +1,8 @@
-@import "src/styles/base/variables";
+@import "../../styles/base/variables";
 
 .root {
   width: 82px;
+  height: fit-content;
   padding: 5px;
   cursor: pointer;
   border-radius: 4px;
