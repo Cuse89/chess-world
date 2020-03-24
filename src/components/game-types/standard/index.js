@@ -2,9 +2,8 @@ import React, { useContext, useEffect } from "react";
 import Board from "components/board";
 import { Piece } from "components/piece";
 import { getPieceProps, getSquareDetails } from "utils/helpers";
-
-import Context from "context";
 import useGameState from "hooks/useGameState";
+import Context from "context";
 
 const Standard = () => {
   const { user, settings } = useContext(Context);

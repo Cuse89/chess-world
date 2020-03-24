@@ -1,18 +1,13 @@
 import React, { useContext, useState } from "react";
 import DashboardButton from "components/dashboard-button";
 import useAvailableUsers from "hooks/useAvailableUsers";
-
-import Context from "context"
-import styles from "./ChallengePlayer.module.scss";
-import { GAME_TYPES } from "utils/constants";
-import { getPrettyFromTechnicalName } from "utils/helpers";
 import CreateGame from "components/create-game";
+import ChallengeButton from "components/dashboard-online/challenge-button";
+import Context from "context";
+import firebase from "../../../firebase";
+import styles from "./ChallengePlayer.module.scss";
 
-const ChallengePlayer = ({
-  handleStartNewGame,
-  updateGameRequest,
-  joinGame
-}) => {
+const ChallengePlayer = ({ history }) => {
   const { user } = useContext(Context);
   const { availableUsers } = useAvailableUsers(user.id);
   const [displayAvailableUsers, setDisplayAvailableUsers] = useState(false);
@@ -21,48 +16,23 @@ const ChallengePlayer = ({
     setDisplayAvailableUsers(prevState => !prevState);
   };
 
-  const getButton = availableUser => {
-    let button = (
-      <DashboardButton
-        displayText={"Challenge"}
-        onClick={() => toggleShowCreateGame(true)}
-        fullLength
-      />
-    );
-    if (user.requestsOutgoing && user.requestsOutgoing[availableUser.id]) {
-      button = (
-        <DashboardButton
-          displayText={"Challenge request sent"}
-          onClick={() => updateGameRequest(user.id, availableUser.id, null)}
-          type={"warning"}
-          fullLength
-        />
-      );
+  const updateGameRequest = async (outgoingUserId, incomingUserId, value) => {
+    try {
+      await firebase.updateUser(incomingUserId, "requestsIncoming", {
+        [outgoingUserId]: value
+      });
+      await firebase.updateUser(outgoingUserId, "requestsOutgoing", {
+        [incomingUserId]: value
+      });
+    } catch (err) {
+      console.log(err);
     }
-    if (user.requestsIncoming && user.requestsIncoming[availableUser.id]) {
-      const gameType = user.requestsIncoming[availableUser.id].gameType;
-      const gameTypeText = getPrettyFromTechnicalName(GAME_TYPES, gameType);
-      button = (
-        <DashboardButton
-          displayText={`Incoming ${gameTypeText} request. Click to play!`}
-          onClick={() => handleStartNewGame(availableUser.id)}
-          type={"accept"}
-          fullLength
-        />
-      );
-    }
-    if (user.games && user.games[availableUser.id]) {
-      button = (
-        <DashboardButton
-          displayText={"Game in progress. Join Game"}
-          onClick={() => joinGame(user.games[availableUser.id])}
-          type={"accept"}
-          fullLength
-        />
-      );
-    }
-    return button;
   };
+
+  const joinGame = (gameType, gameId) => {
+    history.push(`/${gameType}?game=${gameId}`);
+  };
+
 
   const onCreateGameSubmit = (gameType, opponentId) => {
     toggleShowCreateGame(false);
@@ -80,7 +50,14 @@ const ChallengePlayer = ({
           {availableUsers.map(availableUser => (
             <div key={`challenge-${availableUser}`} className={styles.content}>
               <p>{availableUser.name}</p>
-              {!showCreateGame && getButton(availableUser)}
+              {!showCreateGame && (
+                <ChallengeButton
+                  opponentId={availableUser.id}
+                  toggleShowCreateGame={toggleShowCreateGame}
+                  updateGameRequest={updateGameRequest}
+                  joinGame={joinGame}
+                />
+              )}
               {showCreateGame && (
                 <CreateGame
                   onSubmit={gameType =>

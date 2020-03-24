@@ -48,6 +48,10 @@ class Firebase {
   async updateGame(gameId, value) {
     await this.database.ref(`games/${gameId}`).update(value)
   }
+
+  async getGame(gameId) {
+    return await this.database.ref(`games/${gameId}`).once("value").then((game) => game.val())
+  }
 }
 
 const firebase = new Firebase();
