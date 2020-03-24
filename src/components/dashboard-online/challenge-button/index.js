@@ -15,22 +15,11 @@ const ChallengeButton = ({
   toggleShowCreateGame
 }) => {
   const { user, settings } = useContext(Context);
-  const {gameState} = useGameState({
-    gameMode: settings.gameMode,
-    isOnline: true,
-    gameId: user.games[opponentId]
-  });
 
-  // const handleCurrentGame = async () => {
-  //   if (user.games && user.games[opponentId]) {
-  //     const game = await firebase.getGame(user.games[opponentId]);
-  //     setCurrentGame(game);
-  //   }
-  // };
-  //
-  // useEffect(() => {
-  //   handleCurrentGame();
-  // }, []);
+  const { gameState } = useGameState({
+    gameMode: settings.gameMode,
+    gameId: user.games && user.games[opponentId]
+  });
 
   const handleStartNewGame = async (opponentId, gameSettings) => {
     const newGameId = `game-${uuid().split("-")[0]}`;
@@ -38,7 +27,7 @@ const ChallengeButton = ({
       await firebase.updateGame(newGameId, {
         users: { white: user.id, black: opponentId },
         board: defaultBoard,
-        turn: user.id,
+        turn: "white",
         gameType: gameSettings.gameType
       });
       await updateGameRequest(opponentId, user.id, null);
@@ -80,7 +69,7 @@ const ChallengeButton = ({
         />
       );
     }
-    if (gameState) {
+    if (gameState.users) {
       // Todo: fetch gametype from game object
       const gameType = gameState.gameType;
       button = (

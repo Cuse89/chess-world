@@ -7,7 +7,7 @@ import styles from "./Board.module.scss";
 
 const Board = ({ board, boardWidth, getSquaresChild, onDragEnd }) => {
   const rows = [];
-  const isGreen = (coords) => {
+  const isGreen = coords => {
     const isEven = n => n % 2 === 0;
     const evenRow = isEven(Number(coords[0]));
     const evenSquare = isEven(Number(coords[1]));
@@ -26,9 +26,7 @@ const Board = ({ board, boardWidth, getSquaresChild, onDragEnd }) => {
     rows.push(squares);
   }
   return (
-    <DragDropContext
-      onDragEnd={onDragEnd}
-    >
+    <DragDropContext onDragEnd={onDragEnd}>
       <div className={styles.board}>{rows}</div>
     </DragDropContext>
   );
@@ -42,7 +40,7 @@ Board.defaultProps = {
 Board.propTypes = {
   board: PropTypes.array.isRequired,
   boardWidth: PropTypes.number,
-  onDragEnd: PropTypes.func,
+  onDragEnd: PropTypes.func
 };
 
 export default Board;

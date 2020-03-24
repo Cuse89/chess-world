@@ -8,14 +8,13 @@ import { GAME_MODES } from "utils/constants";
 
 const Standard = () => {
   const { user, settings } = useContext(Context);
-  console.log({ user });
 
   const { gameState, performMove, performBotMove, isUsersTurn } = useGameState({
     gameMode: settings.gameMode,
     userId: user && user.id,
     gameId: getUrlParam("game")
   });
-  console.log("is users turn", isUsersTurn());
+
   const isOnePlayer =
     settings.gameMode === GAME_MODES.ONE_PLAYER.TECHNICAL_NAME;
   const isTwoPlayer =
