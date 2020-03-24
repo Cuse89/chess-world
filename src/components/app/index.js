@@ -7,11 +7,10 @@ import Header from "components/header";
 import useGameSettings from "hooks/useGameSettings";
 import DashboardOnline from "components/dashboard-online";
 import useUser from "hooks/useUser";
+import Context from "context";
 
 import "styles/styles.scss";
 import styles from "./App.module.scss";
-
-export const Context = React.createContext(null);
 
 const App = () => {
   const settings = useGameSettings();

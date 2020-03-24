@@ -3,7 +3,7 @@ import React, { useContext, useState } from "react";
 import SelectGameMode from "components/select-game-mode";
 import CreateGame from "components/create-game";
 import { GAME_MODES } from "utils/constants";
-import { Context } from "components/app";
+import Context from "context"
 
 const Dashboard = ({ history }) => {
   const { settings } = useContext(Context);

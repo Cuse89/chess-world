@@ -1,12 +1,11 @@
 import React, { useContext, useEffect, useState } from "react";
-import firebase from "../../firebase";
+import firebase from "firebase";
 import ChallengePlayer from "components/dashboard-online/challenge-player";
 import NameInput from "components/dashboard-online/name-input";
-import { Context } from "components/app";
+import Context from "context"
 import useAvailableUsers from "hooks/useAvailableUsers";
 import { v4 as uuid } from "uuid";
 import defaultBoard from "lineups/defaultBoard";
-import CreateGame from "components/create-game";
 
 const DashboardOnline = ({ history }) => {
   const { user, settings } = useContext(Context);

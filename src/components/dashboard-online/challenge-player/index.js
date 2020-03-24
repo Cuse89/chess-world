@@ -2,7 +2,7 @@ import React, { useContext, useState } from "react";
 import DashboardButton from "components/dashboard-button";
 import useAvailableUsers from "hooks/useAvailableUsers";
 
-import { Context } from "components/app";
+import Context from "context"
 import styles from "./ChallengePlayer.module.scss";
 import { GAME_TYPES } from "utils/constants";
 import { getPrettyFromTechnicalName } from "utils/helpers";
@@ -55,7 +55,7 @@ const ChallengePlayer = ({
       button = (
         <DashboardButton
           displayText={"Game in progress. Join Game"}
-          onClick={() => joinGame(user.games[availableUser.id].gameType)}
+          onClick={() => joinGame(user.games[availableUser.id])}
           type={"accept"}
           fullLength
         />

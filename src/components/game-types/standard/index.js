@@ -1,57 +1,27 @@
-import React, { Component } from "react";
+import React, { useContext, useEffect } from "react";
 import Board from "components/board";
 import { Piece } from "components/piece";
-import {
-  kingStatusOpponent,
-  kingStatusSelf,
-  getNextBoard,
-  getOpponent,
-  getPieceProps,
-  getSquareDetails,
-  getTargetPiece,
-  getUpdatedFallen,
-  performValidation
-} from "utils/helpers";
-import defaultBoard from "lineups/defaultBoard";
-import { decideBotMove, getBotMoves } from "utils/onePlayerHelpers";
+import { getPieceProps, getSquareDetails } from "utils/helpers";
 
-class Standard extends Component {
-  constructor(props) {
-    super(props);
+import Context from "context";
+import useGameState from "hooks/useGameState";
 
-    this.state = {
-      board: defaultBoard,
-      turn: "white",
-      fallen: {
-        white: [],
-        black: []
-      },
-      inCheck: ""
-    };
-  }
+const Standard = () => {
+  const { user, settings } = useContext(Context);
+  const { gameState, performMove, performBotMove } = useGameState();
 
-  componentDidUpdate(prevProps, prevState, snapshot) {
-    if (prevState.turn !== this.state.turn) {
-      this.handleNextTurn();
+  useEffect(() => {
+    handleNextTurn();
+  }, [gameState.turn]);
+
+  function handleNextTurn() {
+    if (settings.gameMode === "onePlayer") {
+      performBotMove();
     }
   }
 
-  handleNextTurn() {
-    if (this.props.gameMode === "onePlayer") {
-      const selectedMove = decideBotMove(getBotMoves(this.state.board));
-      console.log("selected move", selectedMove);
-      this.setState({
-        board: getNextBoard(
-          this.state.board,
-          selectedMove.source.coords,
-          selectedMove.destination.coords
-        )
-      });
-    }
-  }
-
-  getStandardSquaresChild = coords => {
-    const square = getSquareDetails(coords, this.state.board);
+  function getStandardSquaresChild(coords) {
+    const square = getSquareDetails(coords, gameState.board);
     const { player, pieceId, inCheck } = square;
 
     return square.pieceId ? (
@@ -63,51 +33,17 @@ class Standard extends Component {
         inCheck={inCheck}
       />
     ) : null;
-  };
-
-  handlePerformMove = a => {
-    const { board, turn } = this.state;
-    const sourceCoords = a.source.droppableId;
-    const destinationCoords = a.destination.droppableId;
-    const validMove = performValidation({
-      board,
-      sourceCoords,
-      destinationCoords,
-      ownColor: "white"
-    });
-    const nextBoard = getNextBoard(board, sourceCoords, destinationCoords);
-    const movedSelfIntoCheck = kingStatusSelf(nextBoard, turn) === "check";
-    const opponent = getOpponent(turn);
-    const opponentKingStatus = kingStatusOpponent(nextBoard, turn);
-    if (validMove && !movedSelfIntoCheck) {
-      this.setState(({ board, fallen, inCheck, inCheckmate }) => {
-        return {
-          board: nextBoard,
-          turn: opponent,
-          fallen: getUpdatedFallen(
-            getTargetPiece(board, destinationCoords),
-            fallen
-          ),
-          inCheck: opponentKingStatus === "check" ? opponent : inCheck,
-          inCheckmate:
-            opponentKingStatus === "checkmate" ? opponent : inCheckmate
-        };
-      });
-    }
-  };
-
-  render() {
-    const { board } = this.state;
-    return (
-      <div>
-        <Board
-          board={board}
-          getSquaresChild={this.getStandardSquaresChild}
-          onDragEnd={this.handlePerformMove}
-        />
-      </div>
-    );
   }
-}
+
+  return (
+    <div>
+      <Board
+        board={gameState.board}
+        getSquaresChild={getStandardSquaresChild}
+        onDragEnd={performMove}
+      />
+    </div>
+  );
+};
 
 export default Standard;
