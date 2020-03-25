@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome/index";
 import { Draggable } from "react-beautiful-dnd";
 
 export const Piece = memo(
-  ({ className, icon, available, pieceColour, inCheck }) => (
+  ({ className, icon, available, pieceColor, inCheck }) => (
     <Draggable isDragDisabled={!available} draggableId={className} index={0}>
       {(provided, snapshot) => {
         return (
@@ -16,7 +16,7 @@ export const Piece = memo(
               icon={icon}
               cursor={available ? "pointer" : "cursor"}
               color={
-                pieceColour === "white"
+                pieceColor === "white"
                   ? inCheck
                     ? "#d85656"
                     : "#c7c7c7"

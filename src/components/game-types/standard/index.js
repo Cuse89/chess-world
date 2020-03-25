@@ -1,20 +1,26 @@
 import React, { useContext, useEffect } from "react";
 import Board from "components/board";
 import { Piece } from "components/piece";
-import {
-  getPieceProps,
-  getUrlParam,
-} from "utils/helpers";
+import { getPieceProps, getUrlParam } from "utils/helpers";
 import useGameState from "hooks/useGameState";
 import Context from "context";
 import { GAME_MODES } from "utils/constants";
+import Fallen from "components/fallen";
 
 const Standard = () => {
   const { user, settings } = useContext(Context);
   const { gameMode } = settings;
   const userId = user && user.id;
 
-  const { gameState, performMove, performBotMove, isUsersTurn } = useGameState({
+  const {
+    gameState,
+    performOfflineMove,
+    performOnlineMove,
+    performBotMove,
+    isUsersTurn,
+    validateOfflineMove,
+    validateOnlineMove
+  } = useGameState({
     gameMode,
     userId,
     gameId: getUrlParam("game")
@@ -27,6 +33,14 @@ const Standard = () => {
   useEffect(() => {
     handleNextTurn();
   }, [gameState.turn]);
+
+  function onDrop(a) {
+    if ((isOnePlayer || isTwoPlayer) && validateOfflineMove(a)) {
+      performOfflineMove(a);
+    } else if (isOnlinePlay && validateOnlineMove(a)) {
+      performOnlineMove(a);
+    }
+  }
 
   function handleNextTurn() {
     if (isOnePlayer && gameState.turn === "black") {
@@ -41,7 +55,7 @@ const Standard = () => {
         key={`${player}-${pieceId}`}
         className={`${player}-${pieceId}`}
         icon={getPieceProps(pieceId).icon}
-        pieceColour={player}
+        pieceColor={player}
         inCheck={inCheck}
         available={isUsersTurn()}
       />
@@ -50,11 +64,13 @@ const Standard = () => {
 
   return (
     <div>
+      <Fallen fallen={[]} />
       <Board
         board={gameState.board}
         getSquaresChild={getStandardSquaresChild}
-        onDragEnd={performMove}
+        onDragEnd={onDrop}
       />
+      <Fallen fallen={[]} />
     </div>
   );
 };
