@@ -83,7 +83,8 @@ export const performValidation = ({
   board,
   player,
   sourceCoords,
-  destinationCoords
+  destinationCoords,
+  baselinePlayer
 }) => {
   // work out if valid square has been selected, or another of mine
   const prevSquare = getSquareDetails(sourceCoords, board);
@@ -98,17 +99,15 @@ export const performValidation = ({
       sourceCoords,
       destinationCoords,
       board,
-      player
+      player,
+      baselinePlayer
     })
   ) {
     return false;
   }
   const nextBoard = getNextBoard(board, sourceCoords, destinationCoords);
-  const movedSelfIntoCheck = kingStatusSelf(nextBoard, player) === "check";
-  if (!movedSelfIntoCheck) {
-    return false;
-  }
-  return true
+  const movedSelfIntoCheck = getKingStatus(nextBoard, player, baselinePlayer) === "check";
+  return !movedSelfIntoCheck;
 };
 
 export const loopBoard = (board, func) =>
@@ -119,13 +118,13 @@ export const loopBoard = (board, func) =>
     });
   });
 
-export const kingStatusOpponent = (nextBoard, turn) => {
-  const opponent = turn === "white" ? "black" : "white";
-  return getKingStatus(opponent, nextBoard);
+export const kingStatusOpponent = (nextBoard, player, baselinePlayer) => {
+  const opponent = player === "white" ? "black" : "white";
+  return getKingStatus(opponent, nextBoard, baselinePlayer);
 };
 
-export const kingStatusSelf = (nextBoard, turn) =>
-  getKingStatus(turn, nextBoard);
+export const kingStatusSelf = (nextBoard, player, baselinePlayer) =>
+  getKingStatus(player, nextBoard, baselinePlayer);
 
 export const getOpponent = turn => (turn === "white" ? "black" : "white");
 

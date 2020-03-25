@@ -1,7 +1,7 @@
 import { getPieceProps, loopBoard } from "../utils/helpers";
 // kingPlayer is the players colour that controls the king in question
 
-export const getKingStatus = (kingPlayer, board) => {
+export const getKingStatus = (board, kingPlayer, baselinePlayer) => {
   let inCheck = false;
   const potentialCoords = [11, -11, 10, -10, 9, -9, 1, -1, 0];
   let availableCoords = [];
@@ -56,7 +56,8 @@ export const getKingStatus = (kingPlayer, board) => {
           sourceCoords,
           destinationCoords,
           board,
-          player: square.player
+          player: square.player,
+          baselinePlayer
         });
         isSafe = !availableCoordCouldBeTaken;
       }
@@ -80,7 +81,8 @@ export const getKingStatus = (kingPlayer, board) => {
           sourceCoords,
           destinationCoords: kingPos,
           board,
-          player: square.player
+          player: square.player,
+          baselinePlayer,
         })
       ) {
         inCheck = true;

@@ -5,9 +5,9 @@ export const pawnValidation = ({
   destinationCoords,
   board,
   player,
-  captureOnly
+  captureOnly,
+  baselinePlayer,
 }) => {
-  console.log("pawnValidation", sourceCoords, destinationCoords);
   // captureOnly is validation to see if it can capture only
   const targetSquareOccupied = captureOnly
     ? true
@@ -15,11 +15,11 @@ export const pawnValidation = ({
       getOpponent(player);
   const move = parseInt(sourceCoords) - parseInt(destinationCoords);
   // moved 1 space forward
-  if (move === (player === "white" ? 10 : -10)) {
+  if (move === (player === baselinePlayer ? 10 : -10)) {
     return !targetSquareOccupied;
     // moved 2 spaces forward
-  } else if (move === (player === "white" ? 20 : -20)) {
-    const eligibleColumn = player === "white" ? 6 : 1;
+  } else if (move === (player === baselinePlayer ? 20 : -20)) {
+    const eligibleColumn = player === baselinePlayer ? 6 : 1;
     // was moving 2 spaces eligible?
     // Todo: Dont allow pawn to jump over piece when moving 2 squares
     return (
@@ -27,8 +27,8 @@ export const pawnValidation = ({
     );
     // pawn moved diagonally
   } else if (
-    move === (player === "white" ? 9 : -9) ||
-    move === (player === "white" ? 11 : -11)
+    move === (player === baselinePlayer ? 9 : -9) ||
+    move === (player === baselinePlayer ? 11 : -11)
   ) {
     // was diagonal move eligible?
     return targetSquareOccupied;

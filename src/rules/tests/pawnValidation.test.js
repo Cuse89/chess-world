@@ -82,7 +82,8 @@ describe("pawnValidation", () => {
           sourceCoords,
           destinationCoords,
           board,
-          player: player || "white"
+          player: player || "white",
+          baselinePlayer: "white"
         })
       ).toBe(testObj.expect);
     });

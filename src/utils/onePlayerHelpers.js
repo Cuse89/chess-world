@@ -6,6 +6,7 @@ import {
   loopBoard,
   performValidation
 } from "./helpers";
+import { getKingStatus } from "rules/getKingStatus";
 
 export const getThreats = (threatenedPlayer, destinationCoords, board) => {
   let threats = [];
@@ -44,7 +45,8 @@ export const getBotMoves = board => {
             board,
             player: "black",
             sourceCoords,
-            destinationCoords
+            destinationCoords,
+            baselinePlayer: "white"
           })
         ) {
           const nextBoard = getNextBoard(
@@ -58,8 +60,8 @@ export const getBotMoves = board => {
               pieceId: prevSquare.pieceId,
               coords: sourceCoords,
               strength: getPieceProps(prevSquare.pieceId).strength,
-              checkmateYou: kingStatusSelf(board, "black"),
-              checkmateOpponent: kingStatusOpponent(board),
+              checkmateYou: getKingStatus(board, "black", "white"),
+              checkmateOpponent: getKingStatus(board, "white", "white"),
               threats: getThreats("black", sourceCoords, board)
             },
             destination: {
@@ -68,8 +70,8 @@ export const getBotMoves = board => {
               strength:
                 nextSquare.pieceId &&
                 getPieceProps(nextSquare.pieceId).strength,
-              checkmateYou: kingStatusSelf(nextBoard, "black"),
-              checkmateOpponent: kingStatusOpponent(nextBoard, "black"),
+              checkmateYou: getKingStatus(nextBoard, "black", "white"),
+              checkmateOpponent: getKingStatus(nextBoard, "white", "white"),
               threats: getThreats("black", destinationCoords, nextBoard),
               defenders: getThreats("white", destinationCoords, nextBoard)
             }

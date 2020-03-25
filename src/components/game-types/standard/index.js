@@ -3,7 +3,6 @@ import Board from "components/board";
 import { Piece } from "components/piece";
 import {
   getPieceProps,
-  getSquareDetails,
   getUrlParam,
 } from "utils/helpers";
 import useGameState from "hooks/useGameState";

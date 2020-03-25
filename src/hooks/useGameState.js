@@ -13,6 +13,7 @@ import {
 import { decideBotMove, getBotMoves } from "utils/onePlayerHelpers";
 import firebase from "../firebase";
 import { GAME_MODES } from "utils/constants";
+import { getKingStatus } from "rules/getKingStatus";
 
 const useGameState = ({ gameMode, gameId, userId }) => {
   const defaultTurn = "white";
@@ -55,12 +56,14 @@ const useGameState = ({ gameMode, gameId, userId }) => {
     const { board, turn } = gameState;
     const sourceCoords = a.source.droppableId;
     const destinationCoords = a.destination.droppableId;
-    console.log(sourceCoords, destinationCoords, board);
+    const baselinePlayer =
+      isOnlinePlay && gameState.users.black === userId ? "black" : "white";
     const validMove = performValidation({
       board,
       sourceCoords,
       destinationCoords,
-      player: gameState.turn
+      player: gameState.turn,
+      baselinePlayer
     });
     if (!validMove) {
       return;
@@ -68,8 +71,7 @@ const useGameState = ({ gameMode, gameId, userId }) => {
 
     const nextBoard = getNextBoard(board, sourceCoords, destinationCoords);
     const opponent = getOpponent(turn);
-    const opponentKingStatus = kingStatusOpponent(nextBoard, turn);
-
+    const opponentKingStatus = getKingStatus(nextBoard, getOpponent(turn), baselinePlayer);
     const newGameState = {
       ...gameState,
       board: nextBoard,
