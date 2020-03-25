@@ -106,7 +106,8 @@ export const performValidation = ({
     return false;
   }
   const nextBoard = getNextBoard(board, sourceCoords, destinationCoords);
-  const movedSelfIntoCheck = getKingStatus(nextBoard, player, baselinePlayer) === "check";
+  const movedSelfIntoCheck =
+    getKingStatus(nextBoard, player, baselinePlayer) === "check";
   return !movedSelfIntoCheck;
 };
 
@@ -160,3 +161,6 @@ export const mirrorBoard = board => {
   boardReversed.forEach(row => row.reverse());
   return boardReversed;
 };
+
+export const getBaselinePlayer = (blackId, userId) =>
+  blackId === userId ? "black" : "white";

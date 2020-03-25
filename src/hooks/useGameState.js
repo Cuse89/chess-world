@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import defaultBoard from "lineups/defaultBoard";
 import {
+  getBaselinePlayer,
   getNextBoard,
   getOpponent,
   getTargetPiece,
@@ -33,6 +34,7 @@ const useGameState = ({ gameMode, gameId, userId }) => {
   const isTwoPlayer = gameMode === GAME_MODES.TWO_PLAYER.TECHNICAL_NAME;
   const isOnlinePlay = gameMode === GAME_MODES.ONLINE_PLAY.TECHNICAL_NAME;
   const opponent = getOpponent(gameState.turn);
+  const baselinePlayer = gameState.users && getBaselinePlayer(gameState.users.black, userId);
 
   console.log({ gameState, gameMode });
 
@@ -43,7 +45,13 @@ const useGameState = ({ gameMode, gameId, userId }) => {
         setGameState({
           ...game,
           board:
-            game.users.black === userId ? mirrorBoard(game.board) : game.board
+            game.users.black === userId ? mirrorBoard(game.board) : game.board,
+          fallen: game.fallen
+            ? {
+                black: game.fallen.black || [],
+                white: game.fallen.white || []
+              }
+            : defaultFallen
         });
       });
     }
@@ -73,7 +81,7 @@ const useGameState = ({ gameMode, gameId, userId }) => {
       sourceCoords,
       destinationCoords,
       player: gameState.turn,
-      baselinePlayer: gameState.users.black === userId ? "black" : "white"
+      baselinePlayer
     });
   }
 
@@ -81,7 +89,6 @@ const useGameState = ({ gameMode, gameId, userId }) => {
     const { board } = gameState;
     const sourceCoords = a.source.droppableId;
     const destinationCoords = a.destination.droppableId;
-    const baselinePlayer = gameState.users.black === userId ? "black" : "white";
     const nextBoard = getNextBoard(board, sourceCoords, destinationCoords);
 
     const opponentKingStatus = getKingStatus(
@@ -93,11 +100,11 @@ const useGameState = ({ gameMode, gameId, userId }) => {
     const newGameState = {
       board: baselinePlayer === "black" ? mirrorBoard(nextBoard) : nextBoard,
       turn: opponent,
-      fallen:
-        getUpdatedFallen(
-          getTargetPiece(board, destinationCoords),
-          gameState.fallen
-        ) || defaultFallen,
+      fallen: getUpdatedFallen(
+        getTargetPiece(board, destinationCoords),
+
+        gameState.fallen
+      ),
       inCheck:
         opponentKingStatus === "check" ? opponent : gameState.inCheck || "",
       inCheckmate:
@@ -113,7 +120,7 @@ const useGameState = ({ gameMode, gameId, userId }) => {
   }
 
   function performOfflineMove(a) {
-    const { board, turn } = gameState;
+    const { board } = gameState;
     const sourceCoords = a.source.droppableId;
     const destinationCoords = a.destination.droppableId;
     const nextBoard = getNextBoard(board, sourceCoords, destinationCoords);
@@ -174,7 +181,7 @@ const useGameState = ({ gameMode, gameId, userId }) => {
     performBotMove,
     isUsersTurn,
     validateOfflineMove,
-    validateOnlineMove
+    validateOnlineMove,
   };
 };
 

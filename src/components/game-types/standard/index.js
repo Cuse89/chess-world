@@ -1,7 +1,12 @@
 import React, { useContext, useEffect } from "react";
 import Board from "components/board";
 import { Piece } from "components/piece";
-import { getPieceProps, getUrlParam } from "utils/helpers";
+import {
+  getBaselinePlayer,
+  getOpponent,
+  getPieceProps,
+  getUrlParam
+} from "utils/helpers";
 import useGameState from "hooks/useGameState";
 import Context from "context";
 import { GAME_MODES } from "utils/constants";
@@ -62,15 +67,32 @@ const Standard = () => {
     ) : null;
   }
 
+  function getFallen(baseline) {
+    if (isOnlinePlay && gameState.users) {
+      console.log("yaaa")
+      const baselinePlayer = getBaselinePlayer(gameState.users.black, userId);
+      console.log("getFallen", baselinePlayer, gameState.fallen);
+      console.log("mmmm",baseline
+        ? gameState.fallen[getOpponent(baselinePlayer)]
+        : gameState.fallen[baselinePlayer])
+      return baseline
+        ? gameState.fallen[getOpponent(baselinePlayer)]
+        : gameState.fallen[baselinePlayer];
+    } else {
+      console.log("nnooo")
+      return baseline ? gameState.fallen.black : gameState.fallen.white;
+    }
+  }
+
   return (
     <div>
-      <Fallen fallen={[]} />
+      <Fallen fallen={getFallen()} />
       <Board
         board={gameState.board}
         getSquaresChild={getStandardSquaresChild}
         onDragEnd={onDrop}
       />
-      <Fallen fallen={[]} />
+      <Fallen fallen={getFallen(true)} />
     </div>
   );
 };
