@@ -104,6 +104,7 @@ const useGameState = ({ gameMode, gameId, userId }) => {
 
   function performBotMove() {
     const selectedMove = decideBotMove(getBotMoves(gameState.board));
+    console.log("selectedMove", selectedMove)
     const board = getNextBoard(
       gameState.board,
       selectedMove.source.coords,
