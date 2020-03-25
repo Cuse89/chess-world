@@ -7,6 +7,7 @@ import {
   getUpdatedFallen,
   kingStatusOpponent,
   kingStatusSelf,
+  mirrorBoard,
   performValidation
 } from "utils/helpers";
 import { decideBotMove, getBotMoves } from "utils/onePlayerHelpers";
@@ -31,38 +32,31 @@ const useGameState = ({ gameMode, gameId, userId }) => {
   const isTwoPlayer = gameMode === GAME_MODES.TWO_PLAYER.TECHNICAL_NAME;
   const isOnlinePlay = gameMode === GAME_MODES.ONLINE_PLAY.TECHNICAL_NAME;
 
+  function handleMirroredBoard(board, blackId) {
+    // if onlinePlay and player is black, mirror board from db, and also mirror back before sending back to db
+    return blackId === userId ? mirrorBoard(board) : board;
+  }
+
   function gameListener() {
-    firebase.database.ref(`games/${gameId}`).on("value", async game => {
-      setGameState(game.val());
+    firebase.database.ref(`games/${gameId}`).on("value", async snapshot => {
+      const game = snapshot.val();
+      setGameState({
+        ...game,
+        board: handleMirroredBoard(game.board, game.users.black)
+      });
     });
-  }
-
-  function getUserColor() {
-    if (isOnePlayer) {
-      return "white";
-    } else if (isTwoPlayer) {
-      return gameState.turn;
-    } else if (isOnlinePlay) {
-      return gameState.users.white === userId ? "white" : "black";
-    }
-  }
-
-  function setBoard(board) {
-    setGameState(prevState => ({
-      ...prevState,
-      board
-    }));
   }
 
   async function performMove(a) {
     const { board, turn } = gameState;
     const sourceCoords = a.source.droppableId;
     const destinationCoords = a.destination.droppableId;
+    console.log(sourceCoords, destinationCoords, board);
     const validMove = performValidation({
       board,
       sourceCoords,
       destinationCoords,
-      ownColor: getUserColor()
+      player: gameState.turn
     });
     const nextBoard = getNextBoard(board, sourceCoords, destinationCoords);
     const movedSelfIntoCheck = kingStatusSelf(nextBoard, turn) === "check";
@@ -89,7 +83,10 @@ const useGameState = ({ gameMode, gameId, userId }) => {
         setGameState(newGameState);
       } else if (isOnlinePlay) {
         try {
-          await firebase.updateGame(gameId, newGameState);
+          await firebase.updateGame(gameId, {
+            ...newGameState,
+            board: handleMirroredBoard(nextBoard, gameState.users.black)
+          });
         } catch (err) {
           console.log(err);
         }
@@ -99,13 +96,16 @@ const useGameState = ({ gameMode, gameId, userId }) => {
 
   function performBotMove() {
     const selectedMove = decideBotMove(getBotMoves(gameState.board));
-    setBoard(
-      getNextBoard(
-        gameState.board,
-        selectedMove.source.coords,
-        selectedMove.destination.coords
-      )
+    const board = getNextBoard(
+      gameState.board,
+      selectedMove.source.coords,
+      selectedMove.destination.coords
     );
+    setGameState({
+      ...gameState,
+      board,
+      turn: getOpponent(gameState.turn)
+    });
   }
 
   function isUsersTurn() {
@@ -121,7 +121,7 @@ const useGameState = ({ gameMode, gameId, userId }) => {
     if (gameId) {
       gameListener();
     }
-  }, []);
+  }, [gameId, userId]);
 
   return {
     gameState,

@@ -5,7 +5,10 @@ import { getCoords } from "utils/helpers";
 import Square from "components/square";
 import styles from "./Board.module.scss";
 
-const Board = ({ board, boardWidth, getSquaresChild, onDragEnd }) => {
+// king on left for white
+// king on right for black
+
+const Board = ({ board, getSquaresChild, onDragEnd }) => {
   const rows = [];
   const isGreen = coords => {
     const isEven = n => n % 2 === 0;
@@ -13,18 +16,21 @@ const Board = ({ board, boardWidth, getSquaresChild, onDragEnd }) => {
     const evenSquare = isEven(Number(coords[1]));
     return evenRow ? !evenSquare : evenSquare;
   };
-  for (let rowIdx = 0; rowIdx < boardWidth; rowIdx++) {
+
+  board.forEach((row, rowIdx) => {
     const squares = [];
-    board.forEach((square, squareIdx) => {
+
+    row.forEach((square, squareIdx) => {
       const coords = getCoords(rowIdx, squareIdx);
       squares.push(
         <Square key={coords} coords={coords} isGreen={isGreen(coords)}>
-          {getSquaresChild(coords)}
+          {getSquaresChild(square)}
         </Square>
       );
     });
     rows.push(squares);
-  }
+  });
+
   return (
     <DragDropContext onDragEnd={onDragEnd}>
       <div className={styles.board}>{rows}</div>
@@ -33,7 +39,6 @@ const Board = ({ board, boardWidth, getSquaresChild, onDragEnd }) => {
 };
 
 Board.defaultProps = {
-  boardWidth: 8,
   onDragEnd: () => {}
 };
 

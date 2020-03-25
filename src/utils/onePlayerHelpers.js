@@ -42,7 +42,7 @@ export const getBotMoves = board => {
         if (
           performValidation({
             board,
-            ownColor: "black",
+            player: "black",
             sourceCoords,
             destinationCoords
           })

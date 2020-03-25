@@ -12,7 +12,7 @@ import { bishopValidation } from "../rules/bishopValidation";
 import { knightValidation } from "../rules/knightValidation";
 import { kingValidation } from "../rules/kingValidation";
 import { getKingStatus } from "../rules/getKingStatus";
-import { GAME_TYPES } from "utils/constants";
+import { GAME_MODES, GAME_TYPES } from "utils/constants";
 
 export const getPieceProps = pieceId => {
   switch (pieceId && pieceId.split("-")[0]) {
@@ -81,15 +81,16 @@ export const getNextBoard = (board, sourceCoords, destinationCoords) => {
 
 export const performValidation = ({
   board,
-  ownColor,
+  player,
   sourceCoords,
   destinationCoords
 }) => {
+  debugger;
   // work out if valid square has been selected, or another of mine
   const prevSquare = getSquareDetails(sourceCoords, board);
   const nextSquare = getSquareDetails(destinationCoords, board);
   // if clicked on own piece again
-  if (nextSquare.player === ownColor) {
+  if (nextSquare.player === player) {
     return false;
     // else perform validation
   } else if (
@@ -97,7 +98,7 @@ export const performValidation = ({
       sourceCoords,
       destinationCoords,
       board,
-      ownColor
+      player
     )
   ) {
     return true;
@@ -117,14 +118,15 @@ export const kingStatusOpponent = (nextBoard, turn) => {
   return getKingStatus(opponent, nextBoard);
 };
 
-export const kingStatusSelf = (nextBoard, turn) => getKingStatus(turn, nextBoard);
+export const kingStatusSelf = (nextBoard, turn) =>
+  getKingStatus(turn, nextBoard);
 
 export const getOpponent = turn => (turn === "white" ? "black" : "white");
 
 export const getUpdatedFallen = (targetPiece, fallen) => {
   const { player, pieceId } = targetPiece;
   if (!player) {
-    return fallen
+    return fallen;
   }
   return {
     ...fallen,
@@ -136,14 +138,20 @@ export const getTargetPiece = (board, destinationCoords) =>
   board[destinationCoords[0]][destinationCoords[1]];
 
 export const getPrettyFromTechnicalName = (obj, technicalName) => {
-  const key =  Object.keys(obj, technicalName).filter(
+  const key = Object.keys(obj, technicalName).filter(
     key => obj[key].TECHNICAL_NAME === technicalName
   );
-  return obj[key].PRETTY
-}
+  return obj[key].PRETTY;
+};
 
-export const getUrlParam = (key) => {
+export const getUrlParam = key => {
   const queryString = window.location.search;
   const urlParams = new URLSearchParams(queryString);
-  return urlParams.get(key)
-}
+  return urlParams.get(key);
+};
+
+export const mirrorBoard = board => {
+  const boardReversed = [...board].reverse();
+  boardReversed.forEach(row => row.reverse());
+  return boardReversed;
+};
