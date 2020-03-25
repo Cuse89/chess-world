@@ -75,14 +75,15 @@ const tests = [
 
 describe("kingValidation", () => {
   tests.forEach(testObj => {
+    const {sourceCoords, destinationCoords, board, player} = testObj;
     it(testObj.it, () => {
       expect(
-        kingValidation(
-          testObj.sourceCoords,
-          testObj.destinationCoords,
-          testObj.board,
-          testObj.player || "white"
-        )
+        kingValidation({
+          sourceCoords,
+          destinationCoords,
+          board,
+          player: player || "white"
+        })
       ).toBe(testObj.expect);
     });
   });

@@ -1,7 +1,6 @@
 import { rookValidation } from "rules/rookValidation";
 import { testBoard } from "rules/tests/mockData";
 
-
 const testBoardRow3 = testBoard("white", "rook", 3);
 
 const tests = [
@@ -95,19 +94,20 @@ const tests = [
     destinationCoords: "36",
     board: testBoardRow3,
     expect: true
-  },
+  }
 ];
 
 describe("rookValidation", () => {
   tests.forEach(testObj => {
+    const { sourceCoords, destinationCoords, board } = testObj;
     it(testObj.it, () => {
       expect(
-        rookValidation(
-          testObj.sourceCoords,
-          testObj.destinationCoords,
-          testObj.board,
-          "white"
-        )
+        rookValidation({
+          sourceCoords,
+          destinationCoords,
+          board,
+          player: "white"
+        })
       ).toBe(testObj.expect);
     });
   });

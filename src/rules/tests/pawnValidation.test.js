@@ -75,14 +75,15 @@ const tests = [
 
 describe("pawnValidation", () => {
   tests.forEach(testObj => {
+    const {sourceCoords, destinationCoords, board, player} = testObj;
     it(testObj.it, () => {
       expect(
-        pawnValidation(
-          testObj.sourceCoords,
-          testObj.destinationCoords,
-          testObj.board,
-          testObj.player || "white"
-        )
+        pawnValidation({
+          sourceCoords,
+          destinationCoords,
+          board,
+          player: player || "white"
+        })
       ).toBe(testObj.expect);
     });
   });

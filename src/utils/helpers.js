@@ -85,7 +85,6 @@ export const performValidation = ({
   sourceCoords,
   destinationCoords
 }) => {
-  debugger;
   // work out if valid square has been selected, or another of mine
   const prevSquare = getSquareDetails(sourceCoords, board);
   const nextSquare = getSquareDetails(destinationCoords, board);
@@ -93,16 +92,23 @@ export const performValidation = ({
   if (nextSquare.player === player) {
     return false;
     // else perform validation
-  } else if (
-    getPieceProps(prevSquare.pieceId).validateMove(
+  }
+  if (
+    !getPieceProps(prevSquare.pieceId).validateMove({
       sourceCoords,
       destinationCoords,
       board,
       player
-    )
+    })
   ) {
-    return true;
+    return false;
   }
+  const nextBoard = getNextBoard(board, sourceCoords, destinationCoords);
+  const movedSelfIntoCheck = kingStatusSelf(nextBoard, player) === "check";
+  if (!movedSelfIntoCheck) {
+    return false;
+  }
+  return true
 };
 
 export const loopBoard = (board, func) =>

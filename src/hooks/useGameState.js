@@ -32,19 +32,23 @@ const useGameState = ({ gameMode, gameId, userId }) => {
   const isTwoPlayer = gameMode === GAME_MODES.TWO_PLAYER.TECHNICAL_NAME;
   const isOnlinePlay = gameMode === GAME_MODES.ONLINE_PLAY.TECHNICAL_NAME;
 
+  console.log({ gameState, gameMode });
+
   function handleMirroredBoard(board, blackId) {
     // if onlinePlay and player is black, mirror board from db, and also mirror back before sending back to db
     return blackId === userId ? mirrorBoard(board) : board;
   }
 
   function gameListener() {
-    firebase.database.ref(`games/${gameId}`).on("value", async snapshot => {
-      const game = snapshot.val();
-      setGameState({
-        ...game,
-        board: handleMirroredBoard(game.board, game.users.black)
+    if (isOnlinePlay) {
+      firebase.database.ref(`games/${gameId}`).on("value", async snapshot => {
+        const game = snapshot.val();
+        setGameState({
+          ...game,
+          board: handleMirroredBoard(game.board, game.users.black)
+        });
       });
-    });
+    }
   }
 
   async function performMove(a) {
@@ -58,38 +62,40 @@ const useGameState = ({ gameMode, gameId, userId }) => {
       destinationCoords,
       player: gameState.turn
     });
+    if (!validMove) {
+      return;
+    }
+
     const nextBoard = getNextBoard(board, sourceCoords, destinationCoords);
-    const movedSelfIntoCheck = kingStatusSelf(nextBoard, turn) === "check";
     const opponent = getOpponent(turn);
     const opponentKingStatus = kingStatusOpponent(nextBoard, turn);
-    if (validMove && !movedSelfIntoCheck) {
-      const newGameState = {
-        ...gameState,
-        board: nextBoard,
-        turn: opponent,
-        fallen:
-          getUpdatedFallen(
-            getTargetPiece(board, destinationCoords),
-            gameState.fallen
-          ) || defaultFallen,
-        inCheck:
-          opponentKingStatus === "check" ? opponent : gameState.inCheck || "",
-        inCheckmate:
-          opponentKingStatus === "checkmate"
-            ? opponent
-            : gameState.inCheckmate || ""
-      };
-      if (isOnePlayer || isTwoPlayer) {
-        setGameState(newGameState);
-      } else if (isOnlinePlay) {
-        try {
-          await firebase.updateGame(gameId, {
-            ...newGameState,
-            board: handleMirroredBoard(nextBoard, gameState.users.black)
-          });
-        } catch (err) {
-          console.log(err);
-        }
+
+    const newGameState = {
+      ...gameState,
+      board: nextBoard,
+      turn: opponent,
+      fallen:
+        getUpdatedFallen(
+          getTargetPiece(board, destinationCoords),
+          gameState.fallen
+        ) || defaultFallen,
+      inCheck:
+        opponentKingStatus === "check" ? opponent : gameState.inCheck || "",
+      inCheckmate:
+        opponentKingStatus === "checkmate"
+          ? opponent
+          : gameState.inCheckmate || ""
+    };
+    if (isOnePlayer || isTwoPlayer) {
+      setGameState(newGameState);
+    } else if (isOnlinePlay) {
+      try {
+        await firebase.updateGame(gameId, {
+          ...newGameState,
+          board: handleMirroredBoard(nextBoard, gameState.users.black)
+        });
+      } catch (err) {
+        console.log(err);
       }
     }
   }

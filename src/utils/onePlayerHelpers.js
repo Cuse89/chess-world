@@ -17,7 +17,7 @@ export const getThreats = (threatenedPlayer, destinationCoords, board) => {
       // threat cant come from that square itself
       if (
         sourceCoords !== destinationCoords &&
-        validateMove(sourceCoords, destinationCoords, board, square.player, true)
+        validateMove({sourceCoords, destinationCoords, board, player: square.player, captureOnly: true})
       ) {
         threats.push(square.pieceId);
       }

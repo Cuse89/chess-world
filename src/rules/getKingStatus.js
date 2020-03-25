@@ -45,19 +45,19 @@ export const getKingStatus = (kingPlayer, board) => {
   });
 
   // filter available coords and take away any that could be threatened if landed on by king
-  availableCoords = availableCoords.filter(availableCoord => {
+  availableCoords = availableCoords.filter(destinationCoords => {
     let isSafe = true;
     loopBoard(board, ({ rowIdx, square, squareIdx }) => {
       if (square.player && square.player !== kingPlayer && isSafe) {
         // find all available target squares
         const validation = getPieceProps(square.pieceId).validateMove;
-        const threatCoord = rowIdx.toString().concat(squareIdx);
-        const availableCoordCouldBeTaken = validation(
-          threatCoord,
-          availableCoord,
+        const sourceCoords = rowIdx.toString().concat(squareIdx);
+        const availableCoordCouldBeTaken = validation({
+          sourceCoords,
+          destinationCoords,
           board,
-          square.player
-        );
+          player: square.player
+        });
         isSafe = !availableCoordCouldBeTaken;
       }
     });
@@ -73,9 +73,16 @@ export const getKingStatus = (kingPlayer, board) => {
     // check for direct threats
     if (square.player && square.player !== kingPlayer) {
       const validation = getPieceProps(square.pieceId).validateMove;
-      const threatCoord = rowIdx.toString().concat(squareIdx);
+      const sourceCoords = rowIdx.toString().concat(squareIdx);
       // is this piece is able to land on kings available target?
-      if (validation(threatCoord, kingPos, board, square.player)) {
+      if (
+        validation({
+          sourceCoords,
+          destinationCoords: kingPos,
+          board,
+          player: square.player
+        })
+      ) {
         inCheck = true;
       }
     }

@@ -86,14 +86,15 @@ const tests = [
 
 describe("bishopValidation", () => {
   tests.forEach(testObj => {
+    const {sourceCoords, destinationCoords, board} = testObj;
     it(testObj.it, () => {
       expect(
-        bishopValidation(
-          testObj.sourceCoords,
-          testObj.destinationCoords,
-          testObj.board,
-          "white"
-        )
+        bishopValidation({
+          sourceCoords,
+          destinationCoords,
+          board,
+          player: "white"
+        })
       ).toBe(testObj.expect);
     });
   });

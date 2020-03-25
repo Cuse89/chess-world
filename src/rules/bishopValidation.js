@@ -1,9 +1,9 @@
-export const bishopValidation = (
+export const bishopValidation = ({
   sourceCoords,
   destinationCoords,
   board,
   player
-) => {
+}) => {
   sourceCoords = parseInt(sourceCoords);
   destinationCoords = parseInt(destinationCoords);
   // has the piece moved diagonally?

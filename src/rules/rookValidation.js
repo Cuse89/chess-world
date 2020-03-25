@@ -1,9 +1,9 @@
-export const rookValidation = (
+export const rookValidation = ({
   sourceCoords,
   destinationCoords,
   board,
   player
-) => {
+}) => {
   // is next move either vertical or horizontal?
   if (
     sourceCoords[0] === destinationCoords[0] ||
@@ -41,5 +41,5 @@ export const rookValidation = (
     }
     return true;
   }
-  return false
+  return false;
 };

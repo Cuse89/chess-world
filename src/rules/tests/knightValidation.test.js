@@ -57,14 +57,15 @@ const tests = [
 
 describe("knightValidation", () => {
   tests.forEach(testObj => {
+    const {sourceCoords, destinationCoords, board } = testObj;
     it(testObj.it, () => {
       expect(
-        knightValidation(
-          testObj.sourceCoords,
-          testObj.destinationCoords,
-          testObj.board,
-          "white"
-        )
+        knightValidation({
+          sourceCoords,
+          destinationCoords,
+          board,
+          player: "white"
+        })
       ).toBe(testObj.expect);
     });
   });
