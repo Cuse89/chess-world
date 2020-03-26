@@ -119,14 +119,6 @@ export const loopBoard = (board, func) =>
     });
   });
 
-export const kingStatusOpponent = (nextBoard, player, baselinePlayer) => {
-  const opponent = player === "white" ? "black" : "white";
-  return getKingStatus(opponent, nextBoard, baselinePlayer);
-};
-
-export const kingStatusSelf = (nextBoard, player, baselinePlayer) =>
-  getKingStatus(player, nextBoard, baselinePlayer);
-
 export const getOpponent = turn => (turn === "white" ? "black" : "white");
 
 export const getUpdatedFallen = (targetPiece, fallen) => {
@@ -163,4 +155,4 @@ export const mirrorBoard = board => {
 };
 
 export const getBaselinePlayer = (blackId, userId) =>
-  blackId === userId ? "black" : "white";
+  userId && blackId === userId ? "black" : "white";

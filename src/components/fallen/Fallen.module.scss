@@ -1,0 +1,10 @@
+.root {
+  display: flex;
+  flex-wrap: wrap-reverse;
+  margin: 5px 0;
+  min-height: 32px;
+
+  .piece {
+    margin: 0 5px;
+  }
+}

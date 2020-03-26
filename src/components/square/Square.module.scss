@@ -4,7 +4,7 @@
   text-align: center;
   width: 40px;
   height: 40px;
-  padding: 2px;
+  padding: 4px;
 }
 
 .green {
@@ -12,5 +12,5 @@
 }
 
 .highlighted {
-  border: 2px #2ec1b2 solid;
+  border: 2px $active-color solid;
 }

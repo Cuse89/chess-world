@@ -21,7 +21,7 @@ const Standard = () => {
     gameState,
     handlePerformMove,
     performBotMove,
-    isUsersTurn,
+    canMovePiece
   } = useGameState({
     gameMode,
     userId,
@@ -31,17 +31,18 @@ const Standard = () => {
   const isOnePlayer = gameMode === GAME_MODES.ONE_PLAYER.TECHNICAL_NAME;
   const isTwoPlayer = gameMode === GAME_MODES.TWO_PLAYER.TECHNICAL_NAME;
   const isOnlinePlay = gameMode === GAME_MODES.ONLINE_PLAY.TECHNICAL_NAME;
+  const { board, turn, fallen, users } = gameState;
 
   useEffect(() => {
     handleNextTurn();
-  }, [gameState.turn]);
+  }, [turn]);
 
   function onDrop(a) {
-    handlePerformMove(a)
+    handlePerformMove(a);
   }
 
   function handleNextTurn() {
-    if (isOnePlayer && gameState.turn === "black") {
+    if (isOnePlayer && turn === "black") {
       performBotMove();
     }
   }
@@ -51,17 +52,16 @@ const Standard = () => {
     return square.pieceId ? (
       <Piece
         key={`${player}-${pieceId}`}
-        className={`${player}-${pieceId}`}
+        id={`${player}-${pieceId}`}
         icon={getPieceProps(pieceId).icon}
         pieceColor={player}
         inCheck={inCheck}
-        available={isUsersTurn()}
+        available={canMovePiece(player)}
       />
     ) : null;
   }
 
   function getFallen(baseline) {
-    const {fallen, users} = gameState;
     if (isOnlinePlay && users) {
       const baselinePlayer = getBaselinePlayer(users.black, userId);
       return baseline
@@ -76,9 +76,11 @@ const Standard = () => {
     <div>
       <Fallen fallen={getFallen()} />
       <Board
-        board={gameState.board}
+        board={board}
         getSquaresChild={getPiece}
         onDragEnd={onDrop}
+        turn={turn}
+        users={users}
       />
       <Fallen fallen={getFallen(true)} />
     </div>

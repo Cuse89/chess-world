@@ -5,5 +5,21 @@
   grid-gap: 0;
   grid-template-columns: $square-width $square-width $square-width $square-width $square-width $square-width $square-width $square-width;
   width: fit-content;
-  border: 1px #325a53 solid;
+  border: 2px $board-color solid;
+
+  &.topActive {
+    border-top: 2px $active-color solid;
+  }
+  &.baselineActive {
+    border-bottom: 2px $active-color solid;
+  }
+}
+
+.indicator {
+  width: 324px;
+  height: 4px;
+
+  &.active {
+    background: $active-color;
+  }
 }

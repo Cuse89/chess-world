@@ -1,14 +1,19 @@
-import React from "react";
+import React, { useContext, useState } from "react";
 import PropTypes from "prop-types";
-import { DragDropContext } from "react-beautiful-dnd";
-import { getCoords } from "utils/helpers";
+import cx from "classnames";
+import { DragDropContext, Droppable } from "react-beautiful-dnd";
+import { getBaselinePlayer, getCoords, getSquareDetails } from "utils/helpers";
 import Square from "components/square";
 import styles from "./Board.module.scss";
+import Context from "context";
+import { GAME_MODES } from "utils/constants";
 
 // king on left for white
 // king on right for black
 
-const Board = ({ board, getSquaresChild, onDragEnd }) => {
+const Board = ({ board, getSquaresChild, onDragEnd, turn, users }) => {
+  const { user, settings } = useContext(Context);
+  const [draggedPieceCoords, setDraggedPieceCoords] = useState("");
   const rows = [];
   const isGreen = coords => {
     const isEven = n => n % 2 === 0;
@@ -17,23 +22,84 @@ const Board = ({ board, getSquaresChild, onDragEnd }) => {
     return evenRow ? !evenSquare : evenSquare;
   };
 
+  const isSquareDroppable = coords =>
+    getSquareDetails(coords, board).player === turn &&
+    coords !== draggedPieceCoords;
+
+  const onDragStart = a => {
+    setDraggedPieceCoords(a.source.droppableId);
+  };
+
+  const handleOnDragEnd = a => {
+    if (a.destination) {
+      onDragEnd(a);
+    }
+  };
+
   board.forEach((row, rowIdx) => {
     const squares = [];
 
     row.forEach((square, squareIdx) => {
       const coords = getCoords(rowIdx, squareIdx);
       squares.push(
-        <Square key={coords} coords={coords} isGreen={isGreen(coords)}>
-          {getSquaresChild(square)}
-        </Square>
+        <Droppable
+          key={`square-${coords}`}
+          droppableId={coords}
+          isDropDisabled={isSquareDroppable(coords)}
+        >
+          {(provided, snapshot) => {
+            return (
+              <div ref={provided.innerRef} {...provided.droppableProps}>
+                <Square
+                  coords={coords}
+                  isGreen={isGreen(coords)}
+                  isDraggingOver={snapshot.isDraggingOver}
+                >
+                  {getSquaresChild(square)}
+                </Square>
+              </div>
+            );
+          }}
+        </Droppable>
       );
     });
     rows.push(squares);
   });
 
+  function isIndicatorActive(baseline) {
+    if (settings.gameMode === GAME_MODES.ONLINE_PLAY.TECHNICAL_NAME) {
+      const baselinePlayer = getBaselinePlayer(users.black, user.id);
+      return baseline ? baselinePlayer === turn : baselinePlayer !== turn;
+    }
+    if (settings.gameMode === GAME_MODES.ONE_PLAYER.TECHNICAL_NAME) {
+      return false;
+    }
+    if (settings.gameMode === GAME_MODES.TWO_PLAYER.TECHNICAL_NAME) {
+      return baseline ? turn === "white" : turn === "black";
+    }
+  }
+
+  const topActive = isIndicatorActive();
+  const baselineActive = isIndicatorActive(true);
+  const indicatorClassname = baseline =>
+    cx({
+      [styles.indicator]: true,
+      [styles.active]: baseline ? baselineActive : topActive
+    });
+
   return (
-    <DragDropContext onDragEnd={onDragEnd}>
-      <div className={styles.board}>{rows}</div>
+    <DragDropContext onDragEnd={handleOnDragEnd} onDragStart={onDragStart}>
+      <div className={indicatorClassname()} />
+      <div
+        className={cx({
+          [styles.board]: true,
+          [styles.topActive]: topActive,
+          [styles.baselineActive]: baselineActive
+        })}
+      >
+        {rows}
+      </div>
+      <div className={indicatorClassname(true)} />
     </DragDropContext>
   );
 };
