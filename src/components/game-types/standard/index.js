@@ -19,12 +19,9 @@ const Standard = () => {
 
   const {
     gameState,
-    performOfflineMove,
-    performOnlineMove,
+    handlePerformMove,
     performBotMove,
     isUsersTurn,
-    validateOfflineMove,
-    validateOnlineMove
   } = useGameState({
     gameMode,
     userId,
@@ -40,11 +37,7 @@ const Standard = () => {
   }, [gameState.turn]);
 
   function onDrop(a) {
-    if ((isOnePlayer || isTwoPlayer) && validateOfflineMove(a)) {
-      performOfflineMove(a);
-    } else if (isOnlinePlay && validateOnlineMove(a)) {
-      performOnlineMove(a);
-    }
+    handlePerformMove(a)
   }
 
   function handleNextTurn() {
@@ -53,7 +46,7 @@ const Standard = () => {
     }
   }
 
-  function getStandardSquaresChild(square) {
+  function getPiece(square) {
     const { player, pieceId, inCheck } = square;
     return square.pieceId ? (
       <Piece
@@ -68,19 +61,14 @@ const Standard = () => {
   }
 
   function getFallen(baseline) {
-    if (isOnlinePlay && gameState.users) {
-      console.log("yaaa")
-      const baselinePlayer = getBaselinePlayer(gameState.users.black, userId);
-      console.log("getFallen", baselinePlayer, gameState.fallen);
-      console.log("mmmm",baseline
-        ? gameState.fallen[getOpponent(baselinePlayer)]
-        : gameState.fallen[baselinePlayer])
+    const {fallen, users} = gameState;
+    if (isOnlinePlay && users) {
+      const baselinePlayer = getBaselinePlayer(users.black, userId);
       return baseline
-        ? gameState.fallen[getOpponent(baselinePlayer)]
-        : gameState.fallen[baselinePlayer];
+        ? fallen[getOpponent(baselinePlayer)]
+        : fallen[baselinePlayer];
     } else {
-      console.log("nnooo")
-      return baseline ? gameState.fallen.black : gameState.fallen.white;
+      return baseline ? fallen.black : fallen.white;
     }
   }
 
@@ -89,7 +77,7 @@ const Standard = () => {
       <Fallen fallen={getFallen()} />
       <Board
         board={gameState.board}
-        getSquaresChild={getStandardSquaresChild}
+        getSquaresChild={getPiece}
         onDragEnd={onDrop}
       />
       <Fallen fallen={getFallen(true)} />

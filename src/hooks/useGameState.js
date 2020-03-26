@@ -34,7 +34,10 @@ const useGameState = ({ gameMode, gameId, userId }) => {
   const isTwoPlayer = gameMode === GAME_MODES.TWO_PLAYER.TECHNICAL_NAME;
   const isOnlinePlay = gameMode === GAME_MODES.ONLINE_PLAY.TECHNICAL_NAME;
   const opponent = getOpponent(gameState.turn);
-  const baselinePlayer = gameState.users && getBaselinePlayer(gameState.users.black, userId);
+  const baselinePlayer =
+    isOnePlayer || isTwoPlayer
+      ? "white"
+      : gameState.users && getBaselinePlayer(gameState.users.black, userId);
 
   console.log({ gameState, gameMode });
 
@@ -57,7 +60,17 @@ const useGameState = ({ gameMode, gameId, userId }) => {
     }
   }
 
-  function validateOfflineMove(a) {
+  function handlePerformMove(a) {
+    if (validateMove(a)) {
+      if (isOnePlayer || isTwoPlayer) {
+        performMove(a);
+      } else if (isOnlinePlay) {
+        performMove(a);
+      }
+    }
+  }
+
+  function validateMove(a) {
     const { board } = gameState;
     const sourceCoords = a.source.droppableId;
     const destinationCoords = a.destination.droppableId;
@@ -67,42 +80,25 @@ const useGameState = ({ gameMode, gameId, userId }) => {
       sourceCoords,
       destinationCoords,
       player: gameState.turn,
-      baselinePlayer: "white"
+      baselinePlayer: isOnePlayer || isTwoPlayer ? "white" : baselinePlayer
     });
   }
 
-  function validateOnlineMove(a) {
-    const { board } = gameState;
-    const sourceCoords = a.source.droppableId;
-    const destinationCoords = a.destination.droppableId;
-
-    return performValidation({
-      board,
-      sourceCoords,
-      destinationCoords,
-      player: gameState.turn,
-      baselinePlayer
-    });
-  }
-
-  async function performOnlineMove(a) {
+  async function performMove(a) {
     const { board } = gameState;
     const sourceCoords = a.source.droppableId;
     const destinationCoords = a.destination.droppableId;
     const nextBoard = getNextBoard(board, sourceCoords, destinationCoords);
-
     const opponentKingStatus = getKingStatus(
       nextBoard,
       opponent,
       baselinePlayer
     );
-
     const newGameState = {
       board: baselinePlayer === "black" ? mirrorBoard(nextBoard) : nextBoard,
       turn: opponent,
       fallen: getUpdatedFallen(
         getTargetPiece(board, destinationCoords),
-
         gameState.fallen
       ),
       inCheck:
@@ -112,35 +108,15 @@ const useGameState = ({ gameMode, gameId, userId }) => {
           ? opponent
           : gameState.inCheckmate || ""
     };
-    try {
-      await firebase.updateGame(gameId, newGameState);
-    } catch (err) {
-      console.log(err);
+    if (isOnePlayer || isTwoPlayer) {
+      setGameState(newGameState);
+    } else if (isOnlinePlay) {
+      try {
+        await firebase.updateGame(gameId, newGameState);
+      } catch (err) {
+        console.log(err);
+      }
     }
-  }
-
-  function performOfflineMove(a) {
-    const { board } = gameState;
-    const sourceCoords = a.source.droppableId;
-    const destinationCoords = a.destination.droppableId;
-    const nextBoard = getNextBoard(board, sourceCoords, destinationCoords);
-    const opponentKingStatus = getKingStatus(nextBoard, opponent, "white");
-    const newGameState = {
-      ...gameState,
-      board: nextBoard,
-      turn: opponent,
-      fallen: getUpdatedFallen(
-        getTargetPiece(board, destinationCoords),
-        gameState.fallen
-      ),
-      inCheck:
-        opponentKingStatus === "check" ? opponent : gameState.inCheck || "",
-      inCheckmate:
-        opponentKingStatus === "checkmate"
-          ? opponent
-          : gameState.inCheckmate || ""
-    };
-    setGameState(newGameState);
   }
 
   function performBotMove() {
@@ -176,12 +152,11 @@ const useGameState = ({ gameMode, gameId, userId }) => {
   return {
     gameState,
     setGameState,
-    performOfflineMove,
-    performOnlineMove,
+    handlePerformMove,
+    validateMove,
+    performMove,
     performBotMove,
     isUsersTurn,
-    validateOfflineMove,
-    validateOnlineMove,
   };
 };
 
