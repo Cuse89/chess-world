@@ -46,13 +46,6 @@ const tests = [
     board: testBoardRow3,
     expect: true
   },
-  {
-    it: "returns false when moving like a knight onto own piece",
-    sourceCoords: "44",
-    destinationCoords: "63",
-    board: testBoard("white", "knight", 4),
-    expect: false
-  },
 ];
 
 describe("knightValidation", () => {

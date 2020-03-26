@@ -1,18 +1,17 @@
-import { getOpponent } from "utils/helpers";
+import { getSquareDetails } from "utils/helpers";
 
 export const pawnValidation = ({
   sourceCoords,
   destinationCoords,
   board,
-  player,
   captureOnly,
-  baselinePlayer,
+  baselinePlayer
 }) => {
+  const player = getSquareDetails(sourceCoords, board).player;
   // captureOnly is validation to see if it can capture only
   const targetSquareOccupied = captureOnly
     ? true
-    : board[destinationCoords[0]][destinationCoords[1]].player ===
-      getOpponent(player);
+    : getSquareDetails(destinationCoords, board).pieceId.length > 0;
   const move = parseInt(sourceCoords) - parseInt(destinationCoords);
   // moved 1 space forward
   if (move === (player === baselinePlayer ? 10 : -10)) {

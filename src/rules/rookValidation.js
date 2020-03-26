@@ -1,9 +1,4 @@
-export const rookValidation = ({
-  sourceCoords,
-  destinationCoords,
-  board,
-  player
-}) => {
+export const rookValidation = ({ sourceCoords, destinationCoords, board }) => {
   // is next move either vertical or horizontal?
   if (
     sourceCoords[0] === destinationCoords[0] ||
@@ -19,7 +14,7 @@ export const rookValidation = ({
 
     for (
       position;
-      forwards ? position > end : position < end;
+      forwards ? position >= end : position <= end;
       forwards ? position-- : position++
     ) {
       // dont check first square
@@ -32,14 +27,15 @@ export const rookValidation = ({
         } else {
           piece = board[destinationCoords[0]][position];
         }
-        // if piece is on this square
-        if (piece.player) {
-          // can only be opposition and on final square
-          return piece.player !== player && position === end;
+
+        if (piece.pieceId && position !== end) {
+          return false;
+        }
+        if (position === end) {
+          return true;
         }
       }
     }
-    return true;
   }
   return false;
 };

@@ -116,7 +116,6 @@ export const performValidation = ({
       sourceCoords,
       destinationCoords,
       board,
-      player,
       baselinePlayer,
       captureOnly
     })
