@@ -1,8 +1,9 @@
+import { getSquareDetails } from "utils/helpers";
+
 export const bishopValidation = ({
   sourceCoords,
   destinationCoords,
   board,
-  player
 }) => {
   sourceCoords = parseInt(sourceCoords);
   destinationCoords = parseInt(destinationCoords);
@@ -37,15 +38,16 @@ export const bishopValidation = ({
       }
       // dont check first square
       if (i !== sourceCoords) {
-        const piece = board[coords[0]][coords[1]];
         // if piece is on this square
-        if (piece.player) {
-          // can only be opposition and on final square
-          return piece.player !== player && i === destinationCoords;
+        const square = getSquareDetails(coords, board)
+        if (square.pieceId && i !== destinationCoords) {
+          return false
+        }
+        if (i === destinationCoords) {
+          return true
         }
       }
     }
-    return true;
   }
   return false;
 };

@@ -6,17 +6,25 @@ import {
 } from "./helpers";
 import { getKingStatus } from "rules/getKingStatus";
 
-export const getThreats = (threatenedPlayer, destinationCoords, board) => {
+export const getThreats = (threatenedPlayer, threatenedPlayerCoords, board) => {
   let threats = [];
 
-  loopBoard(board, ({ rowIdx, square, squareIdx }) => {
-    if (square.player && square.player !== threatenedPlayer) {
-      const sourceCoords = rowIdx.toString().concat(squareIdx);
-      const validateMove = getPieceProps(square.pieceId).validateMove;
+  loopBoard(board, ({ square, coords }) => {
+    const threateningPlayer =
+      square.player && square.player !== threatenedPlayer && square.player;
+    if (threateningPlayer) {
+      const sourceCoords = coords;
+      // const validateMove = getPieceProps(square.pieceId).validateMove;
       // threat cant come from that square itself
       if (
-        sourceCoords !== destinationCoords &&
-        validateMove({sourceCoords, destinationCoords, board, player: square.player, captureOnly: true})
+        performValidation({
+          sourceCoords,
+          destinationCoords: threatenedPlayerCoords,
+          board,
+          player: threateningPlayer,
+          captureOnly: true,
+          baselinePlayer: "white"
+        })
       ) {
         threats.push(square.pieceId);
       }
@@ -28,14 +36,14 @@ export const getThreats = (threatenedPlayer, destinationCoords, board) => {
 export const getBotMoves = board => {
   let moves = [];
   // find black piece
-  loopBoard(board, ({ rowIdx, square: prevSquare, squareIdx }) => {
+  loopBoard(board, ({ square: prevSquare, coords }) => {
     if (prevSquare.player === "black") {
       // got black piece
-      const sourceCoords = rowIdx.toString().concat(squareIdx);
+      const sourceCoords = coords;
 
       // loop through board and see if this piece can move there
-      loopBoard(board, ({ rowIdx, squareIdx, square: nextSquare }) => {
-        const destinationCoords = rowIdx.toString().concat(squareIdx);
+      loopBoard(board, ({ coords, square: nextSquare }) => {
+        const destinationCoords = coords;
         // console.log('next coords', destinationCoords)
 
         if (

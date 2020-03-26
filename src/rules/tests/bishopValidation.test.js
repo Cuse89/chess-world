@@ -75,13 +75,6 @@ const tests = [
     board: testBoardRow4,
     expect: true
   },
-  {
-    it: "returns false when going diagonally and landing on own piece",
-    sourceCoords: "44",
-    destinationCoords: "62",
-    board: testBoardRow4,
-    expect: false
-  }
 ];
 
 describe("bishopValidation", () => {
@@ -93,7 +86,6 @@ describe("bishopValidation", () => {
           sourceCoords,
           destinationCoords,
           board,
-          player: "white"
         })
       ).toBe(testObj.expect);
     });

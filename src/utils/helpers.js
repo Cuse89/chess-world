@@ -66,6 +66,16 @@ export const getCoords = (row, col) => {
 };
 
 export const getSquareDetails = (coords, board) => {
+  if (
+    coords[0] > 7 ||
+    coords[0] < 0 ||
+    coords[1] > 7 ||
+    coords[1] < 0 ||
+    coords < 0 ||
+    coords > 78
+  ) {
+    return false;
+  }
   return board[coords[0]][coords[1]];
 };
 
@@ -84,23 +94,31 @@ export const performValidation = ({
   player,
   sourceCoords,
   destinationCoords,
-  baselinePlayer
+  baselinePlayer,
+  captureOnly
 }) => {
+
   // work out if valid square has been selected, or another of mine
-  const prevSquare = getSquareDetails(sourceCoords, board);
-  const nextSquare = getSquareDetails(destinationCoords, board);
+  const sourceSquare = getSquareDetails(sourceCoords, board);
+  const destinationSquare = getSquareDetails(destinationCoords, board);
+
+  // nextSquare doesnt exist
+  if (!destinationSquare) {
+    return false;
+  }
   // if clicked on own piece again
-  if (nextSquare.player === player) {
+  if (destinationSquare.player === player) {
     return false;
     // else perform validation
   }
   if (
-    !getPieceProps(prevSquare.pieceId).validateMove({
+    !getPieceProps(sourceSquare.pieceId).validateMove({
       sourceCoords,
       destinationCoords,
       board,
       player,
-      baselinePlayer
+      baselinePlayer,
+      captureOnly
     })
   ) {
     return false;
@@ -114,8 +132,8 @@ export const performValidation = ({
 export const loopBoard = (board, func) =>
   board.forEach((row, rowIdx) => {
     row.forEach((square, squareIdx) => {
-      const params = { row, rowIdx, square, squareIdx };
-      func(params);
+      const coords = rowIdx.toString().concat(squareIdx);
+      func({ square, coords });
     });
   });
 

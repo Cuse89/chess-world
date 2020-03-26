@@ -64,13 +64,6 @@ const tests = [
     board: testBoardRow3,
     expect: false,
   },
-  {
-    it: "returns false when moving 1 space into onto own player",
-    sourceCoords: "54",
-    destinationCoords: "64",
-    board: testBoardRow5,
-    expect: false,
-  },
 ];
 
 describe("kingValidation", () => {

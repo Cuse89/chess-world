@@ -380,6 +380,5 @@ export const inCheckmateBoard2 = [
     { player: "", pieceId: "" },
     { player: "white", pieceId: "bishop-1" },
     { player: "white", pieceId: "knight-1" },
-    { player: "", pieceId: "" }
   ]
 ];
