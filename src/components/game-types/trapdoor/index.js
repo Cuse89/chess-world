@@ -5,14 +5,18 @@ import {
   getBaselinePlayer,
   getOpponent,
   getPieceProps,
-  getUrlParam
+  getSquareDetails,
+  getUrlParam,
+  loopBoard
 } from "utils/helpers";
 import useGameState from "hooks/useGameState";
 import Context from "context";
-import { GAME_MODES } from "utils/constants";
+import { emptySquare, GAME_MODES } from "utils/constants";
 import Fallen from "components/fallen";
 
-const StandardChess = () => {
+import styles from "./TrapdoorChess.module.scss";
+
+const TrapdoorChess = () => {
   const { user, settings } = useContext(Context);
   const { gameMode } = settings;
   const userId = user && user.id;
@@ -22,7 +26,7 @@ const StandardChess = () => {
     gameState,
     handlePerformMove,
     performBotMove,
-    canMovePiece
+    updateSquare
   } = useGameState({
     gameMode,
     userId,
@@ -33,6 +37,9 @@ const StandardChess = () => {
   const isTwoPlayer = gameMode === GAME_MODES.TWO_PLAYER.TECHNICAL_NAME;
   const isOnlinePlay = gameMode === GAME_MODES.ONLINE_PLAY.TECHNICAL_NAME;
   const { board, turn, fallen, users, inCheck, inCheckmate } = gameState;
+  const trapdoorsSet = countTrapdoors();
+
+  const allTrapdoorsSet = trapdoorsSet === 4;
 
   useEffect(() => {
     handleNextTurn();
@@ -40,12 +47,18 @@ const StandardChess = () => {
 
   useEffect(() => {
     handleSetMessage();
-  }, [inCheck, inCheckmate]);
+  }, [inCheck, inCheckmate, trapdoorsSet]);
 
   function onDrop(a) {
     const sourceCoords = a.source.droppableId;
     const destinationCoords = a.destination.droppableId;
-    handlePerformMove(sourceCoords, destinationCoords);
+    console.log("sss", getSquareDetails(destinationCoords, board));
+    if (getSquareDetails(destinationCoords, board).trapdoor) {
+      console.log({ sourceCoords });
+      updateSquare(sourceCoords, emptySquare);
+    } else {
+      handlePerformMove(sourceCoords, destinationCoords);
+    }
   }
 
   function handleNextTurn() {
@@ -54,18 +67,52 @@ const StandardChess = () => {
     }
   }
 
-  function getPiece(square) {
-    const { player, pieceId, inCheck } = square;
-    return square.pieceId ? (
+  function getSquare(square) {
+    const { player, pieceId, trapdoor } = square;
+    const piece = pieceId && (
       <Piece
         key={`${player}-${pieceId}`}
         id={`${player}-${pieceId}`}
         icon={getPieceProps(pieceId).icon}
         pieceColor={player}
-        inCheck={inCheck}
-        available={canMovePiece(player)}
+        available={allTrapdoorsSet}
       />
-    ) : null;
+    );
+    if (trapdoor) {
+      const displayTrapdoor = (
+        <div className={styles.trapdoor}>{square.pieceId && piece}</div>
+      );
+      if (isOnlinePlay && gameState.users) {
+        const playerColor =
+          gameState.users.black === userId ? "black" : "white";
+        console.log({playerColor})
+        if (trapdoor === playerColor) {
+          return displayTrapdoor;
+        }
+      }
+      if (isOnePlayer && trapdoor === "white") {
+        return displayTrapdoor;
+      }
+    }
+    return piece || null;
+  }
+
+  function countTrapdoors() {
+    let count = 0;
+    loopBoard(board, ({ square }) => {
+      if (square.trapdoor && square.trapdoor === "white") {
+        count++;
+      }
+    });
+    return count;
+  }
+
+  function setTrapdoor(coords) {
+    const square = getSquareDetails(coords, board);
+    if (allTrapdoorsSet || square.pieceId) {
+      return;
+    }
+    updateSquare(coords, { ...square, trapdoor: "white" });
   }
 
   function getFallen(baseline) {
@@ -87,23 +134,27 @@ const StandardChess = () => {
     if (inCheckmate) {
       message = `Checkmate. ${turn} wins`;
     }
+    if (!allTrapdoorsSet) {
+      message = `Set your trapdoors. ${4 - trapdoorsSet} left`;
+    }
     setMessage(message);
   }
 
   return (
-    <div>
-      <div>{message}</div>
+    <div className={styles.root}>
+      <h4>{message}</h4>
       <Fallen fallen={getFallen()} />
       <Board
         board={board}
-        getSquaresChild={getPiece}
+        getSquaresChild={getSquare}
         onDragEnd={onDrop}
         turn={turn}
         users={users}
+        onSquareSelect={setTrapdoor}
       />
       <Fallen fallen={getFallen(true)} />
     </div>
   );
 };
 
-export default StandardChess;
+export default TrapdoorChess;

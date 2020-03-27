@@ -12,7 +12,6 @@ import { bishopValidation } from "../rules/bishopValidation";
 import { knightValidation } from "../rules/knightValidation";
 import { kingValidation } from "../rules/kingValidation";
 import { getKingStatus } from "../rules/getKingStatus";
-import { GAME_MODES, GAME_TYPES } from "utils/constants";
 
 export const getPieceProps = pieceId => {
   switch (pieceId && pieceId.split("-")[0]) {

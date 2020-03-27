@@ -2,7 +2,8 @@ import React from "react";
 import { BrowserRouter, Switch, Route, Redirect } from "react-router-dom";
 
 import Dashboard from "components/dashboard";
-import Standard from "components/game-types/standard";
+import StandardChess from "components/game-types/standard";
+import TrapdoorChess from "components/game-types/trapdoor";
 import Header from "components/header";
 import useGameSettings from "hooks/useGameSettings";
 import useUser from "hooks/useUser";
@@ -10,6 +11,7 @@ import Context from "context";
 
 import "styles/styles.scss";
 import styles from "./App.module.scss";
+
 
 const App = () => {
   const settings = useGameSettings();
@@ -22,7 +24,8 @@ const App = () => {
           <Switch>
             <Route exact path="/" render={() => <Redirect to="/dashboard" />} />
             <Route exact path="/dashboard" component={Dashboard} />
-            <Route path="/standard" component={Standard} />
+            <Route path="/standard" component={StandardChess} />
+            <Route path="/trapdoor" component={TrapdoorChess} />
           </Switch>
         </div>
       </Context.Provider>

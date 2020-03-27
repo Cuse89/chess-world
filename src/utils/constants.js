@@ -25,5 +25,10 @@ export const GAME_TYPES = {
   TRIVIA: {
     TECHNICAL_NAME: "trivia",
     PRETTY: "Trivia Chess"
-  },
+  }
+};
+
+export const emptySquare = {
+  player: "",
+  pieceId: ""
 };

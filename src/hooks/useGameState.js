@@ -6,6 +6,7 @@ import {
   getOpponent,
   getTargetPiece,
   getUpdatedFallen,
+  getUrlParam,
   mirrorBoard,
   performValidation
 } from "utils/helpers";
@@ -92,11 +93,8 @@ const useGameState = ({ gameMode, gameId, userId }) => {
 
   function getNextGameState(sourceCoords, destinationCoords) {
     const nextBoard = getNextBoard(board, sourceCoords, destinationCoords);
-    const opponentKingStatus = getKingStatus(
-      nextBoard,
-      opponent,
-    );
-    console.log({opponentKingStatus}, {opponent})
+    const opponentKingStatus = getKingStatus(nextBoard, opponent);
+    console.log({ opponentKingStatus }, { opponent });
     return {
       board: baselinePlayer === "black" ? mirrorBoard(nextBoard) : nextBoard,
       turn: opponentKingStatus !== "checkmate" ? opponent : turn,
@@ -105,8 +103,7 @@ const useGameState = ({ gameMode, gameId, userId }) => {
         fallen
       ),
       inCheck: opponentKingStatus === "check" ? opponent : "",
-      inCheckmate:
-        opponentKingStatus === "checkmate" ? opponent : ""
+      inCheckmate: opponentKingStatus === "checkmate" ? opponent : ""
     };
   }
 
@@ -135,6 +132,20 @@ const useGameState = ({ gameMode, gameId, userId }) => {
     return false;
   }
 
+  function updateSquare(coords, value) {
+    let boardCopy = JSON.parse(JSON.stringify(board));
+    boardCopy[coords[0]][coords[1]] = value;
+    updateBoard(boardCopy);
+  }
+
+  function updateBoard(newBoard) {
+    if (isOnlinePlay) {
+      firebase.updateGame(gameId, { board: newBoard });
+    } else {
+      setGameState({ ...gameState, board: newBoard });
+    }
+  }
+
   useEffect(() => {
     if (gameId) {
       gameListener();
@@ -143,12 +154,11 @@ const useGameState = ({ gameMode, gameId, userId }) => {
 
   return {
     gameState,
-    setGameState,
     handlePerformMove,
     validateMove,
-    performMove,
     performBotMove,
-    canMovePiece
+    canMovePiece,
+    updateSquare,
   };
 };
 

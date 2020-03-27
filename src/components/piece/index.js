@@ -2,10 +2,12 @@ import React, { memo } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome/index";
 import { Draggable } from "react-beautiful-dnd";
 
+import styles from "./Piece.module.scss";
 
 export const Piece = memo(({ id, icon, available, pieceColor, inCheck }) => {
   const piece = (
     <FontAwesomeIcon
+      className={styles.root}
       icon={icon}
       cursor={available ? "pointer" : "cursor"}
       color={

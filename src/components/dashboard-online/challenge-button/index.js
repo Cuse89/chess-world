@@ -59,7 +59,7 @@ const ChallengeButton = ({
       );
     }
     if (user.requestsIncoming && user.requestsIncoming[opponentId]) {
-      const gameType = user.requestsIncoming[opponentId].gameType;
+      const gameType = user.requestsIncoming[opponentId];
       const gameTypeText = getPrettyFromTechnicalName(GAME_TYPES, gameType);
       button = (
         <DashboardButton

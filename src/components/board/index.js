@@ -11,7 +11,7 @@ import { GAME_MODES } from "utils/constants";
 // king on left for white
 // king on right for black
 
-const Board = ({ board, getSquaresChild, onDragEnd, turn, users }) => {
+const Board = ({ board, getSquaresChild, onDragEnd, turn, users, onSquareSelect }) => {
   const { user, settings } = useContext(Context);
   const [draggedPieceCoords, setDraggedPieceCoords] = useState("");
   const rows = [];
@@ -54,6 +54,7 @@ const Board = ({ board, getSquaresChild, onDragEnd, turn, users }) => {
                   coords={coords}
                   isGreen={isGreen(coords)}
                   isDraggingOver={snapshot.isDraggingOver}
+                  handleOnClick={onSquareSelect}
                 >
                   {getSquaresChild(square)}
                 </Square>
@@ -105,13 +106,15 @@ const Board = ({ board, getSquaresChild, onDragEnd, turn, users }) => {
 };
 
 Board.defaultProps = {
-  onDragEnd: () => {}
+  onDragEnd: () => {},
+  onSquareSelect: () => {}
 };
 
 Board.propTypes = {
   board: PropTypes.array.isRequired,
   boardWidth: PropTypes.number,
-  onDragEnd: PropTypes.func
+  onDragEnd: PropTypes.func,
+  onSquareSelect: PropTypes.func
 };
 
 export default Board;
