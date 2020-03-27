@@ -27,6 +27,7 @@ const DashboardOnline = ({history}) => {
   if (user) {
     return (
       <div>
+        <h3>Online play</h3>
         <NameInput user={user} />
         {user.name && getUserAvailability(user.id) && <ChallengePlayer history={history}/>}
       </div>

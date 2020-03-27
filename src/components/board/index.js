@@ -67,7 +67,7 @@ const Board = ({ board, getSquaresChild, onDragEnd, turn, users }) => {
   });
 
   function isIndicatorActive(baseline) {
-    if (settings.gameMode === GAME_MODES.ONLINE_PLAY.TECHNICAL_NAME) {
+    if (users) {
       const baselinePlayer = getBaselinePlayer(users.black, user.id);
       return baseline ? baselinePlayer === turn : baselinePlayer !== turn;
     }

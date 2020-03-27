@@ -5,7 +5,6 @@ import Dashboard from "components/dashboard";
 import Standard from "components/game-types/standard";
 import Header from "components/header";
 import useGameSettings from "hooks/useGameSettings";
-import DashboardOnline from "components/dashboard-online";
 import useUser from "hooks/useUser";
 import Context from "context";
 
@@ -23,7 +22,6 @@ const App = () => {
           <Switch>
             <Route exact path="/" render={() => <Redirect to="/dashboard" />} />
             <Route exact path="/dashboard" component={Dashboard} />
-            <Route exact path="/dashboard/online" component={DashboardOnline} />
             <Route path="/standard" component={Standard} />
           </Switch>
         </div>

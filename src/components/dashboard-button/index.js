@@ -8,7 +8,9 @@ const DashboardButton = ({
   onClick,
   type,
   fullLength,
-  selected
+  selected,
+  spaceRight,
+  spaceBottom
 }) => {
   const className = cx({
     [styles.root]: true,
@@ -17,7 +19,9 @@ const DashboardButton = ({
     [styles.warning]: type === "warning",
     [styles.accept]: type === "accept",
     [styles.fullLength]: fullLength,
-    [styles.selected]: selected
+    [styles.selected]: selected,
+    [styles.spaceRight]: spaceRight,
+    [styles.spaceBottom]: spaceBottom
   });
   return (
     <div className={className} onClick={onClick}>

@@ -9,7 +9,7 @@
 }
 
 .fullLength {
-  width: 100%;
+  width: fit-content;
 }
 
 .default {
@@ -54,5 +54,13 @@
     background: $green-50;
     color: white;
   }
+}
+
+.spaceRight {
+  margin-right: 10px;
+}
+
+.spaceBottom {
+  margin-bottom: 10px;
 }
 

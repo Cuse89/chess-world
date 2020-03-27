@@ -1,6 +1,7 @@
 import React from "react";
 //https://github.com/voronianski/react-swipe
 import ReactSwipe from "react-swipe";
+import DashboardButton from "components/dashboard-button";
 
 class Swiper extends React.Component {
   constructor(props) {
@@ -33,8 +34,18 @@ class Swiper extends React.Component {
           ))}
         </ReactSwipe>
 
-        <button onClick={() => reactSwipeEl.prev()}>Previous</button>
-        <button onClick={() => reactSwipeEl.next()}>Next</button>
+        <div className={"flex"}>
+          <DashboardButton
+            displayText="Previous"
+            onClick={() => reactSwipeEl.prev()}
+            spaceRight
+          />
+          <DashboardButton
+            displayText="Next"
+            onClick={() => reactSwipeEl.next()}
+          />
+        </div>
+
       </div>
     );
   }

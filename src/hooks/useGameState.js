@@ -28,7 +28,7 @@ const useGameState = ({ gameMode, gameId, userId }) => {
     inCheckmate: ""
   });
 
-  const { board, turn, fallen, inCheck, inCheckmate, users } = gameState;
+  const { board, turn, fallen, users } = gameState;
 
   const isOnePlayer = gameMode === GAME_MODES.ONE_PLAYER.TECHNICAL_NAME;
   const isTwoPlayer = gameMode === GAME_MODES.TWO_PLAYER.TECHNICAL_NAME;
@@ -54,21 +54,16 @@ const useGameState = ({ gameMode, gameId, userId }) => {
                 black: game.fallen.black || [],
                 white: game.fallen.white || []
               }
-            : defaultFallen
+            : defaultFallen,
+          test: "test"
         });
       });
     }
   }
 
-  function handlePerformMove(a) {
-    const sourceCoords = a.source.droppableId;
-    const destinationCoords = a.destination.droppableId;
+  function handlePerformMove(sourceCoords, destinationCoords) {
     if (validateMove(sourceCoords, destinationCoords)) {
-      if (isOnePlayer || isTwoPlayer) {
-        performMove(sourceCoords, destinationCoords);
-      } else if (isOnlinePlay) {
-        performMove(sourceCoords, destinationCoords);
-      }
+      performMove(sourceCoords, destinationCoords);
     }
   }
 
@@ -100,18 +95,18 @@ const useGameState = ({ gameMode, gameId, userId }) => {
     const opponentKingStatus = getKingStatus(
       nextBoard,
       opponent,
-      baselinePlayer
     );
+    console.log({opponentKingStatus}, {opponent})
     return {
       board: baselinePlayer === "black" ? mirrorBoard(nextBoard) : nextBoard,
-      turn: opponent,
+      turn: opponentKingStatus !== "checkmate" ? opponent : turn,
       fallen: getUpdatedFallen(
         getTargetPiece(board, destinationCoords),
         fallen
       ),
-      inCheck: opponentKingStatus === "check" ? opponent : inCheck || "",
+      inCheck: opponentKingStatus === "check" ? opponent : "",
       inCheckmate:
-        opponentKingStatus === "checkmate" ? opponent : inCheckmate || ""
+        opponentKingStatus === "checkmate" ? opponent : ""
     };
   }
 

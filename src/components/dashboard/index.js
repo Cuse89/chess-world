@@ -3,34 +3,42 @@ import React, { useContext, useState } from "react";
 import SelectGameMode from "components/select-game-mode";
 import CreateGame from "components/create-game";
 import { GAME_MODES } from "utils/constants";
-import Context from "context"
+import Context from "context";
+import DashboardOnline from "components/dashboard-online";
+
+import styles from "./Dashboard.module.scss";
 
 const Dashboard = ({ history }) => {
   const { settings } = useContext(Context);
-  const { setGameMode, gameType } = settings;
-  const [showSelectGameMode, toggleShowSelectGameMode] = useState(true);
-  const [showCreateGame, toggleShowCreateGame] = useState(false);
+  const { setGameMode, gameType, setGameType } = settings;
+  const [section, setSection] = useState("selectGameMode");
 
+  console.log("Dashboard", { gameType });
   const onGameModeClick = gameMode => {
     setGameMode(gameMode);
-
     if (gameMode === GAME_MODES.ONLINE_PLAY.TECHNICAL_NAME) {
-      history.push("/dashboard/online");
+      setSection("online");
     } else {
-      toggleShowCreateGame(prevState => !prevState);
-      toggleShowSelectGameMode(prevState => !prevState);
+      setSection("createGame");
     }
   };
 
-  const joinGame = () => {
+  const handleOnSubmit = settings => {
+    const { gameType } = settings;
+    setGameType(gameType);
+    // set other settings passed through from CreateGame
     history.push(`/${gameType}`);
   };
+
   return (
-    <div>
-      {showSelectGameMode && (
+    <div className={styles.root}>
+      {section === "selectGameMode" && (
         <SelectGameMode history={history} onGameModeClick={onGameModeClick} />
       )}
-      {showCreateGame && <CreateGame onSubmit={joinGame} />}
+      {section === "online" && <DashboardOnline history={history} />}
+      {section === "createGame" && (
+        <CreateGame onSubmit={handleOnSubmit} />
+      )}
     </div>
   );
 };

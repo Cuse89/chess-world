@@ -33,20 +33,21 @@ const ChallengePlayer = ({ history }) => {
     history.push(`/${gameType}?game=${gameId}`);
   };
 
-
-  const onCreateGameSubmit = (gameType, opponentId) => {
+  const onCreateGameSubmit = async (settings, opponentId) => {
     toggleShowCreateGame(false);
-    updateGameRequest(user.id, opponentId, gameType);
+    try {
+      await updateGameRequest(user.id, opponentId, settings.gameType);
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   return (
     <div className={styles.root}>
-      <DashboardButton
-        displayText="Challenge new player"
-        onClick={toggleDisplayAvailableUsers}
-      />
-      {displayAvailableUsers && availableUsers.length > 0 && (
+
+      {availableUsers.length > 0 && (
         <div>
+          <h3>Users online</h3>
           {availableUsers.map(availableUser => (
             <div key={`challenge-${availableUser}`} className={styles.content}>
               <p>{availableUser.name}</p>
@@ -60,10 +61,11 @@ const ChallengePlayer = ({ history }) => {
               )}
               {showCreateGame && (
                 <CreateGame
-                  onSubmit={gameType =>
-                    onCreateGameSubmit(gameType, availableUser.id)
+                  onSubmit={settings =>
+                    onCreateGameSubmit(settings, availableUser.id)
                   }
-                  useCompact={true}
+                  noHeader
+                  submitText="Click here to challenge"
                 />
               )}
             </div>

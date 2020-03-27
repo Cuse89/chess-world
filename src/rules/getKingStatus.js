@@ -1,7 +1,4 @@
-import {
-  getNextBoard,
-  loopBoard,
-} from "../utils/helpers";
+import { getNextBoard, loopBoard } from "../utils/helpers";
 import { getThreats } from "utils/onePlayerHelpers";
 import { kingValidation } from "rules/kingValidation";
 // kingPlayer is the players colour that controls the king in question
@@ -45,17 +42,14 @@ export const getKingStatus = (board, kingPlayer) => {
     return availableCoords.length < 1;
   };
 
-  const isInCheck = () => {
-    return getThreats(kingPlayer, kingPos, board).length > 0;
-  };
-
   if (isCheckmate()) {
-    console.log("checkmate");
     return "checkmate";
   }
 
+  const isInCheck = () => {
+    return getThreats(kingPlayer, kingPos, board).length > 0;
+  };
   if (isInCheck()) {
-    console.log("check");
     return "check";
   }
 

@@ -18,7 +18,8 @@ const ChallengeButton = ({
 
   const { gameState } = useGameState({
     gameMode: settings.gameMode,
-    gameId: user.games && user.games[opponentId]
+    gameId: user.games && user.games[opponentId],
+    userId: user.id
   });
 
   const handleStartNewGame = async (opponentId, gameSettings) => {

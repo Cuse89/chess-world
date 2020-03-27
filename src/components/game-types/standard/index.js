@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import Board from "components/board";
 import { Piece } from "components/piece";
 import {
@@ -16,6 +16,7 @@ const Standard = () => {
   const { user, settings } = useContext(Context);
   const { gameMode } = settings;
   const userId = user && user.id;
+  const [message, setMessage] = useState("");
 
   const {
     gameState,
@@ -31,18 +32,24 @@ const Standard = () => {
   const isOnePlayer = gameMode === GAME_MODES.ONE_PLAYER.TECHNICAL_NAME;
   const isTwoPlayer = gameMode === GAME_MODES.TWO_PLAYER.TECHNICAL_NAME;
   const isOnlinePlay = gameMode === GAME_MODES.ONLINE_PLAY.TECHNICAL_NAME;
-  const { board, turn, fallen, users } = gameState;
+  const { board, turn, fallen, users, inCheck, inCheckmate } = gameState;
 
   useEffect(() => {
     handleNextTurn();
   }, [turn]);
 
+  useEffect(() => {
+    handleSetMessage();
+  }, [inCheck, inCheckmate]);
+
   function onDrop(a) {
-    handlePerformMove(a);
+    const sourceCoords = a.source.droppableId;
+    const destinationCoords = a.destination.droppableId;
+    handlePerformMove(sourceCoords, destinationCoords);
   }
 
   function handleNextTurn() {
-    if (isOnePlayer && turn === "black") {
+    if (isOnePlayer && turn === "black" && !inCheckmate) {
       performBotMove();
     }
   }
@@ -72,8 +79,20 @@ const Standard = () => {
     }
   }
 
+  function handleSetMessage() {
+    let message = "";
+    if (inCheck) {
+      message = `${turn} in check`;
+    }
+    if (inCheckmate) {
+      message = `Checkmate. ${turn} wins`;
+    }
+    setMessage(message);
+  }
+
   return (
     <div>
+      <div>{message}</div>
       <Fallen fallen={getFallen()} />
       <Board
         board={board}
