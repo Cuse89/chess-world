@@ -21,8 +21,8 @@ import styles from "./TrapdoorChess.module.scss";
 import { decideBotMove, getBotMoves } from "utils/onePlayerHelpers";
 
 const TrapdoorChess = () => {
-  const { user, settings } = useContext(Context);
-  const { gameMode } = settings;
+  const { user, gameSettings } = useContext(Context);
+  const { gameMode, trapdoorsAmount } = gameSettings;
   const userId = user && user.id;
   const [message, setMessage] = useState("");
   const gameId = getUrlParam("game");
@@ -30,9 +30,8 @@ const TrapdoorChess = () => {
   const {
     gameState,
     setGameState,
-    handlePerformMove,
-    performBotMove,
     updateSquare,
+    updateBoard,
     canMovePiece,
     validateMove,
     performMove
@@ -47,8 +46,7 @@ const TrapdoorChess = () => {
   const isOnlinePlay = gameMode === GAME_MODES.ONLINE_PLAY.TECHNICAL_NAME;
   const { board, turn, fallen, users, inCheck, inCheckmate } = gameState;
   const trapdoorsSet = countTrapdoors();
-
-  const allTrapdoorsSet = trapdoorsSet === 4;
+  const allTrapdoorsSet = trapdoorsSet === trapdoorsAmount;
 
   useEffect(() => {
     handleNextTurn();
@@ -56,7 +54,13 @@ const TrapdoorChess = () => {
 
   useEffect(() => {
     handleSetMessage();
-  }, [inCheck, inCheckmate, trapdoorsSet]);
+  }, [board, inCheck, inCheckmate, trapdoorsAmount]);
+
+  useEffect(() => {
+    if (isOnePlayer) {
+      setBotTrapdoors();
+    }
+  }, []);
 
   function onDrop(move) {
     const sourceCoords = move.source.droppableId;
@@ -136,7 +140,6 @@ const TrapdoorChess = () => {
   }
 
   function setTrapdoor(coords) {
-    console.log("setTrapdoor", coords);
     if (!allTrapdoorsSet) {
       const square = getSquareDetails(coords, board);
       if (square.pieceId) {
@@ -147,6 +150,32 @@ const TrapdoorChess = () => {
         trapdoor: { ...square.trapdoor, [getPlayerColor()]: true }
       });
     }
+  }
+
+  function setBotTrapdoors() {
+    const emptySquares = [];
+    const trapdoorCoords = [];
+    let newBoard = board;
+    loopBoard(
+      board,
+      ({ square, coords }) => !square.pieceId && emptySquares.push(coords)
+    );
+    while (trapdoorCoords.length < trapdoorsAmount) {
+      const randomIndex = Math.floor(Math.random() * emptySquares.length);
+      const coords = emptySquares[randomIndex];
+      if (!trapdoorCoords.includes(coords)) {
+        trapdoorCoords.push(coords);
+      }
+    }
+    trapdoorCoords.forEach(coords => {
+      coords.toString();
+      const square = getSquareDetails(coords, board);
+      newBoard = getUpdatedBoard(newBoard, coords, {
+        ...square,
+        trapdoor: { ...square.trapdoor, black: true }
+      });
+    });
+    updateBoard(newBoard);
   }
 
   function getPlayerColor() {
@@ -176,7 +205,7 @@ const TrapdoorChess = () => {
       message = `Checkmate. ${turn} wins`;
     }
     if (!allTrapdoorsSet) {
-      message = `Set your trapdoors. ${4 - trapdoorsSet} left`;
+      message = `Set your trapdoors. ${trapdoorsAmount - trapdoorsSet} left`;
     }
     setMessage(message);
   }

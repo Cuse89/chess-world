@@ -5,23 +5,29 @@ import {
   GAME_TYPES
 } from "utils/constants";
 import { getUrlParam } from "utils/helpers";
+import firebase from "../firebase";
 
 const useGameSettings = () => {
   const [gameSettings, setGameSettings] = useState({
     gameMode: GAME_MODES.ONE_PLAYER.TECHNICAL_NAME,
     gameType: GAME_TYPES.STANDARD.TECHNICAL_NAME,
-    trapdoorAmount: DEFAULT_TRAPDOOR_AMOUNT
+    trapdoorsAmount: DEFAULT_TRAPDOOR_AMOUNT
   });
 
   const updateGameSettings = setting => {
     setGameSettings({ ...gameSettings, ...setting });
   };
+
+  const getGameSettingsFromDb = gameId => {
+    firebase.database.ref(`games/${gameId}/settings`).on("value", snapshot => {
+      updateGameSettings({ ...snapshot.val() });
+    });
+  };
+
   useEffect(() => {
-    if (getUrlParam("game")) {
-      setGameSettings({
-        ...gameSettings,
-        gameMode: GAME_MODES.ONLINE_PLAY.TECHNICAL_NAME
-      });
+    const gameId = getUrlParam("game");
+    if (gameId) {
+      getGameSettingsFromDb(gameId);
     }
   }, []);
 

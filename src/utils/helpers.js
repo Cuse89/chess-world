@@ -90,6 +90,7 @@ export const getNextBoard = (board, sourceCoords, destinationCoords) => {
 };
 
 export const getUpdatedBoard = (board, coords, value) => {
+  console.log("get updated baord", board,coords,value)
   let boardCopy = JSON.parse(JSON.stringify(board));
   boardCopy[coords[0]][coords[1]] = value;
   return boardCopy;

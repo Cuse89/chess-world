@@ -11,10 +11,10 @@ const CreateGame = ({ onSubmit, noHeader, submitText }) => {
   const {
     updateGameSettings,
     gameType,
-    trapdoorAmount,
+    trapdoorsAmount,
   } = useGameSettings();
   const handleOnSubmit = () => {
-    onSubmit({ gameType, trapdoorAmount });
+    onSubmit({ gameType, trapdoorsAmount });
   };
 
   return (
@@ -30,11 +30,12 @@ const CreateGame = ({ onSubmit, noHeader, submitText }) => {
           <div className={styles.trapdoors}>
             {TRAPDOOR_AMOUNTS.map(amount => (
               <DashboardButton
+                key={`trapdoor-button-${amount}`}
                 displayText={amount}
                 onClick={() =>
-                  updateGameSettings({ trapdoorAmount: amount })
+                  updateGameSettings({ trapdoorsAmount: amount })
                 }
-                selected={amount === trapdoorAmount}
+                selected={amount === trapdoorsAmount}
                 fullLength
                 spaceBottom
                 spaceRight

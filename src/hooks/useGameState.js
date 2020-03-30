@@ -37,7 +37,6 @@ const useGameState = ({ gameMode, gameId, userId }) => {
   const playerColorOnline = users && users[userId].color;
   const baselinePlayer =
     isOnePlayer || isTwoPlayer ? "white" : playerColorOnline;
-  console.log({ baselinePlayer });
 
   console.log({ gameState, gameMode });
 
@@ -139,8 +138,6 @@ const useGameState = ({ gameMode, gameId, userId }) => {
   }
 
   function handleMirroredBoard(board) {
-    console.log("handleMirroredBoard");
-    console.log("baslineplyer", baselinePlayer, users);
     return baselinePlayer === "black" ? mirrorBoard(board) : board;
   }
 
@@ -166,7 +163,8 @@ const useGameState = ({ gameMode, gameId, userId }) => {
     performBotMove,
     canMovePiece,
     updateSquare,
-    performMove
+    performMove,
+    updateBoard,
   };
 };
 

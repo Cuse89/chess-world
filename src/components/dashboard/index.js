@@ -10,11 +10,9 @@ import styles from "./Dashboard.module.scss";
 
 const Dashboard = ({ history }) => {
   const { gameSettings } = useContext(Context);
-  const { updateGameSettings, gameType, setGameType } = gameSettings;
-  console.log("aaaaaaaaaaa", gameSettings);
+  const { updateGameSettings } = gameSettings;
   const [section, setSection] = useState("selectGameMode");
 
-  console.log("Dashboard", { gameType });
   const onGameModeClick = gameMode => {
     updateGameSettings({ gameMode });
     if (gameMode === GAME_MODES.ONLINE_PLAY.TECHNICAL_NAME) {
@@ -25,11 +23,8 @@ const Dashboard = ({ history }) => {
   };
 
   const onCreateGameSubmit = settings => {
-    const { gameType } = settings;
-
     updateGameSettings(settings);
-    // set other settings passed through from CreateGame
-    history.push(`/${gameType}`);
+    history.push(`/${settings.gameType}`);
   };
 
   return (

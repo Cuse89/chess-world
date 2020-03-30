@@ -1,5 +1,4 @@
 import React, { useContext, useState } from "react";
-import DashboardButton from "components/dashboard-button";
 import useAvailableUsers from "hooks/useAvailableUsers";
 import CreateGame from "components/create-game";
 import ChallengeButton from "components/dashboard-online/challenge-button";
@@ -32,7 +31,7 @@ const ChallengePlayer = ({ history }) => {
   const onCreateGameSubmit = async (settings, opponentId) => {
     toggleShowCreateGame(false);
     try {
-      await updateGameRequest(user.id, opponentId, settings.gameType);
+      await updateGameRequest(user.id, opponentId, {...settings});
     } catch (err) {
       console.log(err);
     }

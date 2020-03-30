@@ -36,7 +36,7 @@ const ChallengeButton = ({
         },
         board: defaultBoard,
         turn: "white",
-        gameType: gameSettings.gameType
+        settings: {...gameSettings}
       });
       await updateGameRequest(opponentId, user.id, null);
       await firebase.updateUser(user.id, "games", { [opponentId]: newGameId });
@@ -66,12 +66,13 @@ const ChallengeButton = ({
       );
     }
     if (user.requestsIncoming && user.requestsIncoming[opponentId]) {
-      const gameType = user.requestsIncoming[opponentId];
+      const gameSettings = user.requestsIncoming[opponentId]
+      const gameType = gameSettings.gameType
       const gameTypeText = getPrettyFromTechnicalName(GAME_TYPES, gameType);
       button = (
         <DashboardButton
           displayText={`Incoming ${gameTypeText} request. Click to play!`}
-          onClick={() => handleStartNewGame(opponentId, { gameType })}
+          onClick={() => handleStartNewGame(opponentId, gameSettings)}
           type={"accept"}
           fullLength
         />
@@ -79,7 +80,7 @@ const ChallengeButton = ({
     }
     if (gameState.users) {
       // Todo: fetch gametype from game object
-      const gameType = gameState.gameType;
+      const gameType = gameState.settings.gameType;
       button = (
         <DashboardButton
           displayText={"Game in progress. Join Game"}
