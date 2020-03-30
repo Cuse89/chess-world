@@ -165,7 +165,8 @@ const useGameState = ({ gameMode, gameId, userId }) => {
     validateMove,
     performBotMove,
     canMovePiece,
-    updateSquare
+    updateSquare,
+    performMove
   };
 };
 

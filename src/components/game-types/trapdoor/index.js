@@ -18,6 +18,7 @@ import Fallen from "components/fallen";
 import firebase from "../../../firebase";
 
 import styles from "./TrapdoorChess.module.scss";
+import { decideBotMove, getBotMoves } from "utils/onePlayerHelpers";
 
 const TrapdoorChess = () => {
   const { user, settings } = useContext(Context);
@@ -33,7 +34,8 @@ const TrapdoorChess = () => {
     performBotMove,
     updateSquare,
     canMovePiece,
-    validateMove
+    validateMove,
+    performMove
   } = useGameState({
     gameMode,
     userId,
@@ -56,15 +58,28 @@ const TrapdoorChess = () => {
     handleSetMessage();
   }, [inCheck, inCheckmate, trapdoorsSet]);
 
-  function onDrop(a) {
-    const sourceCoords = a.source.droppableId;
-    const destinationCoords = a.destination.droppableId;
+  function onDrop(move) {
+    const sourceCoords = move.source.droppableId;
+    const destinationCoords = move.destination.droppableId;
     if (validateMove(sourceCoords, destinationCoords)) {
-      if (getSquareDetails(destinationCoords, board).trapdoor) {
-        handleFallenInTrapdoor(sourceCoords);
-      } else {
-        handlePerformMove(sourceCoords, destinationCoords);
-      }
+      handleTrapdoor(sourceCoords, destinationCoords);
+    }
+  }
+
+  function handleNextTurn() {
+    if (isOnePlayer && turn === "black" && !inCheckmate) {
+      const selectedMove = decideBotMove(getBotMoves(board));
+      const { source, destination } = selectedMove;
+      handleTrapdoor(source.coords, destination.coords);
+    }
+  }
+
+  function handleTrapdoor(sourceCoords, destinationCoords) {
+    const square = getSquareDetails(destinationCoords, board);
+    if (square.trapdoor) {
+      handleFallenInTrapdoor(sourceCoords);
+    } else {
+      performMove(sourceCoords, destinationCoords);
     }
   }
 
@@ -89,12 +104,6 @@ const TrapdoorChess = () => {
             ? mirrorBoard(updatedBoard)
             : updatedBoard
       });
-    }
-  }
-
-  function handleNextTurn() {
-    if (isOnePlayer && turn === "black" && !inCheckmate) {
-      performBotMove();
     }
   }
 
