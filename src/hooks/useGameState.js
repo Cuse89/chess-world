@@ -94,7 +94,6 @@ const useGameState = ({ gameMode, gameId, userId }) => {
   }
 
   function getNextGameState(sourceCoords, destinationCoords) {
-    console.log("getNextGameState");
     const nextBoard = getNextBoard(board, sourceCoords, destinationCoords);
     const opponentKingStatus = getKingStatus(nextBoard, opponent);
     return {

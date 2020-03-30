@@ -32,7 +32,8 @@ const TrapdoorChess = () => {
     handlePerformMove,
     performBotMove,
     updateSquare,
-    canMovePiece
+    canMovePiece,
+    validateMove
   } = useGameState({
     gameMode,
     userId,
@@ -58,35 +59,35 @@ const TrapdoorChess = () => {
   function onDrop(a) {
     const sourceCoords = a.source.droppableId;
     const destinationCoords = a.destination.droppableId;
-    console.log(
-      "sss",
-      destinationCoords,
-      board,
-      getSquareDetails(destinationCoords, board)
-    );
-    if (getSquareDetails(destinationCoords, board).trapdoor) {
-      handleFallenInTrapdoor(sourceCoords);
-    } else {
-      handlePerformMove(sourceCoords, destinationCoords);
+    if (validateMove(sourceCoords, destinationCoords)) {
+      if (getSquareDetails(destinationCoords, board).trapdoor) {
+        handleFallenInTrapdoor(sourceCoords);
+      } else {
+        handlePerformMove(sourceCoords, destinationCoords);
+      }
     }
   }
 
   function handleFallenInTrapdoor(sourceCoords) {
     const updatedBoard = getUpdatedBoard(board, sourceCoords, emptySquare);
+    const updatedFallen = getUpdatedFallen(
+      getSquareDetails(sourceCoords, board),
+      gameState.fallen
+    );
+    const sharedState = {
+      turn: getOpponent(turn),
+      fallen: updatedFallen
+    };
     if (isOnePlayer) {
-      const newState = {
-        board: updatedBoard ,
-        turn: getOpponent(turn),
-        fallen: getUpdatedFallen(
-          getSquareDetails(sourceCoords, board),
-          gameState.fallen
-        )
-      };
-      setGameState({ ...gameState, ...newState });    }
+      setGameState({ ...gameState, ...sharedState, board: updatedBoard });
+    }
     if (isOnlinePlay) {
       firebase.updateGame(gameId, {
-        board: users[userId].color === "black" ? mirrorBoard(updatedBoard) : updatedBoard,
-        turn: getOpponent(turn)
+        ...sharedState,
+        board:
+          users[userId].color === "black"
+            ? mirrorBoard(updatedBoard)
+            : updatedBoard
       });
     }
   }
@@ -108,21 +109,17 @@ const TrapdoorChess = () => {
         available={allTrapdoorsSet && canMovePiece(player)}
       />
     );
-    if (trapdoor) {
-      const displayTrapdoor = (
-        <div className={styles.trapdoor}>{square.pieceId && piece}</div>
-      );
-      if (trapdoor === getPlayerColor()) {
-        return displayTrapdoor;
-      }
+    if (trapdoor && trapdoor[getPlayerColor()]) {
+      return <div className={styles.trapdoor}>{square.pieceId && piece}</div>;
     }
     return piece || null;
   }
 
   function countTrapdoors() {
+    const playerColor = getPlayerColor();
     let count = 0;
     loopBoard(board, ({ square }) => {
-      if (square.trapdoor === getPlayerColor()) {
+      if (square.trapdoor && square.trapdoor[playerColor]) {
         count++;
       }
     });
@@ -136,7 +133,10 @@ const TrapdoorChess = () => {
       if (square.pieceId) {
         return;
       }
-      updateSquare(coords, { ...square, trapdoor: getPlayerColor() });
+      updateSquare(coords, {
+        ...square,
+        trapdoor: { ...square.trapdoor, [getPlayerColor()]: true }
+      });
     }
   }
 
