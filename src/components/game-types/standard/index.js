@@ -2,7 +2,6 @@ import React, { useContext, useState, useEffect } from "react";
 import Board from "components/board";
 import { Piece } from "components/piece";
 import {
-  getBaselinePlayer,
   getOpponent,
   getPieceProps,
   getUrlParam
@@ -70,10 +69,10 @@ const StandardChess = () => {
 
   function getFallen(baseline) {
     if (isOnlinePlay && users) {
-      const baselinePlayer = getBaselinePlayer(users.black, userId);
+      const playerColor = users[userId].color;
       return baseline
-        ? fallen[getOpponent(baselinePlayer)]
-        : fallen[baselinePlayer];
+        ? fallen[getOpponent(playerColor)]
+        : fallen[playerColor];
     } else {
       return baseline ? fallen.black : fallen.white;
     }

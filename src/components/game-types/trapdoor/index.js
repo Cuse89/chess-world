@@ -2,17 +2,20 @@ import React, { useContext, useState, useEffect } from "react";
 import Board from "components/board";
 import { Piece } from "components/piece";
 import {
-  getBaselinePlayer,
   getOpponent,
   getPieceProps,
   getSquareDetails,
+  getUpdatedBoard,
+  getUpdatedFallen,
   getUrlParam,
-  loopBoard
+  loopBoard,
+  mirrorBoard
 } from "utils/helpers";
 import useGameState from "hooks/useGameState";
 import Context from "context";
 import { emptySquare, GAME_MODES } from "utils/constants";
 import Fallen from "components/fallen";
+import firebase from "../../../firebase";
 
 import styles from "./TrapdoorChess.module.scss";
 
@@ -21,16 +24,19 @@ const TrapdoorChess = () => {
   const { gameMode } = settings;
   const userId = user && user.id;
   const [message, setMessage] = useState("");
+  const gameId = getUrlParam("game");
 
   const {
     gameState,
+    setGameState,
     handlePerformMove,
     performBotMove,
-    updateSquare
+    updateSquare,
+    canMovePiece
   } = useGameState({
     gameMode,
     userId,
-    gameId: getUrlParam("game")
+    gameId
   });
 
   const isOnePlayer = gameMode === GAME_MODES.ONE_PLAYER.TECHNICAL_NAME;
@@ -52,12 +58,36 @@ const TrapdoorChess = () => {
   function onDrop(a) {
     const sourceCoords = a.source.droppableId;
     const destinationCoords = a.destination.droppableId;
-    console.log("sss", getSquareDetails(destinationCoords, board));
+    console.log(
+      "sss",
+      destinationCoords,
+      board,
+      getSquareDetails(destinationCoords, board)
+    );
     if (getSquareDetails(destinationCoords, board).trapdoor) {
-      console.log({ sourceCoords });
-      updateSquare(sourceCoords, emptySquare);
+      handleFallenInTrapdoor(sourceCoords);
     } else {
       handlePerformMove(sourceCoords, destinationCoords);
+    }
+  }
+
+  function handleFallenInTrapdoor(sourceCoords) {
+    const updatedBoard = getUpdatedBoard(board, sourceCoords, emptySquare);
+    if (isOnePlayer) {
+      const newState = {
+        board: updatedBoard ,
+        turn: getOpponent(turn),
+        fallen: getUpdatedFallen(
+          getSquareDetails(sourceCoords, board),
+          gameState.fallen
+        )
+      };
+      setGameState({ ...gameState, ...newState });    }
+    if (isOnlinePlay) {
+      firebase.updateGame(gameId, {
+        board: users[userId].color === "black" ? mirrorBoard(updatedBoard) : updatedBoard,
+        turn: getOpponent(turn)
+      });
     }
   }
 
@@ -75,22 +105,14 @@ const TrapdoorChess = () => {
         id={`${player}-${pieceId}`}
         icon={getPieceProps(pieceId).icon}
         pieceColor={player}
-        available={allTrapdoorsSet}
+        available={allTrapdoorsSet && canMovePiece(player)}
       />
     );
     if (trapdoor) {
       const displayTrapdoor = (
         <div className={styles.trapdoor}>{square.pieceId && piece}</div>
       );
-      if (isOnlinePlay && gameState.users) {
-        const playerColor =
-          gameState.users.black === userId ? "black" : "white";
-        console.log({playerColor})
-        if (trapdoor === playerColor) {
-          return displayTrapdoor;
-        }
-      }
-      if (isOnePlayer && trapdoor === "white") {
+      if (trapdoor === getPlayerColor()) {
         return displayTrapdoor;
       }
     }
@@ -100,7 +122,7 @@ const TrapdoorChess = () => {
   function countTrapdoors() {
     let count = 0;
     loopBoard(board, ({ square }) => {
-      if (square.trapdoor && square.trapdoor === "white") {
+      if (square.trapdoor === getPlayerColor()) {
         count++;
       }
     });
@@ -108,19 +130,29 @@ const TrapdoorChess = () => {
   }
 
   function setTrapdoor(coords) {
-    const square = getSquareDetails(coords, board);
-    if (allTrapdoorsSet || square.pieceId) {
-      return;
+    console.log("setTrapdoor", coords);
+    if (!allTrapdoorsSet) {
+      const square = getSquareDetails(coords, board);
+      if (square.pieceId) {
+        return;
+      }
+      updateSquare(coords, { ...square, trapdoor: getPlayerColor() });
     }
-    updateSquare(coords, { ...square, trapdoor: "white" });
+  }
+
+  function getPlayerColor() {
+    if (isOnlinePlay && gameState.users) {
+      return gameState.users[userId].color;
+    }
+    if (isOnePlayer) {
+      return "white";
+    }
   }
 
   function getFallen(baseline) {
     if (isOnlinePlay && users) {
-      const baselinePlayer = getBaselinePlayer(users.black, userId);
-      return baseline
-        ? fallen[getOpponent(baselinePlayer)]
-        : fallen[baselinePlayer];
+      const playerColor = users[userId].color;
+      return baseline ? fallen[getOpponent(playerColor)] : fallen[playerColor];
     } else {
       return baseline ? fallen.black : fallen.white;
     }

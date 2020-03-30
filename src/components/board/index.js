@@ -2,7 +2,7 @@ import React, { useContext, useState } from "react";
 import PropTypes from "prop-types";
 import cx from "classnames";
 import { DragDropContext, Droppable } from "react-beautiful-dnd";
-import { getBaselinePlayer, getCoords, getSquareDetails } from "utils/helpers";
+import { getCoords, getSquareDetails } from "utils/helpers";
 import Square from "components/square";
 import styles from "./Board.module.scss";
 import Context from "context";
@@ -11,7 +11,14 @@ import { GAME_MODES } from "utils/constants";
 // king on left for white
 // king on right for black
 
-const Board = ({ board, getSquaresChild, onDragEnd, turn, users, onSquareSelect }) => {
+const Board = ({
+  board,
+  getSquaresChild,
+  onDragEnd,
+  turn,
+  users,
+  onSquareSelect
+}) => {
   const { user, settings } = useContext(Context);
   const [draggedPieceCoords, setDraggedPieceCoords] = useState("");
   const rows = [];
@@ -69,8 +76,8 @@ const Board = ({ board, getSquaresChild, onDragEnd, turn, users, onSquareSelect 
 
   function isIndicatorActive(baseline) {
     if (users) {
-      const baselinePlayer = getBaselinePlayer(users.black, user.id);
-      return baseline ? baselinePlayer === turn : baselinePlayer !== turn;
+      const playerColor = users[user.id].color;
+      return baseline ? playerColor === turn : playerColor !== turn;
     }
     if (settings.gameMode === GAME_MODES.ONE_PLAYER.TECHNICAL_NAME) {
       return false;

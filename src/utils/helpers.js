@@ -12,6 +12,7 @@ import { bishopValidation } from "../rules/bishopValidation";
 import { knightValidation } from "../rules/knightValidation";
 import { kingValidation } from "../rules/kingValidation";
 import { getKingStatus } from "../rules/getKingStatus";
+import { emptySquare } from "utils/constants";
 
 export const getPieceProps = pieceId => {
   switch (pieceId && pieceId.split("-")[0]) {
@@ -84,7 +85,13 @@ export const getNextBoard = (board, sourceCoords, destinationCoords) => {
   boardCopy[destinationCoords[0]][destinationCoords[1]] =
     boardCopy[sourceCoords[0]][sourceCoords[1]];
   // old square is emptied
-  boardCopy[sourceCoords[0]][sourceCoords[1]] = { player: "", pieceId: "" };
+  boardCopy[sourceCoords[0]][sourceCoords[1]] = emptySquare;
+  return boardCopy;
+};
+
+export const getUpdatedBoard = (board, coords, value) => {
+  let boardCopy = JSON.parse(JSON.stringify(board));
+  boardCopy[coords[0]][coords[1]] = value;
   return boardCopy;
 };
 
@@ -96,7 +103,6 @@ export const performValidation = ({
   baselinePlayer,
   captureOnly
 }) => {
-
   // work out if valid square has been selected, or another of mine
   const sourceSquare = getSquareDetails(sourceCoords, board);
   const destinationSquare = getSquareDetails(destinationCoords, board);
@@ -152,7 +158,7 @@ export const getTargetPiece = (board, destinationCoords) =>
   board[destinationCoords[0]][destinationCoords[1]];
 
 export const getPrettyFromTechnicalName = (obj, technicalName) => {
-  const key = Object.keys(obj, technicalName).filter(
+  const key = Object.keys(obj).filter(
     key => obj[key].TECHNICAL_NAME === technicalName
   );
   return obj[key].PRETTY;
@@ -165,10 +171,8 @@ export const getUrlParam = key => {
 };
 
 export const mirrorBoard = board => {
-  const boardReversed = [...board].reverse();
-  boardReversed.forEach(row => row.reverse());
-  return boardReversed;
+  let boardCopy = JSON.parse(JSON.stringify(board));
+  const boardMirrored = [...boardCopy].reverse();
+  boardMirrored.forEach(row => row.reverse());
+  return boardMirrored;
 };
-
-export const getBaselinePlayer = (blackId, userId) =>
-  userId && blackId === userId ? "black" : "white";

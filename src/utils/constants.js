@@ -30,5 +30,5 @@ export const GAME_TYPES = {
 
 export const emptySquare = {
   player: "",
-  pieceId: ""
+  pieceId: "",
 };

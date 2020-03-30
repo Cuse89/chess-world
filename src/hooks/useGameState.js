@@ -1,12 +1,10 @@
 import React, { useEffect, useState } from "react";
 import defaultBoard from "lineups/defaultBoard";
 import {
-  getBaselinePlayer,
   getNextBoard,
   getOpponent,
-  getTargetPiece,
+  getTargetPiece, getUpdatedBoard,
   getUpdatedFallen,
-  getUrlParam,
   mirrorBoard,
   performValidation
 } from "utils/helpers";
@@ -21,6 +19,7 @@ const useGameState = ({ gameMode, gameId, userId }) => {
     white: [],
     black: []
   };
+
   const [gameState, setGameState] = useState({
     board: defaultBoard,
     turn: defaultTurn,
@@ -35,34 +34,37 @@ const useGameState = ({ gameMode, gameId, userId }) => {
   const isTwoPlayer = gameMode === GAME_MODES.TWO_PLAYER.TECHNICAL_NAME;
   const isOnlinePlay = gameMode === GAME_MODES.ONLINE_PLAY.TECHNICAL_NAME;
   const opponent = getOpponent(turn);
+  const playerColorOnline = users && users[userId].color;
   const baselinePlayer =
-    isOnePlayer || isTwoPlayer
-      ? "white"
-      : users && getBaselinePlayer(users.black, userId);
+    isOnePlayer || isTwoPlayer ? "white" : playerColorOnline;
+  console.log({ baselinePlayer });
 
   console.log({ gameState, gameMode });
 
   function gameListener() {
     if (isOnlinePlay) {
       firebase.database.ref(`games/${gameId}`).on("value", async snapshot => {
+        console.log("gameListener");
         const game = snapshot.val();
         setGameState({
           ...game,
-          board:
-            game.users.black === userId ? mirrorBoard(game.board) : game.board,
+          board: game.users[userId].color === "black" ? mirrorBoard(game.board) : game.board,
           fallen: game.fallen
             ? {
                 black: game.fallen.black || [],
                 white: game.fallen.white || []
               }
             : defaultFallen,
-          test: "test"
+          users: game.users,
+          inCheck: game.inCheck,
+          inCheckmate: game.inCheckmate
         });
       });
     }
   }
 
   function handlePerformMove(sourceCoords, destinationCoords) {
+    console.log("handlePerformMove");
     if (validateMove(sourceCoords, destinationCoords)) {
       performMove(sourceCoords, destinationCoords);
     }
@@ -74,7 +76,7 @@ const useGameState = ({ gameMode, gameId, userId }) => {
       sourceCoords,
       destinationCoords,
       player: turn,
-      baselinePlayer: isOnePlayer || isTwoPlayer ? "white" : baselinePlayer
+      baselinePlayer
     });
   }
 
@@ -92,11 +94,11 @@ const useGameState = ({ gameMode, gameId, userId }) => {
   }
 
   function getNextGameState(sourceCoords, destinationCoords) {
+    console.log("getNextGameState");
     const nextBoard = getNextBoard(board, sourceCoords, destinationCoords);
     const opponentKingStatus = getKingStatus(nextBoard, opponent);
-    console.log({ opponentKingStatus }, { opponent });
     return {
-      board: baselinePlayer === "black" ? mirrorBoard(nextBoard) : nextBoard,
+      board: handleMirroredBoard(nextBoard),
       turn: opponentKingStatus !== "checkmate" ? opponent : turn,
       fallen: getUpdatedFallen(
         getTargetPiece(board, destinationCoords),
@@ -126,21 +128,26 @@ const useGameState = ({ gameMode, gameId, userId }) => {
         return true;
       }
       if (isOnlinePlay) {
-        return users && users[turn] === userId;
+        return users && users[userId].color === turn;
       }
     }
     return false;
   }
 
   function updateSquare(coords, value) {
-    let boardCopy = JSON.parse(JSON.stringify(board));
-    boardCopy[coords[0]][coords[1]] = value;
+    const boardCopy = getUpdatedBoard(board, coords, value)
     updateBoard(boardCopy);
+  }
+
+  function handleMirroredBoard(board) {
+    console.log("handleMirroredBoard");
+    console.log("baslineplyer", baselinePlayer, users);
+    return baselinePlayer === "black" ? mirrorBoard(board) : board;
   }
 
   function updateBoard(newBoard) {
     if (isOnlinePlay) {
-      firebase.updateGame(gameId, { board: newBoard });
+      firebase.updateGame(gameId, { board: handleMirroredBoard(newBoard) });
     } else {
       setGameState({ ...gameState, board: newBoard });
     }
@@ -154,11 +161,12 @@ const useGameState = ({ gameMode, gameId, userId }) => {
 
   return {
     gameState,
+    setGameState,
     handlePerformMove,
     validateMove,
     performBotMove,
     canMovePiece,
-    updateSquare,
+    updateSquare
   };
 };
 

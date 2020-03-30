@@ -45,6 +45,7 @@ class Firebase {
   }
 
   async updateGame(gameId, value) {
+    console.log("updateGame", gameId, value)
     await this.database.ref(`games/${gameId}`).update(value)
   }
 

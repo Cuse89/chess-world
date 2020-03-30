@@ -10,11 +10,7 @@ import styles from "./ChallengePlayer.module.scss";
 const ChallengePlayer = ({ history }) => {
   const { user } = useContext(Context);
   const { availableUsers } = useAvailableUsers(user.id);
-  const [displayAvailableUsers, setDisplayAvailableUsers] = useState(false);
   const [showCreateGame, toggleShowCreateGame] = useState(false);
-  const toggleDisplayAvailableUsers = () => {
-    setDisplayAvailableUsers(prevState => !prevState);
-  };
 
   const updateGameRequest = async (outgoingUserId, incomingUserId, value) => {
     try {

@@ -26,7 +26,14 @@ const ChallengeButton = ({
     const newGameId = `game-${uuid().split("-")[0]}`;
     try {
       await firebase.updateGame(newGameId, {
-        users: { white: user.id, black: opponentId },
+        users: {
+          [user.id]: {
+            color: "white"
+          },
+          [opponentId]: {
+            color: "black"
+          }
+        },
         board: defaultBoard,
         turn: "white",
         gameType: gameSettings.gameType

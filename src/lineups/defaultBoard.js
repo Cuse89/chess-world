@@ -1,4 +1,6 @@
 // IMPORTANT- board coordinates order are y - top to bottom, x - left to right
+import { emptySquare } from "utils/constants";
+
 export default [
   [
     { player: "black", pieceId: "rook-1" },
@@ -22,44 +24,44 @@ export default [
     { player: "black", pieceId: "pawn-0" }
   ],
   [
-    { player: "", pieceId: "" },
-    { player: "", pieceId: "" },
-    { player: "", pieceId: "" },
-    { player: "", pieceId: "" },
-    { player: "", pieceId: "" },
-    { player: "", pieceId: "" },
-    { player: "", pieceId: "" },
-    { player: "", pieceId: "" }
+    emptySquare,
+    emptySquare,
+    emptySquare,
+    emptySquare,
+    emptySquare,
+    emptySquare,
+    emptySquare,
+    emptySquare
   ],
   [
-    { player: "", pieceId: "" },
-    { player: "", pieceId: "" },
-    { player: "", pieceId: "" },
-    { player: "", pieceId: "" },
-    { player: "", pieceId: "" },
-    { player: "", pieceId: "" },
-    { player: "", pieceId: "" },
-    { player: "", pieceId: "" }
+    emptySquare,
+    emptySquare,
+    emptySquare,
+    emptySquare,
+    emptySquare,
+    emptySquare,
+    emptySquare,
+    emptySquare
   ],
   [
-    { player: "", pieceId: "" },
-    { player: "", pieceId: "" },
-    { player: "", pieceId: "" },
-    { player: "", pieceId: "" },
-    { player: "", pieceId: "" },
-    { player: "", pieceId: "" },
-    { player: "", pieceId: "" },
-    { player: "", pieceId: "" }
+    emptySquare,
+    emptySquare,
+    emptySquare,
+    emptySquare,
+    emptySquare,
+    emptySquare,
+    emptySquare,
+    emptySquare
   ],
   [
-    { player: "", pieceId: "" },
-    { player: "", pieceId: "" },
-    { player: "", pieceId: "" },
-    { player: "", pieceId: "" },
-    { player: "", pieceId: "" },
-    { player: "", pieceId: "" },
-    { player: "", pieceId: "" },
-    { player: "", pieceId: "" }
+    emptySquare,
+    emptySquare,
+    emptySquare,
+    emptySquare,
+    emptySquare,
+    emptySquare,
+    emptySquare,
+    emptySquare
   ],
   [
     { player: "white", pieceId: "pawn-0" },
