@@ -9,13 +9,14 @@ import DashboardOnline from "components/dashboard-online";
 import styles from "./Dashboard.module.scss";
 
 const Dashboard = ({ history }) => {
-  const { settings } = useContext(Context);
-  const { setGameMode, gameType, setGameType } = settings;
+  const { gameSettings } = useContext(Context);
+  const { updateGameSettings, gameType, setGameType } = gameSettings;
+  console.log("aaaaaaaaaaa", gameSettings);
   const [section, setSection] = useState("selectGameMode");
 
   console.log("Dashboard", { gameType });
   const onGameModeClick = gameMode => {
-    setGameMode(gameMode);
+    updateGameSettings({ gameMode });
     if (gameMode === GAME_MODES.ONLINE_PLAY.TECHNICAL_NAME) {
       setSection("online");
     } else {
@@ -23,9 +24,10 @@ const Dashboard = ({ history }) => {
     }
   };
 
-  const handleOnSubmit = settings => {
+  const onCreateGameSubmit = settings => {
     const { gameType } = settings;
-    setGameType(gameType);
+
+    updateGameSettings(settings);
     // set other settings passed through from CreateGame
     history.push(`/${gameType}`);
   };
@@ -36,9 +38,7 @@ const Dashboard = ({ history }) => {
         <SelectGameMode history={history} onGameModeClick={onGameModeClick} />
       )}
       {section === "online" && <DashboardOnline history={history} />}
-      {section === "createGame" && (
-        <CreateGame onSubmit={handleOnSubmit} />
-      )}
+      {section === "createGame" && <CreateGame onSubmit={onCreateGameSubmit} />}
     </div>
   );
 };

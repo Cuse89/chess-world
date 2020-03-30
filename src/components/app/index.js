@@ -14,11 +14,11 @@ import styles from "./App.module.scss";
 
 
 const App = () => {
-  const settings = useGameSettings();
+  const gameSettings = useGameSettings();
   const user = useUser();
   return (
     <BrowserRouter>
-      <Context.Provider value={{ settings, user }}>
+      <Context.Provider value={{ gameSettings, user }}>
         <div className={styles.root}>
           <Header />
           <Switch>

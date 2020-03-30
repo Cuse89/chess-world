@@ -12,7 +12,7 @@ import { bishopValidation } from "../rules/bishopValidation";
 import { knightValidation } from "../rules/knightValidation";
 import { kingValidation } from "../rules/kingValidation";
 import { getKingStatus } from "../rules/getKingStatus";
-import { emptySquare } from "utils/constants";
+import { EMPTY_SQUARE } from "utils/constants";
 
 export const getPieceProps = pieceId => {
   switch (pieceId && pieceId.split("-")[0]) {
@@ -85,7 +85,7 @@ export const getNextBoard = (board, sourceCoords, destinationCoords) => {
   boardCopy[destinationCoords[0]][destinationCoords[1]] =
     boardCopy[sourceCoords[0]][sourceCoords[1]];
   // old square is emptied
-  boardCopy[sourceCoords[0]][sourceCoords[1]] = emptySquare;
+  boardCopy[sourceCoords[0]][sourceCoords[1]] = EMPTY_SQUARE;
   return boardCopy;
 };
 

@@ -14,10 +14,10 @@ const ChallengeButton = ({
   joinGame,
   toggleShowCreateGame
 }) => {
-  const { user, settings } = useContext(Context);
+  const { user, gameSettings } = useContext(Context);
 
   const { gameState } = useGameState({
-    gameMode: settings.gameMode,
+    gameMode: gameSettings.gameMode,
     gameId: user.games && user.games[opponentId],
     userId: user.id
   });

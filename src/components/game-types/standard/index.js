@@ -1,19 +1,15 @@
 import React, { useContext, useState, useEffect } from "react";
 import Board from "components/board";
 import { Piece } from "components/piece";
-import {
-  getOpponent,
-  getPieceProps,
-  getUrlParam
-} from "utils/helpers";
+import { getOpponent, getPieceProps, getUrlParam } from "utils/helpers";
 import useGameState from "hooks/useGameState";
 import Context from "context";
 import { GAME_MODES } from "utils/constants";
 import Fallen from "components/fallen";
 
 const StandardChess = () => {
-  const { user, settings } = useContext(Context);
-  const { gameMode } = settings;
+  const { user, gameSettings } = useContext(Context);
+  const { gameMode } = gameSettings;
   const userId = user && user.id;
   const [message, setMessage] = useState("");
 
@@ -70,9 +66,7 @@ const StandardChess = () => {
   function getFallen(baseline) {
     if (isOnlinePlay && users) {
       const playerColor = users[userId].color;
-      return baseline
-        ? fallen[getOpponent(playerColor)]
-        : fallen[playerColor];
+      return baseline ? fallen[getOpponent(playerColor)] : fallen[playerColor];
     } else {
       return baseline ? fallen.black : fallen.white;
     }

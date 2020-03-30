@@ -19,7 +19,8 @@ const Board = ({
   users,
   onSquareSelect
 }) => {
-  const { user, settings } = useContext(Context);
+  const { user, gameSettings } = useContext(Context);
+  const { gameMode } = gameSettings;
   const [draggedPieceCoords, setDraggedPieceCoords] = useState("");
   const rows = [];
   const isGreen = coords => {
@@ -79,10 +80,10 @@ const Board = ({
       const playerColor = users[user.id].color;
       return baseline ? playerColor === turn : playerColor !== turn;
     }
-    if (settings.gameMode === GAME_MODES.ONE_PLAYER.TECHNICAL_NAME) {
+    if (gameMode === GAME_MODES.ONE_PLAYER.TECHNICAL_NAME) {
       return false;
     }
-    if (settings.gameMode === GAME_MODES.TWO_PLAYER.TECHNICAL_NAME) {
+    if (gameMode === GAME_MODES.TWO_PLAYER.TECHNICAL_NAME) {
       return baseline ? turn === "white" : turn === "black";
     }
   }

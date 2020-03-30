@@ -1,17 +1,30 @@
 import React, { useEffect, useState } from "react";
-import { GAME_MODES, GAME_TYPES } from "utils/constants";
+import {
+  DEFAULT_TRAPDOOR_AMOUNT,
+  GAME_MODES,
+  GAME_TYPES
+} from "utils/constants";
 import { getUrlParam } from "utils/helpers";
 
 const useGameSettings = () => {
-  const [gameMode, setGameMode] = useState(
-    GAME_MODES.ONE_PLAYER.TECHNICAL_NAME
-  );
-  const [gameType, setGameType] = useState(GAME_TYPES.STANDARD.TECHNICAL_NAME);
+  const [gameSettings, setGameSettings] = useState({
+    gameMode: GAME_MODES.ONE_PLAYER.TECHNICAL_NAME,
+    gameType: GAME_TYPES.STANDARD.TECHNICAL_NAME,
+    trapdoorAmount: DEFAULT_TRAPDOOR_AMOUNT
+  });
+
+  const updateGameSettings = setting => {
+    setGameSettings({ ...gameSettings, ...setting });
+  };
   useEffect(() => {
     if (getUrlParam("game")) {
-      setGameMode(GAME_MODES.ONLINE_PLAY.TECHNICAL_NAME);
+      setGameSettings({
+        ...gameSettings,
+        gameMode: GAME_MODES.ONLINE_PLAY.TECHNICAL_NAME
+      });
     }
   }, []);
-  return { gameMode, setGameMode, gameType, setGameType };
+
+  return { updateGameSettings, ...gameSettings };
 };
 export default useGameSettings;

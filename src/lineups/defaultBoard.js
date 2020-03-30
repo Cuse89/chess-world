@@ -1,5 +1,5 @@
 // IMPORTANT- board coordinates order are y - top to bottom, x - left to right
-import { emptySquare } from "utils/constants";
+import { EMPTY_SQUARE } from "utils/constants";
 
 export default [
   [
@@ -24,44 +24,44 @@ export default [
     { player: "black", pieceId: "pawn-0" }
   ],
   [
-    emptySquare,
-    emptySquare,
-    emptySquare,
-    emptySquare,
-    emptySquare,
-    emptySquare,
-    emptySquare,
-    emptySquare
+    EMPTY_SQUARE,
+    EMPTY_SQUARE,
+    EMPTY_SQUARE,
+    EMPTY_SQUARE,
+    EMPTY_SQUARE,
+    EMPTY_SQUARE,
+    EMPTY_SQUARE,
+    EMPTY_SQUARE
   ],
   [
-    emptySquare,
-    emptySquare,
-    emptySquare,
-    emptySquare,
-    emptySquare,
-    emptySquare,
-    emptySquare,
-    emptySquare
+    EMPTY_SQUARE,
+    EMPTY_SQUARE,
+    EMPTY_SQUARE,
+    EMPTY_SQUARE,
+    EMPTY_SQUARE,
+    EMPTY_SQUARE,
+    EMPTY_SQUARE,
+    EMPTY_SQUARE
   ],
   [
-    emptySquare,
-    emptySquare,
-    emptySquare,
-    emptySquare,
-    emptySquare,
-    emptySquare,
-    emptySquare,
-    emptySquare
+    EMPTY_SQUARE,
+    EMPTY_SQUARE,
+    EMPTY_SQUARE,
+    EMPTY_SQUARE,
+    EMPTY_SQUARE,
+    EMPTY_SQUARE,
+    EMPTY_SQUARE,
+    EMPTY_SQUARE
   ],
   [
-    emptySquare,
-    emptySquare,
-    emptySquare,
-    emptySquare,
-    emptySquare,
-    emptySquare,
-    emptySquare,
-    emptySquare
+    EMPTY_SQUARE,
+    EMPTY_SQUARE,
+    EMPTY_SQUARE,
+    EMPTY_SQUARE,
+    EMPTY_SQUARE,
+    EMPTY_SQUARE,
+    EMPTY_SQUARE,
+    EMPTY_SQUARE
   ],
   [
     { player: "white", pieceId: "pawn-0" },

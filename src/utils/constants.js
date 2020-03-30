@@ -28,7 +28,10 @@ export const GAME_TYPES = {
   }
 };
 
-export const emptySquare = {
+export const EMPTY_SQUARE = {
   player: "",
-  pieceId: "",
+  pieceId: ""
 };
+
+export const TRAPDOOR_AMOUNTS = [1, 2, 3, 4];
+export const DEFAULT_TRAPDOOR_AMOUNT = 1;

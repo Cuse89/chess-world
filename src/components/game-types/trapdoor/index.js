@@ -13,7 +13,7 @@ import {
 } from "utils/helpers";
 import useGameState from "hooks/useGameState";
 import Context from "context";
-import { emptySquare, GAME_MODES } from "utils/constants";
+import { EMPTY_SQUARE, GAME_MODES } from "utils/constants";
 import Fallen from "components/fallen";
 import firebase from "../../../firebase";
 
@@ -84,7 +84,7 @@ const TrapdoorChess = () => {
   }
 
   function handleFallenInTrapdoor(sourceCoords) {
-    const updatedBoard = getUpdatedBoard(board, sourceCoords, emptySquare);
+    const updatedBoard = getUpdatedBoard(board, sourceCoords, EMPTY_SQUARE);
     const updatedFallen = getUpdatedFallen(
       getSquareDetails(sourceCoords, board),
       gameState.fallen
