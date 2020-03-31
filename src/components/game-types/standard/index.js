@@ -7,9 +7,10 @@ import Context from "context";
 import { GAME_MODES } from "utils/constants";
 import Fallen from "components/fallen";
 
-const StandardChess = () => {
+const StandardChess = ({ history }) => {
   const { user, gameSettings } = useContext(Context);
-  const { gameMode } = gameSettings;
+  const { gameMode, setGameId } = gameSettings;
+  const gameId = getUrlParam("game");
   const userId = user && user.id;
   const [message, setMessage] = useState("");
 
@@ -17,11 +18,12 @@ const StandardChess = () => {
     gameState,
     handlePerformMove,
     performBotMove,
-    canMovePiece
+    canMovePiece,
+    gameExists
   } = useGameState({
     gameMode,
     userId,
-    gameId: getUrlParam("game")
+    gameId
   });
 
   const isOnePlayer = gameMode === GAME_MODES.ONE_PLAYER.TECHNICAL_NAME;
@@ -30,12 +32,25 @@ const StandardChess = () => {
   const { board, turn, fallen, users, inCheck, inCheckmate } = gameState;
 
   useEffect(() => {
+    if (gameId) {
+      setGameId(gameId);
+    }
+  }, []);
+
+  useEffect(() => {
     handleNextTurn();
   }, [turn]);
 
   useEffect(() => {
     handleSetMessage();
   }, [inCheck, inCheckmate]);
+
+  useEffect(() => {
+    console.log({ gameExists });
+    if (!gameExists) {
+      history.push("/");
+    }
+  }, [gameExists]);
 
   function onDrop(a) {
     const sourceCoords = a.source.droppableId;

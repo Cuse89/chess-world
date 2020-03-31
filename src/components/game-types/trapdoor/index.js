@@ -16,16 +16,18 @@ import Context from "context";
 import { EMPTY_SQUARE, GAME_MODES } from "utils/constants";
 import Fallen from "components/fallen";
 import firebase from "../../../firebase";
-
-import styles from "./TrapdoorChess.module.scss";
 import { decideBotMove, getBotMoves } from "utils/onePlayerHelpers";
 
-const TrapdoorChess = () => {
+import styles from "./TrapdoorChess.module.scss";
+
+
+
+const TrapdoorChess = ({ history }) => {
   const { user, gameSettings } = useContext(Context);
-  const { gameMode, trapdoorsAmount } = gameSettings;
+  const { gameMode, trapdoorsAmount, setGameId } = gameSettings;
+  const gameId = getUrlParam("game");
   const userId = user && user.id;
   const [message, setMessage] = useState("");
-  const gameId = getUrlParam("game");
 
   const {
     gameState,
@@ -34,7 +36,8 @@ const TrapdoorChess = () => {
     updateBoard,
     canMovePiece,
     validateMove,
-    performMove
+    performMove,
+    gameExists
   } = useGameState({
     gameMode,
     userId,
@@ -49,6 +52,12 @@ const TrapdoorChess = () => {
   const allTrapdoorsSet = trapdoorsSet === trapdoorsAmount;
 
   useEffect(() => {
+    if (gameId) {
+      setGameId(gameId);
+    }
+  }, []);
+
+  useEffect(() => {
     handleNextTurn();
   }, [turn]);
 
@@ -61,6 +70,13 @@ const TrapdoorChess = () => {
       setBotTrapdoors();
     }
   }, []);
+
+  useEffect(() => {
+    console.log({ gameExists });
+    if (!gameExists) {
+      history.push("/");
+    }
+  }, [gameExists]);
 
   function onDrop(move) {
     const sourceCoords = move.source.droppableId;

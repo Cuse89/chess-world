@@ -1,0 +1,14 @@
+@import "../../../styles/base/variables";
+
+.message {
+  text-align: center;
+
+  .available {
+    color: green;
+    cursor: pointer;
+  }
+  .unavailable {
+    color: red;
+    cursor: pointer;
+  }
+}

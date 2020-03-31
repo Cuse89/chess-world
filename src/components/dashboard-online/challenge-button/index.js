@@ -1,7 +1,7 @@
 import React, { Fragment, useContext, useEffect, useState } from "react";
 import DashboardButton from "components/dashboard-button";
 import { getPrettyFromTechnicalName } from "utils/helpers";
-import { GAME_TYPES } from "utils/constants";
+import { GAME_MODES, GAME_TYPES } from "utils/constants";
 import Context from "context";
 import { v4 as uuid } from "uuid";
 import firebase from "../../../firebase";
@@ -14,10 +14,10 @@ const ChallengeButton = ({
   joinGame,
   toggleShowCreateGame
 }) => {
-  const { user, gameSettings } = useContext(Context);
+  const { user } = useContext(Context);
 
   const { gameState } = useGameState({
-    gameMode: gameSettings.gameMode,
+    gameMode: GAME_MODES.ONLINE_PLAY.TECHNICAL_NAME,
     gameId: user.games && user.games[opponentId],
     userId: user.id
   });

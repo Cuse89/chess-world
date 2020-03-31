@@ -28,7 +28,7 @@ class Firebase {
     await this.database.ref(`users/${userId}/${key}`).update(value);
   }
 
-  async getUsersFromIds(ids, condition) {
+  async getUsersFromIds(ids, filterFunc = () => true) {
     const users = [];
     return await firebase.database
       .ref("users")
@@ -36,7 +36,7 @@ class Firebase {
       .then(allUsers => {
         ids.val() &&
           Object.keys(ids.val()).forEach(userId => {
-            if (!condition || condition(userId)) {
+            if (filterFunc(userId)) {
               users.push({ ...allUsers.val()[userId], id: userId });
             }
           });

@@ -1,14 +1,18 @@
 import React, { useContext, useEffect } from "react";
+import Context from "context";
 import firebase from "../../firebase";
 import ChallengePlayer from "components/dashboard-online/challenge-player";
 import NameInput from "components/dashboard-online/name-input";
-import Context from "context";
-import useAvailableUsers from "hooks/useAvailableUsers";
 
-const DashboardOnline = ({history}) => {
+import useAvailableUsers from "hooks/useAvailableUsers";
+import UserAvailability from "components/dashboard-online/user-availability";
+
+const DashboardOnline = ({ history }) => {
   const { user } = useContext(Context);
 
-  const { getUserAvailability } = useAvailableUsers();
+  const { userAvailable, updateAvailableUser } = useAvailableUsers(
+    user && user.id
+  );
 
   const login = async () => {
     try {
@@ -28,8 +32,17 @@ const DashboardOnline = ({history}) => {
     return (
       <div>
         <h3>Online play</h3>
-        <NameInput user={user} />
-        {user.name && getUserAvailability(user.id) && <ChallengePlayer history={history}/>}
+        {user.name && (
+          <UserAvailability
+            user={user}
+            userAvailable={userAvailable}
+            updateAvailableUser={updateAvailableUser}
+          />
+        )}
+        {!user.name && (
+          <NameInput user={user} updateAvailableUser={updateAvailableUser} />
+        )}
+        {user.name && userAvailable && <ChallengePlayer history={history} />}
       </div>
     );
   }

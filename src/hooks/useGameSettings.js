@@ -8,6 +8,7 @@ import { getUrlParam } from "utils/helpers";
 import firebase from "../firebase";
 
 const useGameSettings = () => {
+  const [gameId, setGameId] = useState("");
   const [gameSettings, setGameSettings] = useState({
     gameMode: GAME_MODES.ONE_PLAYER.TECHNICAL_NAME,
     gameType: GAME_TYPES.STANDARD.TECHNICAL_NAME,
@@ -20,17 +21,19 @@ const useGameSettings = () => {
 
   const getGameSettingsFromDb = gameId => {
     firebase.database.ref(`games/${gameId}/settings`).on("value", snapshot => {
-      updateGameSettings({ ...snapshot.val() });
+      updateGameSettings({
+        ...snapshot.val(),
+        gameMode: GAME_MODES.ONLINE_PLAY.TECHNICAL_NAME
+      });
     });
   };
 
   useEffect(() => {
-    const gameId = getUrlParam("game");
     if (gameId) {
       getGameSettingsFromDb(gameId);
     }
-  }, []);
+  }, [gameId]);
 
-  return { updateGameSettings, ...gameSettings };
+  return { updateGameSettings, setGameId, ...gameSettings };
 };
 export default useGameSettings;

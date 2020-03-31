@@ -28,6 +28,8 @@ const useGameState = ({ gameMode, gameId, userId }) => {
     inCheckmate: ""
   });
 
+  const [gameExists, setGameExists] = useState(true)
+
   const { board, turn, fallen, users } = gameState;
 
   const isOnePlayer = gameMode === GAME_MODES.ONE_PLAYER.TECHNICAL_NAME;
@@ -38,32 +40,33 @@ const useGameState = ({ gameMode, gameId, userId }) => {
   const baselinePlayer =
     isOnePlayer || isTwoPlayer ? "white" : playerColorOnline;
 
-  console.log({ gameState, gameMode });
 
-  function gameListener() {
+  async function gameListener() {
     if (isOnlinePlay) {
       firebase.database.ref(`games/${gameId}`).on("value", async snapshot => {
-        console.log("gameListener");
         const game = snapshot.val();
-        setGameState({
-          ...game,
-          board: game.users[userId].color === "black" ? mirrorBoard(game.board) : game.board,
-          fallen: game.fallen
-            ? {
+        if (game) {
+          setGameState({
+            ...game,
+            board: game.users[userId].color === "black" ? mirrorBoard(game.board) : game.board,
+            fallen: game.fallen
+              ? {
                 black: game.fallen.black || [],
                 white: game.fallen.white || []
               }
-            : defaultFallen,
-          users: game.users,
-          inCheck: game.inCheck,
-          inCheckmate: game.inCheckmate
-        });
+              : defaultFallen,
+            users: game.users,
+            inCheck: game.inCheck,
+            inCheckmate: game.inCheckmate
+          });
+        } else {
+          setGameExists(false)
+        }
       });
     }
   }
 
   function handlePerformMove(sourceCoords, destinationCoords) {
-    console.log("handlePerformMove");
     if (validateMove(sourceCoords, destinationCoords)) {
       performMove(sourceCoords, destinationCoords);
     }
@@ -150,10 +153,10 @@ const useGameState = ({ gameMode, gameId, userId }) => {
   }
 
   useEffect(() => {
-    if (gameId) {
+    if (gameId && userId) {
       gameListener();
     }
-  }, [gameId, userId]);
+  }, [gameId, userId, gameMode]);
 
   return {
     gameState,
@@ -165,6 +168,7 @@ const useGameState = ({ gameMode, gameId, userId }) => {
     updateSquare,
     performMove,
     updateBoard,
+    gameExists,
   };
 };
 
