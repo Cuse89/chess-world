@@ -20,8 +20,6 @@ import { decideBotMove, getBotMoves } from "utils/onePlayerHelpers";
 
 import styles from "./TrapdoorChess.module.scss";
 
-
-
 const TrapdoorChess = ({ history }) => {
   const { user, gameSettings } = useContext(Context);
   const { gameMode, trapdoorsAmount, setGameId } = gameSettings;

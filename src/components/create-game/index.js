@@ -8,11 +8,7 @@ import { GAME_TYPES, TRAPDOOR_AMOUNTS } from "utils/constants";
 import styles from "./CreateGame.module.scss";
 
 const CreateGame = ({ onSubmit, noHeader, submitText }) => {
-  const {
-    updateGameSettings,
-    gameType,
-    trapdoorsAmount,
-  } = useGameSettings();
+  const { updateGameSettings, gameType, trapdoorsAmount } = useGameSettings();
   const handleOnSubmit = () => {
     onSubmit({ gameType, trapdoorsAmount });
   };
@@ -32,9 +28,7 @@ const CreateGame = ({ onSubmit, noHeader, submitText }) => {
               <DashboardButton
                 key={`trapdoor-button-${amount}`}
                 displayText={amount}
-                onClick={() =>
-                  updateGameSettings({ trapdoorsAmount: amount })
-                }
+                onClick={() => updateGameSettings({ trapdoorsAmount: amount })}
                 selected={amount === trapdoorsAmount}
                 fullLength
                 spaceBottom

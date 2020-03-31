@@ -4,7 +4,7 @@ import {
   GAME_MODES,
   GAME_TYPES
 } from "utils/constants";
-import { getUrlParam } from "utils/helpers";
+
 import firebase from "../firebase";
 
 const useGameSettings = () => {

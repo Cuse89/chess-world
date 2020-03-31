@@ -1,26 +1,31 @@
 import React, { useContext, useState, useEffect } from "react";
 import Board from "components/board";
 import { Piece } from "components/piece";
-import { getOpponent, getPieceProps, getUrlParam } from "utils/helpers";
+import { getOpponent, getPieceProps, getSquareDetails, getUrlParam } from "utils/helpers";
 import useGameState from "hooks/useGameState";
 import Context from "context";
 import { GAME_MODES } from "utils/constants";
 import Fallen from "components/fallen";
 import TriviaBox from "components/trivia-box";
+import { decideBotMove, getBotMoves } from "utils/onePlayerHelpers";
 
-const StandardChess = ({ history }) => {
+const TriviaChess = ({ history }) => {
   const { user, gameSettings } = useContext(Context);
   const { gameMode, setGameId } = gameSettings;
   const gameId = getUrlParam("game");
   const userId = user && user.id;
   const [message, setMessage] = useState("");
+  const [pendingMove, setPendingMove] = useState(null);
 
   const {
     gameState,
-    handlePerformMove,
     performBotMove,
     canMovePiece,
-    gameExists
+    gameExists,
+    validateMove,
+    performMove,
+    switchTurns,
+    handlePerformMove,
   } = useGameState({
     gameMode,
     userId,
@@ -39,6 +44,7 @@ const StandardChess = ({ history }) => {
   }, []);
 
   useEffect(() => {
+    setPendingMove(null);
     handleNextTurn();
   }, [turn]);
 
@@ -53,15 +59,48 @@ const StandardChess = ({ history }) => {
     }
   }, [gameExists]);
 
-  function onDrop(a) {
-    const sourceCoords = a.source.droppableId;
-    const destinationCoords = a.destination.droppableId;
-    handlePerformMove(sourceCoords, destinationCoords);
+  function onDrop(move) {
+    const sourceCoords = move.source.droppableId;
+    const destinationCoords = move.destination.droppableId;
+    if (validateMove(sourceCoords, destinationCoords)) {
+      if (getSquareDetails(destinationCoords, board).pieceId) {
+        setPendingMove({ sourceCoords, destinationCoords });
+      } else {
+        handlePerformMove(sourceCoords, destinationCoords);
+      }
+
+    }
   }
+
+  function handleAnswer(correct) {
+    const { sourceCoords, destinationCoords } = pendingMove;
+    if (isOnePlayer && turn === "black") {
+      if (correct) {
+        switchTurns();
+      } else {
+        performMove(sourceCoords, destinationCoords);
+      }
+    } else {
+      if (correct) {
+        performMove(sourceCoords, destinationCoords);
+      } else {
+        switchTurns();
+      }
+    }
+}
 
   function handleNextTurn() {
     if (isOnePlayer && turn === "black" && !inCheckmate) {
-      performBotMove();
+      const selectedMove = decideBotMove(getBotMoves(board));
+      const { source, destination } = selectedMove;
+      const sourceCoords = source.coords
+      const destinationCoords = destination.coords
+      if (getSquareDetails(destinationCoords, board).pieceId) {
+        setPendingMove({ sourceCoords, destinationCoords });
+      } else {
+        performMove(sourceCoords, destinationCoords)
+      }
+
     }
   }
 
@@ -111,9 +150,14 @@ const StandardChess = ({ history }) => {
         users={users}
       />
       <Fallen fallen={getFallen(true)} />
-      <TriviaBox />
+      {pendingMove && (
+        <TriviaBox
+          onAnswerCorrect={() => handleAnswer(true)}
+          onAnswerIncorrect={() => handleAnswer(false)}
+        />
+      )}
     </div>
   );
 };
 
-export default StandardChess;
+export default TriviaChess;

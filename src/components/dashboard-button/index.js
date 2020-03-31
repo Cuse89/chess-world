@@ -10,7 +10,9 @@ const DashboardButton = ({
   fullLength,
   selected,
   spaceRight,
-  spaceBottom
+  spaceBottom,
+  useHtml,
+  notAvailable
 }) => {
   const className = cx({
     [styles.root]: true,
@@ -21,11 +23,17 @@ const DashboardButton = ({
     [styles.fullLength]: fullLength,
     [styles.selected]: selected,
     [styles.spaceRight]: spaceRight,
-    [styles.spaceBottom]: spaceBottom
+    [styles.spaceBottom]: spaceBottom,
+    [styles.notAvailable]: notAvailable
   });
+
   return (
     <div className={className} onClick={onClick}>
-      {displayText}
+      {!useHtml ? (
+        displayText
+      ) : (
+        <div dangerouslySetInnerHTML={{ __html: displayText }} />
+      )}
     </div>
   );
 };

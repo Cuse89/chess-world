@@ -3,7 +3,8 @@ import defaultBoard from "lineups/defaultBoard";
 import {
   getNextBoard,
   getOpponent,
-  getTargetPiece, getUpdatedBoard,
+  getTargetPiece,
+  getUpdatedBoard,
   getUpdatedFallen,
   mirrorBoard,
   performValidation
@@ -27,8 +28,9 @@ const useGameState = ({ gameMode, gameId, userId }) => {
     inCheck: "",
     inCheckmate: ""
   });
+  console.log({gameState})
 
-  const [gameExists, setGameExists] = useState(true)
+  const [gameExists, setGameExists] = useState(true);
 
   const { board, turn, fallen, users } = gameState;
 
@@ -40,7 +42,6 @@ const useGameState = ({ gameMode, gameId, userId }) => {
   const baselinePlayer =
     isOnePlayer || isTwoPlayer ? "white" : playerColorOnline;
 
-
   async function gameListener() {
     if (isOnlinePlay) {
       firebase.database.ref(`games/${gameId}`).on("value", async snapshot => {
@@ -48,19 +49,22 @@ const useGameState = ({ gameMode, gameId, userId }) => {
         if (game) {
           setGameState({
             ...game,
-            board: game.users[userId].color === "black" ? mirrorBoard(game.board) : game.board,
+            board:
+              game.users[userId].color === "black"
+                ? mirrorBoard(game.board)
+                : game.board,
             fallen: game.fallen
               ? {
-                black: game.fallen.black || [],
-                white: game.fallen.white || []
-              }
+                  black: game.fallen.black || [],
+                  white: game.fallen.white || []
+                }
               : defaultFallen,
             users: game.users,
             inCheck: game.inCheck,
             inCheckmate: game.inCheckmate
           });
         } else {
-          setGameExists(false)
+          setGameExists(false);
         }
       });
     }
@@ -136,7 +140,7 @@ const useGameState = ({ gameMode, gameId, userId }) => {
   }
 
   function updateSquare(coords, value) {
-    const boardCopy = getUpdatedBoard(board, coords, value)
+    const boardCopy = getUpdatedBoard(board, coords, value);
     updateBoard(boardCopy);
   }
 
@@ -149,6 +153,23 @@ const useGameState = ({ gameMode, gameId, userId }) => {
       firebase.updateGame(gameId, { board: handleMirroredBoard(newBoard) });
     } else {
       setGameState({ ...gameState, board: newBoard });
+    }
+  }
+
+  async function switchTurns() {
+    const newGameState = {
+      ...gameState,
+      board: handleMirroredBoard(board),
+      turn: getOpponent(turn)
+    };
+    if (isOnePlayer || isTwoPlayer) {
+      setGameState(newGameState);
+    } else if (isOnlinePlay) {
+      try {
+        await firebase.updateGame(gameId, newGameState);
+      } catch (err) {
+        console.log(err);
+      }
     }
   }
 
@@ -169,6 +190,7 @@ const useGameState = ({ gameMode, gameId, userId }) => {
     performMove,
     updateBoard,
     gameExists,
+    switchTurns
   };
 };
 
