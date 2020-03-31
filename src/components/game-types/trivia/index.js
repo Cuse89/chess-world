@@ -19,7 +19,6 @@ const TriviaChess = ({ history }) => {
 
   const {
     gameState,
-    performBotMove,
     canMovePiece,
     gameExists,
     validateMove,
