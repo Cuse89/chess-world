@@ -6,7 +6,6 @@ import useGameState from "hooks/useGameState";
 import Context from "context";
 import { GAME_MODES } from "utils/constants";
 import Fallen from "components/fallen";
-import TriviaBox from "components/trivia-box";
 
 const StandardChess = ({ history }) => {
   const { user, gameSettings } = useContext(Context);
@@ -28,7 +27,6 @@ const StandardChess = ({ history }) => {
   });
 
   const isOnePlayer = gameMode === GAME_MODES.ONE_PLAYER.TECHNICAL_NAME;
-  const isTwoPlayer = gameMode === GAME_MODES.TWO_PLAYER.TECHNICAL_NAME;
   const isOnlinePlay = gameMode === GAME_MODES.ONLINE_PLAY.TECHNICAL_NAME;
   const { board, turn, fallen, users, inCheck, inCheckmate } = gameState;
 
@@ -36,33 +34,42 @@ const StandardChess = ({ history }) => {
     if (gameId) {
       setGameId(gameId);
     }
-  }, []);
+  }, [setGameId, gameId]);
 
   useEffect(() => {
+    const handleNextTurn = () => {
+      if (isOnePlayer && turn === "black" && !inCheckmate) {
+        performBotMove();
+      }
+    };
     handleNextTurn();
-  }, [turn]);
+  }, [turn, isOnePlayer, inCheckmate, performBotMove]);
 
   useEffect(() => {
+    const handleSetMessage = () => {
+      let message = "";
+      if (inCheck) {
+        message = `${turn} in check`;
+      }
+      if (inCheckmate) {
+        message = `Checkmate. ${turn} wins`;
+      }
+      setMessage(message);
+    };
     handleSetMessage();
-  }, [inCheck, inCheckmate]);
+  }, [inCheck, inCheckmate, turn]);
 
   useEffect(() => {
     console.log({ gameExists });
     if (!gameExists) {
       history.push("/");
     }
-  }, [gameExists]);
+  }, [gameExists, history]);
 
   function onDrop(a) {
     const sourceCoords = a.source.droppableId;
     const destinationCoords = a.destination.droppableId;
     handlePerformMove(sourceCoords, destinationCoords);
-  }
-
-  function handleNextTurn() {
-    if (isOnePlayer && turn === "black" && !inCheckmate) {
-      performBotMove();
-    }
   }
 
   function getPiece(square) {
@@ -86,17 +93,6 @@ const StandardChess = ({ history }) => {
     } else {
       return baseline ? fallen.black : fallen.white;
     }
-  }
-
-  function handleSetMessage() {
-    let message = "";
-    if (inCheck) {
-      message = `${turn} in check`;
-    }
-    if (inCheckmate) {
-      message = `Checkmate. ${turn} wins`;
-    }
-    setMessage(message);
   }
 
   return (
