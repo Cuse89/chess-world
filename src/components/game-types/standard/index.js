@@ -111,7 +111,6 @@ const StandardChess = ({ history }) => {
         users={users}
       />
       <Fallen fallen={getFallen(true)} />
-      <TriviaBox />
     </div>
   );
 };

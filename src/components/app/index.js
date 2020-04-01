@@ -10,7 +10,6 @@ import useGameSettings from "hooks/useGameSettings";
 import useUser from "hooks/useUser";
 import Context from "context";
 
-import "styles/styles.scss";
 import styles from "./App.module.scss";
 
 const App = () => {
