@@ -22,7 +22,7 @@ const App = () => {
           <Header />
           <Switch>
             <Route exact path="/chess-world" render={() => <Redirect to="/chess-world/dashboard" />} />
-            <Route exact path="/chess-world/dashboard" component={Dashboard} />
+            <Route path="/chess-world/dashboard" component={Dashboard} />
             <Route path="/chess-world/standard" component={StandardChess} />
             <Route path="/chess-world/trapdoor" component={TrapdoorChess} />
             <Route path="/chess-world/trivia" component={TriviaChess} />

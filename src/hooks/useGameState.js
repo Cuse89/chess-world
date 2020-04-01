@@ -127,6 +127,7 @@ const useGameState = ({ gameMode, gameId, userId }) => {
       board: handleMirroredBoard(board),
       turn: getOpponent(turn)
     };
+    console.log("switch turns", newGameState)
     if (isOnePlayer || isTwoPlayer) {
       setGameState(newGameState);
     } else if (isOnlinePlay) {

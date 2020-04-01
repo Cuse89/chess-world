@@ -48,7 +48,7 @@ const TriviaChess = ({ history }) => {
 
   useEffect(() => {
     const handleNextTurn = () => {
-      if (isOnePlayer && turn === "black" && !inCheckmate) {
+      if (isOnePlayer && turn === "black" && !inCheckmate && !pendingMove) {
         const selectedMove = decideBotMove(getBotMoves(board));
         const { source, destination } = selectedMove;
         const sourceCoords = source.coords;
@@ -60,10 +60,10 @@ const TriviaChess = ({ history }) => {
         }
       }
     };
-    setPendingMove(null);
+
     handleNextTurn();
     // eslint-disable-next-line
-  }, [turn]);
+  }, [turn, pendingMove]);
 
   useEffect(() => {
     const handleSetMessage = () => {
@@ -112,6 +112,7 @@ const TriviaChess = ({ history }) => {
         switchTurns();
       }
     }
+    setPendingMove(null);
   }
 
   function getPiece(square) {
