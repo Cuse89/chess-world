@@ -63,7 +63,7 @@ const StandardChess = ({ history }) => {
   useEffect(() => {
     console.log({ gameExists });
     if (!gameExists) {
-      history.push("/");
+      history.push("/chess-world");
     }
   }, [gameExists, history]);
 

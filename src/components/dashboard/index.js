@@ -24,7 +24,7 @@ const Dashboard = ({ history }) => {
 
   const onCreateGameSubmit = settings => {
     updateGameSettings(settings);
-    history.push(`/${settings.gameType}`);
+    history.push(`/chess-world/${settings.gameType}`);
   };
 
   return (

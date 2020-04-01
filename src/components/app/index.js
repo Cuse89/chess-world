@@ -21,11 +21,11 @@ const App = () => {
         <div className={styles.root}>
           <Header />
           <Switch>
-            <Route exact path="/" render={() => <Redirect to="/dashboard" />} />
-            <Route exact path="/dashboard" component={Dashboard} />
-            <Route path="/standard" component={StandardChess} />
-            <Route path="/trapdoor" component={TrapdoorChess} />
-            <Route path="/trivia" component={TriviaChess} />
+            <Route exact path="/chess-world" render={() => <Redirect to="/chess-world/dashboard" />} />
+            <Route exact path="/chess-world/dashboard" component={Dashboard} />
+            <Route path="/chess-world/standard" component={StandardChess} />
+            <Route path="/chess-world/trapdoor" component={TrapdoorChess} />
+            <Route path="/chess-world/trivia" component={TriviaChess} />
           </Switch>
         </div>
       </Context.Provider>
