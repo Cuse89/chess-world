@@ -81,7 +81,7 @@ const TriviaChess = ({ history }) => {
 
   useEffect(() => {
     if (!gameExists) {
-      history.push("/");
+      history.push("/chess-world/dashboard");
     }
   }, [gameExists, history]);
 

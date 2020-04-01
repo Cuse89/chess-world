@@ -4,7 +4,7 @@ import styles from "./Header.module.scss";
 
 const Header = () => (
   <header className={styles.root}>
-    <NavLink to="/">
+    <NavLink to="/chess-world/dashboard">
       <h3>Chess World</h3>
     </NavLink>
 
