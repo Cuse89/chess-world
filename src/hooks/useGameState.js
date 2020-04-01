@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import defaultBoard from "lineups/defaultBoard";
 import {
   getNextBoard,
@@ -11,25 +11,18 @@ import {
 } from "utils/helpers";
 import { decideBotMove, getBotMoves } from "utils/onePlayerHelpers";
 import firebase from "../firebase";
-import { GAME_MODES } from "utils/constants";
+import { DEFAULT_FALLEN, DEFAULT_TURN, GAME_MODES } from "utils/constants";
 import { getKingStatus } from "rules/getKingStatus";
 
 const useGameState = ({ gameMode, gameId, userId }) => {
-  const defaultTurn = "white";
-  const defaultFallen = {
-    white: [],
-    black: []
-  };
-
   const [gameState, setGameState] = useState({
     board: defaultBoard,
-    turn: defaultTurn,
-    fallen: defaultFallen,
+    turn: DEFAULT_TURN,
+    fallen: DEFAULT_FALLEN,
     inCheck: "",
     inCheckmate: ""
   });
-  console.log({gameState})
-
+  console.log({ gameState });
   const [gameExists, setGameExists] = useState(true);
 
   const { board, turn, fallen, users } = gameState;
@@ -41,34 +34,6 @@ const useGameState = ({ gameMode, gameId, userId }) => {
   const playerColorOnline = users && users[userId].color;
   const baselinePlayer =
     isOnePlayer || isTwoPlayer ? "white" : playerColorOnline;
-
-  async function gameListener() {
-    if (isOnlinePlay) {
-      firebase.database.ref(`games/${gameId}`).on("value", async snapshot => {
-        const game = snapshot.val();
-        if (game) {
-          setGameState({
-            ...game,
-            board:
-              game.users[userId].color === "black"
-                ? mirrorBoard(game.board)
-                : game.board,
-            fallen: game.fallen
-              ? {
-                  black: game.fallen.black || [],
-                  white: game.fallen.white || []
-                }
-              : defaultFallen,
-            users: game.users,
-            inCheck: game.inCheck,
-            inCheckmate: game.inCheckmate
-          });
-        } else {
-          setGameExists(false);
-        }
-      });
-    }
-  }
 
   function handlePerformMove(sourceCoords, destinationCoords) {
     if (validateMove(sourceCoords, destinationCoords)) {
@@ -174,10 +139,37 @@ const useGameState = ({ gameMode, gameId, userId }) => {
   }
 
   useEffect(() => {
+    const gameListener = () => {
+      if (isOnlinePlay) {
+        firebase.database.ref(`games/${gameId}`).on("value", async snapshot => {
+          const game = snapshot.val();
+          if (game) {
+            setGameState({
+              ...game,
+              board:
+                game.users[userId].color === "black"
+                  ? mirrorBoard(game.board)
+                  : game.board,
+              fallen: game.fallen
+                ? {
+                    black: game.fallen.black || [],
+                    white: game.fallen.white || []
+                  }
+                : DEFAULT_FALLEN,
+              users: game.users,
+              inCheck: game.inCheck,
+              inCheckmate: game.inCheckmate
+            });
+          } else {
+            setGameExists(false);
+          }
+        });
+      }
+    };
     if (gameId && userId) {
       gameListener();
     }
-  }, [gameId, userId, gameMode]);
+  }, [gameId, userId, isOnlinePlay]);
 
   return {
     gameState,

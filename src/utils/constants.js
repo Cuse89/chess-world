@@ -28,6 +28,12 @@ export const GAME_TYPES = {
   }
 };
 
+export const DEFAULT_TURN = "white";
+export const DEFAULT_FALLEN = {
+  white: [],
+  black: []
+}
+
 export const EMPTY_SQUARE = {
   player: "",
   pieceId: ""

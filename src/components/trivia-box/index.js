@@ -15,55 +15,51 @@ const TriviaBox = ({
   const [answer, setAnswer] = useState("");
 
   useEffect(() => {
+    const getQuestion = () => {
+      fetch(
+        `https://opentdb.com/api.php?amount=10&type=multiple&difficulty=${difficulty}&category=${categoryId}&amount=1`,
+        {
+          method: "GET"
+        }
+      )
+        .then(res => res.json())
+        .then(response => setTrivia(response.results[0]))
+        .catch(err => console.log(err));
+    };
     getQuestion();
-  }, []);
+  }, [difficulty, categoryId]);
 
   useEffect(() => {
+    const getMixedOptions = () => {
+      const randomIndex = Math.floor(
+        Math.random() * trivia.incorrect_answers.length + 1
+      );
+      let options = [...trivia.incorrect_answers];
+      options.splice(randomIndex, 0, trivia.correct_answer);
+      setOptions(options);
+    };
     if (trivia.question) {
       getMixedOptions();
     }
   }, [trivia]);
 
   useEffect(() => {
+    const handleAnswerQuestion = () => {
+      const answeredCorrect = answer === trivia.correct_answer;
+      setTimeout(() => {
+        if (answeredCorrect) {
+          onAnswerCorrect();
+        } else {
+          onAnswerIncorrect();
+        }
+      }, 1500);
+    };
     if (answer) {
       handleAnswerQuestion();
     }
   }, [answer]);
 
-  function getQuestion() {
-    fetch(
-      `https://opentdb.com/api.php?amount=10&type=multiple&difficulty=${difficulty}&category=${categoryId}&amount=1`,
-      {
-        method: "GET"
-      }
-    )
-      .then(res => res.json())
-      .then(response => setTrivia(response.results[0]))
-      .catch(err => console.log(err));
-  }
-
-  function handleAnswerQuestion() {
-    const answeredCorrect = answer === trivia.correct_answer;
-    setTimeout(() => {
-      if (answeredCorrect) {
-        onAnswerCorrect();
-      } else {
-        onAnswerIncorrect();
-      }
-    }, 1500)
-
-  }
-
-  function getMixedOptions() {
-    const randomIndex = Math.floor(
-      Math.random() * trivia.incorrect_answers.length + 1
-    );
-    let options = [...trivia.incorrect_answers];
-    options.splice(randomIndex, 0, trivia.correct_answer);
-    setOptions(options);
-  }
-
-  function getOptionType(option) {
+  const getOptionType = (option) => {
     if (answer) {
       return option === trivia.correct_answer ? "accept" : "error";
     }

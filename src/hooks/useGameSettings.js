@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import {
   DEFAULT_TRAPDOOR_AMOUNT,
   GAME_MODES,
@@ -15,20 +15,24 @@ const useGameSettings = () => {
     trapdoorsAmount: DEFAULT_TRAPDOOR_AMOUNT
   });
 
-  const updateGameSettings = setting => {
-    setGameSettings({ ...gameSettings, ...setting });
-  };
-
-  const getGameSettingsFromDb = gameId => {
-    firebase.database.ref(`games/${gameId}/settings`).on("value", snapshot => {
-      updateGameSettings({
-        ...snapshot.val(),
-        gameMode: GAME_MODES.ONLINE_PLAY.TECHNICAL_NAME
-      });
-    });
-  };
+  const updateGameSettings = useCallback(
+    setting => {
+      setGameSettings({ ...gameSettings, ...setting });
+    },
+    [gameSettings]
+  );
 
   useEffect(() => {
+    const getGameSettingsFromDb = gameId => {
+      firebase.database
+        .ref(`games/${gameId}/settings`)
+        .on("value", snapshot => {
+          updateGameSettings({
+            ...snapshot.val(),
+            gameMode: GAME_MODES.ONLINE_PLAY.TECHNICAL_NAME
+          });
+        });
+    };
     if (gameId) {
       getGameSettingsFromDb(gameId);
     }
