@@ -43,6 +43,7 @@ const StandardChess = ({ history }) => {
       }
     };
     handleNextTurn();
+    // eslint-disable-next-line
   }, [turn]);
 
   useEffect(() => {

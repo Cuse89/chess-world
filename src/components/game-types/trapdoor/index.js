@@ -63,6 +63,7 @@ const TrapdoorChess = ({ history }) => {
       }
     };
     handleNextTurn();
+    // eslint-disable-next-line
   }, [turn]);
 
   useEffect(() => {
@@ -83,9 +84,35 @@ const TrapdoorChess = ({ history }) => {
   }, [inCheck, inCheckmate, trapdoorsAmount, turn, trapdoorsLeft]);
 
   useEffect(() => {
-    if (isOnePlayer) {
+    const setBotTrapdoors = () => {
+      const emptySquares = [];
+      const trapdoorCoords = [];
+      let newBoard = board;
+      loopBoard(
+        board,
+        ({ square, coords }) => !square.pieceId && emptySquares.push(coords)
+      );
+      while (trapdoorCoords.length < trapdoorsAmount) {
+        const randomIndex = Math.floor(Math.random() * emptySquares.length);
+        const coords = emptySquares[randomIndex];
+        if (!trapdoorCoords.includes(coords)) {
+          trapdoorCoords.push(coords);
+        }
+      }
+      trapdoorCoords.forEach(coords => {
+        coords.toString();
+        const square = getSquareDetails(coords, board);
+        newBoard = getUpdatedBoard(newBoard, coords, {
+          ...square,
+          trapdoor: { ...square.trapdoor, black: true }
+        });
+      });
+      updateBoard(newBoard);
+    };
+    if (isOnePlayer && trapdoorsAmount === 0) {
       setBotTrapdoors();
     }
+    // eslint-disable-next-line
   }, [isOnePlayer]);
 
   useEffect(() => {
@@ -175,32 +202,6 @@ const TrapdoorChess = ({ history }) => {
         trapdoor: { ...square.trapdoor, [getPlayerColor()]: true }
       });
     }
-  }
-
-  function setBotTrapdoors() {
-    const emptySquares = [];
-    const trapdoorCoords = [];
-    let newBoard = board;
-    loopBoard(
-      board,
-      ({ square, coords }) => !square.pieceId && emptySquares.push(coords)
-    );
-    while (trapdoorCoords.length < trapdoorsAmount) {
-      const randomIndex = Math.floor(Math.random() * emptySquares.length);
-      const coords = emptySquares[randomIndex];
-      if (!trapdoorCoords.includes(coords)) {
-        trapdoorCoords.push(coords);
-      }
-    }
-    trapdoorCoords.forEach(coords => {
-      coords.toString();
-      const square = getSquareDetails(coords, board);
-      newBoard = getUpdatedBoard(newBoard, coords, {
-        ...square,
-        trapdoor: { ...square.trapdoor, black: true }
-      });
-    });
-    updateBoard(newBoard);
   }
 
   function getPlayerColor() {

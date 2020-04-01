@@ -48,7 +48,6 @@ const TriviaChess = ({ history }) => {
 
   useEffect(() => {
     const handleNextTurn = () => {
-      console.log("handleNextTurn")
       if (isOnePlayer && turn === "black" && !inCheckmate) {
         const selectedMove = decideBotMove(getBotMoves(board));
         const { source, destination } = selectedMove;
@@ -63,6 +62,7 @@ const TriviaChess = ({ history }) => {
     };
     setPendingMove(null);
     handleNextTurn();
+    // eslint-disable-next-line
   }, [turn]);
 
   useEffect(() => {
@@ -113,8 +113,6 @@ const TriviaChess = ({ history }) => {
       }
     }
   }
-
-
 
   function getPiece(square) {
     const { player, pieceId, inCheck } = square;
