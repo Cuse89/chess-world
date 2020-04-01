@@ -1,7 +1,12 @@
 import React, { useContext, useState, useEffect } from "react";
 import Board from "components/board";
 import { Piece } from "components/piece";
-import { getOpponent, getPieceProps, getSquareDetails, getUrlParam } from "utils/helpers";
+import {
+  getOpponent,
+  getPieceProps,
+  getSquareDetails,
+  getUrlParam
+} from "utils/helpers";
 import useGameState from "hooks/useGameState";
 import Context from "context";
 import { GAME_MODES } from "utils/constants";
@@ -24,7 +29,7 @@ const TriviaChess = ({ history }) => {
     validateMove,
     performMove,
     switchTurns,
-    handlePerformMove,
+    handlePerformMove
   } = useGameState({
     gameMode,
     userId,
@@ -32,7 +37,6 @@ const TriviaChess = ({ history }) => {
   });
 
   const isOnePlayer = gameMode === GAME_MODES.ONE_PLAYER.TECHNICAL_NAME;
-  const isTwoPlayer = gameMode === GAME_MODES.TWO_PLAYER.TECHNICAL_NAME;
   const isOnlinePlay = gameMode === GAME_MODES.ONLINE_PLAY.TECHNICAL_NAME;
   const { board, turn, fallen, users, inCheck, inCheckmate } = gameState;
 
@@ -40,23 +44,46 @@ const TriviaChess = ({ history }) => {
     if (gameId) {
       setGameId(gameId);
     }
-  }, []);
+  }, [setGameId, gameId]);
 
   useEffect(() => {
+    const handleNextTurn = () => {
+      console.log("handleNextTurn")
+      if (isOnePlayer && turn === "black" && !inCheckmate) {
+        const selectedMove = decideBotMove(getBotMoves(board));
+        const { source, destination } = selectedMove;
+        const sourceCoords = source.coords;
+        const destinationCoords = destination.coords;
+        if (getSquareDetails(destinationCoords, board).pieceId) {
+          setPendingMove({ sourceCoords, destinationCoords });
+        } else {
+          performMove(sourceCoords, destinationCoords);
+        }
+      }
+    };
     setPendingMove(null);
     handleNextTurn();
   }, [turn]);
 
   useEffect(() => {
+    const handleSetMessage = () => {
+      let message = "";
+      if (inCheck) {
+        message = `${turn} in check`;
+      }
+      if (inCheckmate) {
+        message = `Checkmate. ${turn} wins`;
+      }
+      setMessage(message);
+    };
     handleSetMessage();
-  }, [inCheck, inCheckmate]);
+  }, [turn, inCheck, inCheckmate]);
 
   useEffect(() => {
-    console.log({ gameExists });
     if (!gameExists) {
       history.push("/");
     }
-  }, [gameExists]);
+  }, [gameExists, history]);
 
   function onDrop(move) {
     const sourceCoords = move.source.droppableId;
@@ -67,7 +94,6 @@ const TriviaChess = ({ history }) => {
       } else {
         handlePerformMove(sourceCoords, destinationCoords);
       }
-
     }
   }
 
@@ -86,22 +112,9 @@ const TriviaChess = ({ history }) => {
         switchTurns();
       }
     }
-}
-
-  function handleNextTurn() {
-    if (isOnePlayer && turn === "black" && !inCheckmate) {
-      const selectedMove = decideBotMove(getBotMoves(board));
-      const { source, destination } = selectedMove;
-      const sourceCoords = source.coords
-      const destinationCoords = destination.coords
-      if (getSquareDetails(destinationCoords, board).pieceId) {
-        setPendingMove({ sourceCoords, destinationCoords });
-      } else {
-        performMove(sourceCoords, destinationCoords)
-      }
-
-    }
   }
+
+
 
   function getPiece(square) {
     const { player, pieceId, inCheck } = square;
@@ -124,17 +137,6 @@ const TriviaChess = ({ history }) => {
     } else {
       return baseline ? fallen.black : fallen.white;
     }
-  }
-
-  function handleSetMessage() {
-    let message = "";
-    if (inCheck) {
-      message = `${turn} in check`;
-    }
-    if (inCheckmate) {
-      message = `Checkmate. ${turn} wins`;
-    }
-    setMessage(message);
   }
 
   return (

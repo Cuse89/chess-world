@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import firebase from "../firebase";
 
 const useAvailableUsers = userId => {
@@ -10,7 +10,6 @@ const useAvailableUsers = userId => {
       .ref("availableUsers")
       .on("value", async allAvailableUsers => {
         const getAvailableUsersFromIds = async () => {
-          const filterOwnUser = id => userId !== id;
           const users = await firebase.getUsersFromIds(allAvailableUsers);
           setAvailableUsers(users);
         };
@@ -28,11 +27,9 @@ const useAvailableUsers = userId => {
 
   useEffect(() => {
     setUserAvailable(allAvailableUsers.map(user => user.id).includes(userId));
-  }, [userId, allAvailableUsers.length]);
+  }, [userId, allAvailableUsers]);
 
-  useEffect(() => {
-    getAvailableUsersIds();
-  }, []);
+  useEffect(getAvailableUsersIds, []);
 
   return { availableUsers, updateAvailableUser, userAvailable };
 };

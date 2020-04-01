@@ -43,7 +43,7 @@ const StandardChess = ({ history }) => {
       }
     };
     handleNextTurn();
-  }, [turn, isOnePlayer, inCheckmate, performBotMove]);
+  }, [turn]);
 
   useEffect(() => {
     const handleSetMessage = () => {
@@ -57,7 +57,7 @@ const StandardChess = ({ history }) => {
       setMessage(message);
     };
     handleSetMessage();
-  }, [inCheck, inCheckmate, turn]);
+  }, [turn, inCheck, inCheckmate]);
 
   useEffect(() => {
     console.log({ gameExists });

@@ -43,52 +43,63 @@ const TrapdoorChess = ({ history }) => {
   });
 
   const isOnePlayer = gameMode === GAME_MODES.ONE_PLAYER.TECHNICAL_NAME;
-  const isTwoPlayer = gameMode === GAME_MODES.TWO_PLAYER.TECHNICAL_NAME;
   const isOnlinePlay = gameMode === GAME_MODES.ONLINE_PLAY.TECHNICAL_NAME;
   const { board, turn, fallen, users, inCheck, inCheckmate } = gameState;
   const trapdoorsSet = countTrapdoors();
-  const allTrapdoorsSet = trapdoorsSet === trapdoorsAmount;
+  const trapdoorsLeft = trapdoorsAmount - trapdoorsSet;
 
   useEffect(() => {
     if (gameId) {
       setGameId(gameId);
     }
-  }, []);
+  }, [gameId, setGameId]);
 
   useEffect(() => {
+    const handleNextTurn = () => {
+      if (isOnePlayer && turn === "black" && !inCheckmate) {
+        const selectedMove = decideBotMove(getBotMoves(board));
+        const { source, destination } = selectedMove;
+        handleTrapdoor(source.coords, destination.coords);
+      }
+    };
     handleNextTurn();
   }, [turn]);
 
   useEffect(() => {
+    const handleSetMessage = () => {
+      let message = "";
+      if (inCheck) {
+        message = `${turn} in check`;
+      }
+      if (inCheckmate) {
+        message = `Checkmate. ${turn} wins`;
+      }
+      if (trapdoorsLeft !== 0) {
+        message = `Set your trapdoors. ${trapdoorsLeft} left`;
+      }
+      setMessage(message);
+    };
     handleSetMessage();
-  }, [board, inCheck, inCheckmate, trapdoorsAmount]);
+  }, [inCheck, inCheckmate, trapdoorsAmount, turn, trapdoorsLeft]);
 
   useEffect(() => {
     if (isOnePlayer) {
       setBotTrapdoors();
     }
-  }, []);
+  }, [isOnePlayer]);
 
   useEffect(() => {
     console.log({ gameExists });
     if (!gameExists) {
       history.push("/");
     }
-  }, [gameExists]);
+  }, [gameExists, history]);
 
   function onDrop(move) {
     const sourceCoords = move.source.droppableId;
     const destinationCoords = move.destination.droppableId;
     if (validateMove(sourceCoords, destinationCoords)) {
       handleTrapdoor(sourceCoords, destinationCoords);
-    }
-  }
-
-  function handleNextTurn() {
-    if (isOnePlayer && turn === "black" && !inCheckmate) {
-      const selectedMove = decideBotMove(getBotMoves(board));
-      const { source, destination } = selectedMove;
-      handleTrapdoor(source.coords, destination.coords);
     }
   }
 
@@ -133,7 +144,7 @@ const TrapdoorChess = ({ history }) => {
         id={`${player}-${pieceId}`}
         icon={getPieceProps(pieceId).icon}
         pieceColor={player}
-        available={allTrapdoorsSet && canMovePiece(player)}
+        available={trapdoorsLeft === 0 && canMovePiece(player)}
       />
     );
     if (trapdoor && trapdoor[getPlayerColor()]) {
@@ -154,7 +165,7 @@ const TrapdoorChess = ({ history }) => {
   }
 
   function setTrapdoor(coords) {
-    if (!allTrapdoorsSet) {
+    if (trapdoorsLeft !== 0) {
       const square = getSquareDetails(coords, board);
       if (square.pieceId) {
         return;
@@ -208,20 +219,6 @@ const TrapdoorChess = ({ history }) => {
     } else {
       return baseline ? fallen.black : fallen.white;
     }
-  }
-
-  function handleSetMessage() {
-    let message = "";
-    if (inCheck) {
-      message = `${turn} in check`;
-    }
-    if (inCheckmate) {
-      message = `Checkmate. ${turn} wins`;
-    }
-    if (!allTrapdoorsSet) {
-      message = `Set your trapdoors. ${trapdoorsAmount - trapdoorsSet} left`;
-    }
-    setMessage(message);
   }
 
   return (

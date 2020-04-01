@@ -36,7 +36,7 @@ const useGameSettings = () => {
     if (gameId) {
       getGameSettingsFromDb(gameId);
     }
-  }, [gameId]);
+  }, [gameId, updateGameSettings]);
 
   return { updateGameSettings, setGameId, ...gameSettings };
 };

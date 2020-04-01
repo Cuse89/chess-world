@@ -45,6 +45,7 @@ const TriviaBox = ({
 
   useEffect(() => {
     const handleAnswerQuestion = () => {
+      console.log("handleAnswerQuestion")
       const answeredCorrect = answer === trivia.correct_answer;
       setTimeout(() => {
         if (answeredCorrect) {
@@ -57,6 +58,7 @@ const TriviaBox = ({
     if (answer) {
       handleAnswerQuestion();
     }
+    // eslint-disable-next-line
   }, [answer]);
 
   const getOptionType = (option) => {
