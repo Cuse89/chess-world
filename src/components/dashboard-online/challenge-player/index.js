@@ -25,7 +25,7 @@ const ChallengePlayer = ({ history }) => {
   };
 
   const joinGame = (gameType, gameId) => {
-    history.push(`/chess-world/${gameType}?game=${gameId}`);
+    history.push(`/${gameType}?game=${gameId}`);
   };
 
   const onCreateGameSubmit = async (settings, opponentId) => {

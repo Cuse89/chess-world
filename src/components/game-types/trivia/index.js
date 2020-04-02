@@ -67,6 +67,7 @@ const TriviaChess = ({ history }) => {
 
   useEffect(() => {
     const handleSetMessage = () => {
+      console.log("handleSetMessage")
       let message = "";
       if (inCheck) {
         message = `${turn} in check`;
@@ -81,7 +82,7 @@ const TriviaChess = ({ history }) => {
 
   useEffect(() => {
     if (!gameExists) {
-      history.push("/chess-world/dashboard");
+      history.push("/");
     }
   }, [gameExists, history]);
 

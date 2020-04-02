@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import {
   DEFAULT_TRAPDOOR_AMOUNT,
   GAME_MODES,
@@ -15,12 +15,9 @@ const useGameSettings = () => {
     trapdoorsAmount: DEFAULT_TRAPDOOR_AMOUNT
   });
 
-  const updateGameSettings = useCallback(
-    setting => {
-      setGameSettings({ ...gameSettings, ...setting });
-    },
-    [gameSettings]
-  );
+  const updateGameSettings = setting => {
+    setGameSettings({ ...gameSettings, ...setting });
+  };
 
   useEffect(() => {
     const getGameSettingsFromDb = gameId => {
@@ -36,7 +33,8 @@ const useGameSettings = () => {
     if (gameId) {
       getGameSettingsFromDb(gameId);
     }
-  }, [gameId, updateGameSettings]);
+    // eslint-disable-next-line
+  }, [gameId]);
 
   return { updateGameSettings, setGameId, ...gameSettings };
 };

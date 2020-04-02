@@ -22,7 +22,7 @@ const useGameState = ({ gameMode, gameId, userId }) => {
     inCheck: "",
     inCheckmate: ""
   });
-  console.log({ gameState });
+
   const [gameExists, setGameExists] = useState(true);
 
   const { board, turn, fallen, users } = gameState;
@@ -81,7 +81,6 @@ const useGameState = ({ gameMode, gameId, userId }) => {
 
   function performBotMove() {
     const selectedMove = decideBotMove(getBotMoves(board));
-    console.log("selectedMove", selectedMove);
     const nextGameState = getNextGameState(
       selectedMove.source.coords,
       selectedMove.destination.coords
@@ -127,7 +126,6 @@ const useGameState = ({ gameMode, gameId, userId }) => {
       board: handleMirroredBoard(board),
       turn: getOpponent(turn)
     };
-    console.log("switch turns", newGameState)
     if (isOnePlayer || isTwoPlayer) {
       setGameState(newGameState);
     } else if (isOnlinePlay) {

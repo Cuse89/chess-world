@@ -118,7 +118,7 @@ const TrapdoorChess = ({ history }) => {
   useEffect(() => {
     console.log({ gameExists });
     if (!gameExists) {
-      history.push("/chess-world");
+      history.push("/");
     }
   }, [gameExists, history]);
 
