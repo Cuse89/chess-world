@@ -11,6 +11,7 @@ import useUser from "hooks/useUser";
 import Context from "context";
 
 import styles from "./App.module.scss";
+import Footer from "components/footer";
 
 const App = () => {
   const gameSettings = useGameSettings();
@@ -26,6 +27,7 @@ const App = () => {
             <Route path="/trapdoor" component={TrapdoorChess} />
             <Route path="/trivia" component={TriviaChess} />
           </Switch>
+          <Footer />
         </div>
       </Context.Provider>
     </BrowserRouter>
