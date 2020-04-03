@@ -176,5 +176,6 @@ export const decideBotMove = (moves) => {
     }
   }
 
+  console.log("selected move", selectedMove)
   return selectedMove;
 };
