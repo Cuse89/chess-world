@@ -1,11 +1,12 @@
 import React, { useContext, useState, useEffect } from "react";
+import Context from "context";
+import firebase from "../../../firebase";
 import Board from "components/board";
 import { Piece } from "components/piece";
-import { getOpponent, getPieceProps, getUrlParam } from "utils/helpers";
 import useGameState from "hooks/useGameState";
-import Context from "context";
-import { GAME_MODES } from "utils/constants";
 import Fallen from "components/fallen";
+import { GAME_MODES } from "utils/constants";
+import { getOpponent, getPieceProps, getUrlParam } from "utils/helpers";
 
 const StandardChess = ({ history }) => {
   const { user, gameSettings } = useContext(Context);
@@ -48,20 +49,49 @@ const StandardChess = ({ history }) => {
 
   useEffect(() => {
     const handleSetMessage = () => {
-      let message = "";
+      let newMessage = "";
       if (inCheck) {
-        message = `${turn} in check`;
+        newMessage = `${turn} in check`;
       }
       if (inCheckmate) {
-        message = `Checkmate. ${turn} wins`;
+        newMessage = `Checkmate. ${turn} wins`;
       }
-      setMessage(message);
+      console.log("xxxx", message, newMessage);
+      if (message !== newMessage) {
+        setMessage(newMessage);
+      }
     };
     handleSetMessage();
   }, [turn, inCheck, inCheckmate]);
 
   useEffect(() => {
-    console.log({ gameExists });
+    const handleGameEnded = async () => {
+      if (isOnlinePlay) {
+        const lostGame = users[userId].color === inCheckmate;
+        const gamesWon = user.gameStats ? user.gameStats.won : 0;
+        const gamesLost = user.gameStats ? user.gameStats.lost : 0;
+        console.log({ lostGame });
+        try {
+          // remove game from user
+          await firebase.updateUser(userId, "games", { [gameId]: null });
+          // update wins or losses
+          await firebase.updateUser(userId, "gameStats", {
+            played: user.gameStats ? user.gameStats.played + 1 : 1,
+            won: lostGame ? gamesWon : gamesWon + 1,
+            lost: lostGame ? gamesLost + 1 : gamesLost
+          });
+        } catch (err) {
+          console.log(err);
+        }
+      }
+    };
+    if (inCheckmate) {
+      console.log("in checkmaate");
+      handleGameEnded();
+    }
+  }, [inCheckmate]);
+
+  useEffect(() => {
     if (!gameExists) {
       history.push("/");
     }
@@ -70,6 +100,7 @@ const StandardChess = ({ history }) => {
   function onDrop(a) {
     const sourceCoords = a.source.droppableId;
     const destinationCoords = a.destination.droppableId;
+    console.log("on drop", sourceCoords, destinationCoords);
     handlePerformMove(sourceCoords, destinationCoords);
   }
 
@@ -98,7 +129,7 @@ const StandardChess = ({ history }) => {
 
   return (
     <div>
-      <div>{message}</div>
+      {message && <div>{message}</div>}
       <Fallen fallen={getFallen()} />
       <Board
         board={board}

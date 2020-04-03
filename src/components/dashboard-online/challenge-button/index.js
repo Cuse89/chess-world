@@ -15,10 +15,13 @@ const ChallengeButton = ({
   toggleShowCreateGame
 }) => {
   const { user } = useContext(Context);
+  const gameId =
+    user.games &&
+    Object.keys(user.games).filter(id => user.games[id] === opponentId)[0];
 
   const { gameState } = useGameState({
     gameMode: GAME_MODES.ONLINE_PLAY.TECHNICAL_NAME,
-    gameId: user.games && user.games[opponentId],
+    gameId,
     userId: user.id
   });
 
@@ -36,11 +39,11 @@ const ChallengeButton = ({
         },
         board: defaultBoard,
         turn: "white",
-        settings: {...gameSettings}
+        settings: { ...gameSettings }
       });
       await updateGameRequest(opponentId, user.id, null);
-      await firebase.updateUser(user.id, "games", { [opponentId]: newGameId });
-      await firebase.updateUser(opponentId, "games", { [user.id]: newGameId });
+      await firebase.updateUser(user.id, "games", { [newGameId]: opponentId });
+      await firebase.updateUser(opponentId, "games", { [newGameId]: user.id });
     } catch (err) {
       console.log(err);
     }
@@ -66,8 +69,8 @@ const ChallengeButton = ({
       );
     }
     if (user.requestsIncoming && user.requestsIncoming[opponentId]) {
-      const gameSettings = user.requestsIncoming[opponentId]
-      const gameType = gameSettings.gameType
+      const gameSettings = user.requestsIncoming[opponentId];
+      const gameType = gameSettings.gameType;
       const gameTypeText = getPrettyFromTechnicalName(GAME_TYPES, gameType);
       button = (
         <DashboardButton
@@ -78,13 +81,14 @@ const ChallengeButton = ({
         />
       );
     }
+
     if (gameState.users) {
       // Todo: fetch gametype from game object
       const gameType = gameState.settings.gameType;
       button = (
         <DashboardButton
           displayText={"Game in progress. Join Game"}
-          onClick={() => joinGame(gameType, user.games[opponentId])}
+          onClick={() => joinGame(gameType, gameId)}
           type={"accept"}
           fullLength
         />

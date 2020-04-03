@@ -1,16 +1,12 @@
-@import 'src/styles/base/variables';
+@import "src/styles/base/variables";
 
 .root {
   display: flex;
-  margin-top: 10px;
+  flex-direction: row;
+  align-items: baseline;
+  margin-bottom: 10px;
 
-  .content {
-    display: flex;
-    flex-direction: row;
-    align-items: baseline;
-
-    p {
-      margin-right: 10px;
-    }
+  p {
+    margin-right: 10px;
   }
 }

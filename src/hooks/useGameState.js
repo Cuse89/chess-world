@@ -23,6 +23,8 @@ const useGameState = ({ gameMode, gameId, userId }) => {
     inCheckmate: ""
   });
 
+  console.log({ gameState });
+
   const [gameExists, setGameExists] = useState(true);
 
   const { board, turn, fallen, users } = gameState;
@@ -67,6 +69,7 @@ const useGameState = ({ gameMode, gameId, userId }) => {
   function getNextGameState(sourceCoords, destinationCoords) {
     const nextBoard = getNextBoard(board, sourceCoords, destinationCoords);
     const opponentKingStatus = getKingStatus(nextBoard, opponent);
+
     return {
       board: handleMirroredBoard(nextBoard),
       turn: opponentKingStatus !== "checkmate" ? opponent : turn,
@@ -160,12 +163,14 @@ const useGameState = ({ gameMode, gameId, userId }) => {
               inCheckmate: game.inCheckmate
             });
           } else {
+            console.log("game doesnt exist")
             setGameExists(false);
           }
         });
       }
     };
     if (gameId && userId) {
+      console.log("www", {gameId, userId})
       gameListener();
     }
   }, [gameId, userId, isOnlinePlay]);

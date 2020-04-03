@@ -26,7 +26,9 @@ const useAvailableUsers = userId => {
   };
 
   useEffect(() => {
-    setUserAvailable(allAvailableUsers.map(user => user.id).includes(userId));
+    if (userId) {
+      setUserAvailable(allAvailableUsers.map(user => user.id).includes(userId));
+    }
   }, [userId, allAvailableUsers]);
 
   useEffect(getAvailableUsersIds, []);

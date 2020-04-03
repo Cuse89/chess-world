@@ -68,20 +68,23 @@ const TrapdoorChess = ({ history }) => {
 
   useEffect(() => {
     const handleSetMessage = () => {
-      let message = "";
+      let newMessage = "";
       if (inCheck) {
-        message = `${turn} in check`;
+        newMessage = `${turn} in check`;
       }
       if (inCheckmate) {
-        message = `Checkmate. ${turn} wins`;
+        newMessage = `Checkmate. ${turn} wins`;
       }
       if (trapdoorsLeft !== 0) {
-        message = `Set your trapdoors. ${trapdoorsLeft} left`;
+        newMessage = `Set your trapdoors. ${trapdoorsLeft} left`;
       }
-      setMessage(message);
+      if (message !== newMessage) {
+        setMessage(newMessage);
+      }
+
     };
     handleSetMessage();
-  }, [inCheck, inCheckmate, trapdoorsAmount, turn, trapdoorsLeft]);
+  }, [turn, inCheck, inCheckmate, trapdoorsLeft]);
 
   useEffect(() => {
     const setBotTrapdoors = () => {
@@ -116,7 +119,6 @@ const TrapdoorChess = ({ history }) => {
   }, [isOnePlayer]);
 
   useEffect(() => {
-    console.log({ gameExists });
     if (!gameExists) {
       history.push("/");
     }
@@ -224,7 +226,7 @@ const TrapdoorChess = ({ history }) => {
 
   return (
     <div className={styles.root}>
-      <h4>{message}</h4>
+      {message && <div>{message}</div>}
       <Fallen fallen={getFallen()} />
       <Board
         board={board}

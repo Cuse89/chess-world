@@ -9,6 +9,7 @@ import UserAvailability from "components/dashboard-online/user-availability";
 
 const DashboardOnline = ({ history }) => {
   const { user } = useContext(Context);
+  const { availableUsers } = useAvailableUsers(user && user.id);
 
   const { userAvailable, updateAvailableUser } = useAvailableUsers(
     user && user.id
@@ -42,7 +43,18 @@ const DashboardOnline = ({ history }) => {
         {!user.name && (
           <NameInput user={user} updateAvailableUser={updateAvailableUser} />
         )}
-        {user.name && userAvailable && <ChallengePlayer history={history} />}
+        {user.name && userAvailable && availableUsers.length > 0 && (
+          <div>
+            <h3>Users available</h3>
+            {availableUsers.map(availableUser => (
+              <ChallengePlayer
+                key={`challenge-${availableUser.id}`}
+                history={history}
+                availableUser={availableUser}
+              />
+            ))}
+          </div>
+        )}
       </div>
     );
   }

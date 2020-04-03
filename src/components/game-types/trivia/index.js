@@ -60,22 +60,22 @@ const TriviaChess = ({ history }) => {
         }
       }
     };
-
     handleNextTurn();
     // eslint-disable-next-line
   }, [turn, pendingMove]);
 
   useEffect(() => {
     const handleSetMessage = () => {
-      console.log("handleSetMessage")
-      let message = "";
+      let newMessage = "";
       if (inCheck) {
-        message = `${turn} in check`;
+        newMessage = `${turn} in check`;
       }
       if (inCheckmate) {
-        message = `Checkmate. ${turn} wins`;
+        newMessage = `Checkmate. ${turn} wins`;
       }
-      setMessage(message);
+      if (message !== newMessage) {
+        setMessage(newMessage);
+      }
     };
     handleSetMessage();
   }, [turn, inCheck, inCheckmate]);
@@ -141,7 +141,7 @@ const TriviaChess = ({ history }) => {
 
   return (
     <div>
-      <div>{message}</div>
+      {message && <div>{message}</div>}
       <Fallen fallen={getFallen()} />
       <Board
         board={board}

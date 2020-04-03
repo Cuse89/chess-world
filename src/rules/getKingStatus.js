@@ -1,4 +1,4 @@
-import { getNextBoard, loopBoard } from "../utils/helpers";
+import { getNextBoard, getSquareDetails, loopBoard } from "../utils/helpers";
 import { getThreats } from "utils/onePlayerHelpers";
 import { kingValidation } from "rules/kingValidation";
 // kingPlayer is the players colour that controls the king in question
@@ -18,13 +18,25 @@ export const getKingStatus = (board, kingPlayer) => {
 
     potentialCoords.forEach(coord => {
       let destinationCoords = (kingPos - coord).toString();
+      // convert to 2 digits - "1" to "01"
+      if (destinationCoords.length === 1) {
+        destinationCoords = "0" + destinationCoords;
+      }
+      const squareDetails = getSquareDetails(destinationCoords, board);
+      // cannot land on own piece
+      const isOwnPlayer = squareDetails && squareDetails.player === kingPlayer;
+      // except for itself (staying in same position)
+      const isOwnKingPiece = destinationCoords === kingPos;
+      console.log("yyyy", kingPlayer, coord, destinationCoords, kingPos);
       if (
-        kingValidation({
+        (kingValidation({
           sourceCoords: kingPos,
           destinationCoords,
           board,
           player: kingPlayer
-        })
+        }) &&
+          !isOwnPlayer) ||
+        isOwnKingPiece
       ) {
         availableCoords.push(destinationCoords);
       }
@@ -39,6 +51,7 @@ export const getKingStatus = (board, kingPlayer) => {
       );
       return threats.length < 1;
     });
+    console.log({ availableCoords });
     return availableCoords.length < 1;
   };
 
