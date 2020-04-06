@@ -141,7 +141,7 @@ export const loopBoard = (board, func) =>
     });
   });
 
-export const getOpponent = turn => (turn === "white" ? "black" : "white");
+export const getOpponent = player => (player === "white" ? "black" : "white");
 
 export const getUpdatedFallen = (targetPiece, fallen) => {
   const { player, pieceId } = targetPiece;
@@ -199,7 +199,7 @@ export const getDirectThreats = (
         baselinePlayer: "white"
       })
     ) {
-      threats.push(square.pieceId);
+      threats.push({coords, pieceId: square.pieceId});
     }
   });
   return threats;

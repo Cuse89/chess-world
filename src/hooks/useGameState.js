@@ -13,10 +13,11 @@ import { decideBotMove, getBotMoves } from "utils/onePlayerHelpers";
 import firebase from "../firebase";
 import { DEFAULT_FALLEN, DEFAULT_TURN, GAME_MODES } from "utils/constants";
 import { getKingStatus } from "rules/getKingStatus";
+import { inCheckBothSides, inCheckCanBlockThreat, inCheckCanTakeThreatWithNonKing } from "rules/tests/mockData";
 
 const useGameState = ({ gameMode, gameId, userId }) => {
   const [gameState, setGameState] = useState({
-    board: defaultBoard,
+    board: inCheckCanTakeThreatWithNonKing,
     turn: DEFAULT_TURN,
     fallen: DEFAULT_FALLEN,
     inCheck: "",

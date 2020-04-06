@@ -1,4 +1,9 @@
-import { getNextBoard, getSquareDetails, loopBoard } from "../utils/helpers";
+import {
+  getNextBoard,
+  getOpponent,
+  getSquareDetails,
+  loopBoard
+} from "../utils/helpers";
 import { kingValidation } from "rules/kingValidation";
 import { getDirectThreats } from "utils/helpers";
 import { getThreats } from "utils/onePlayerHelpers";
@@ -13,11 +18,26 @@ export const getKingStatus = (board, kingPlayer) => {
   };
   loopBoard(board, getKingPos);
 
-  const isInCheck = () => kingPos && getDirectThreats(kingPlayer, kingPos, board).length > 0;
+  const directThreats = getDirectThreats(kingPlayer, kingPos, board);
+
+  const isInCheck = () => kingPos && directThreats.length > 0;
 
   const isCheckmate = () => {
     const potentialCoords = [11, -11, 10, -10, 9, -9, 1, -1, 0];
     let availableCoords = [];
+
+    // can direct threats be taken?
+    const threatsCannotBeTaken = directThreats.filter(
+      ({ coords }) =>
+        getDirectThreats(getOpponent(kingPlayer), coords, board).length === 0
+    );
+
+    if (threatsCannotBeTaken.length === 0) {
+      return false;
+    }
+
+    // can threatsCannotBeTaken be blocked instead?
+
 
     potentialCoords.forEach(coord => {
       let destinationCoords = (kingPos - coord).toString();

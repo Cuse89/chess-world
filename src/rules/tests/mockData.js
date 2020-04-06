@@ -217,7 +217,7 @@ export const inCheckmateBoard = [
   ]
 ];
 
-export const inCheckCanTakeThreatBoard = [
+export const inCheckCanTakeThreatWithKing = [
   [
     { player: "black", pieceId: "rook-0" },
     { player: "black", pieceId: "knight-0" },
@@ -936,12 +936,287 @@ export const oneMoveFromCheck2 = [
 export const inCheckBothSides = [
   [
     {
+      player: "black",
+      pieceId: "rook-1"
+    },
+    {
+      player: "black",
+      pieceId: "knight-1"
+    },
+    {
+      player: "black",
+      pieceId: "bishop-1"
+    },
+    {
+      player: "",
+      pieceId: ""
+    },
+    {
+      player: "black",
+      pieceId: "queen"
+    },
+    {
+      player: "black",
+      pieceId: "bishop-0"
+    },
+    {
+      player: "black",
+      pieceId: "knight-0"
+    },
+    {
+      player: "black",
+      pieceId: "rook-0"
+    }
+  ],
+  [
+    {
+      player: "",
+      pieceId: ""
+    },
+    {
+      player: "black",
+      pieceId: "pawn-6"
+    },
+    {
+      player: "black",
+      pieceId: "pawn-5"
+    },
+    {
+      player: "black",
+      pieceId: "king"
+    },
+    {
+      player: "black",
+      pieceId: "pawn-3"
+    },
+    {
+      player: "black",
+      pieceId: "pawn-2"
+    },
+    {
+      player: "black",
+      pieceId: "pawn-1"
+    },
+    {
+      player: "black",
+      pieceId: "pawn-0"
+    }
+  ],
+  [
+    {
+      player: "",
+      pieceId: ""
+    },
+    {
+      player: "",
+      pieceId: ""
+    },
+    {
+      player: "",
+      pieceId: ""
+    },
+    {
+      player: "",
+      pieceId: ""
+    },
+    {
+      player: "",
+      pieceId: ""
+    },
+    {
+      player: "",
+      pieceId: ""
+    },
+    {
+      player: "",
+      pieceId: ""
+    },
+    {
+      player: "",
+      pieceId: ""
+    }
+  ],
+  [
+    {
+      player: "",
+      pieceId: ""
+    },
+    {
+      player: "",
+      pieceId: ""
+    },
+    {
+      player: "",
+      pieceId: ""
+    },
+    {
+      player: "black",
+      pieceId: "pawn-4"
+    },
+    {
+      player: "",
+      pieceId: ""
+    },
+    {
+      player: "",
+      pieceId: ""
+    },
+    {
+      player: "",
+      pieceId: ""
+    },
+    {
+      player: "",
+      pieceId: ""
+    }
+  ],
+  [
+    {
+      player: "white",
+      pieceId: "queen"
+    },
+    {
+      player: "",
+      pieceId: ""
+    },
+    {
+      player: "",
+      pieceId: ""
+    },
+    {
+      player: "white",
+      pieceId: "pawn-3"
+    },
+    {
+      player: "",
+      pieceId: ""
+    },
+    {
+      player: "",
+      pieceId: ""
+    },
+    {
+      player: "",
+      pieceId: ""
+    },
+    {
+      player: "",
+      pieceId: ""
+    }
+  ],
+  [
+    {
+      player: "white",
+      pieceId: "king"
+    },
+    {
+      player: "",
+      pieceId: ""
+    },
+    {
+      player: "",
+      pieceId: ""
+    },
+    {
+      player: "",
+      pieceId: ""
+    },
+    {
+      player: "",
+      pieceId: ""
+    },
+    {
+      player: "",
+      pieceId: ""
+    },
+    {
+      player: "",
+      pieceId: ""
+    },
+    {
+      player: "",
+      pieceId: ""
+    }
+  ],
+  [
+    {
+      player: "white",
+      pieceId: "pawn-0"
+    },
+    {
+      player: "white",
+      pieceId: "pawn-1"
+    },
+    {
+      player: "white",
+      pieceId: "pawn-2"
+    },
+    {
+      player: "",
+      pieceId: ""
+    },
+    {
+      player: "white",
+      pieceId: "pawn-4"
+    },
+    {
+      player: "white",
+      pieceId: "pawn-5"
+    },
+    {
+      player: "white",
+      pieceId: "pawn-6"
+    },
+    {
+      player: "white",
+      pieceId: "pawn-7"
+    }
+  ],
+  [
+    {
+      player: "white",
+      pieceId: "rook-0"
+    },
+    {
+      player: "white",
+      pieceId: "knight-0"
+    },
+    {
+      player: "white",
+      pieceId: "bishop-0"
+    },
+    {
+      player: "",
+      pieceId: ""
+    },
+    {
+      player: "",
+      pieceId: ""
+    },
+    {
+      player: "white",
+      pieceId: "bishop-1"
+    },
+    {
+      player: "white",
+      pieceId: "knight-1"
+    },
+    {
+      player: "white",
+      pieceId: "rook-1"
+    }
+  ]
+];
+
+export const inCheckCanTakeThreatWithNonKing = [
+  [
+    {
       "player": "black",
       "pieceId": "rook-1"
     },
     {
-      "player": "black",
-      "pieceId": "knight-1"
+      "player": "",
+      "pieceId": ""
     },
     {
       "player": "black",
@@ -952,12 +1227,12 @@ export const inCheckBothSides = [
       "pieceId": ""
     },
     {
-      "player": "black",
-      "pieceId": "queen"
+      "player": "",
+      "pieceId": ""
     },
     {
-      "player": "black",
-      "pieceId": "bishop-0"
+      "player": "",
+      "pieceId": ""
     },
     {
       "player": "black",
@@ -982,12 +1257,12 @@ export const inCheckBothSides = [
       "pieceId": "pawn-5"
     },
     {
-      "player": "black",
-      "pieceId": "king"
+      "player": "",
+      "pieceId": ""
     },
     {
       "player": "black",
-      "pieceId": "pawn-3"
+      "pieceId": "bishop-0"
     },
     {
       "player": "black",
@@ -1012,79 +1287,15 @@ export const inCheckBothSides = [
       "pieceId": ""
     },
     {
-      "player": "",
-      "pieceId": ""
-    },
-    {
-      "player": "",
-      "pieceId": ""
-    },
-    {
-      "player": "",
-      "pieceId": ""
-    },
-    {
-      "player": "",
-      "pieceId": ""
-    },
-    {
-      "player": "",
-      "pieceId": ""
-    },
-    {
-      "player": "",
-      "pieceId": ""
-    }
-  ],
-  [
-    {
-      "player": "",
-      "pieceId": ""
-    },
-    {
-      "player": "",
-      "pieceId": ""
-    },
-    {
-      "player": "",
-      "pieceId": ""
+      "player": "black",
+      "pieceId": "knight-1"
     },
     {
       "player": "black",
-      "pieceId": "pawn-4"
+      "pieceId": "king"
     },
     {
-      "player": "",
-      "pieceId": ""
-    },
-    {
-      "player": "",
-      "pieceId": ""
-    },
-    {
-      "player": "",
-      "pieceId": ""
-    },
-    {
-      "player": "",
-      "pieceId": ""
-    }
-  ],
-  [
-    {
-      "player": "white",
-      "pieceId": "queen"
-    },
-    {
-      "player": "",
-      "pieceId": ""
-    },
-    {
-      "player": "",
-      "pieceId": ""
-    },
-    {
-      "player": "white",
+      "player": "black",
       "pieceId": "pawn-3"
     },
     {
@@ -1098,6 +1309,36 @@ export const inCheckBothSides = [
     {
       "player": "",
       "pieceId": ""
+    }
+  ],
+  [
+    {
+      "player": "",
+      "pieceId": ""
+    },
+    {
+      "player": "",
+      "pieceId": ""
+    },
+    {
+      "player": "",
+      "pieceId": ""
+    },
+    {
+      "player": "",
+      "pieceId": ""
+    },
+    {
+      "player": "",
+      "pieceId": ""
+    },
+    {
+      "player": "",
+      "pieceId": ""
+    },
+    {
+      "player": "",
+      "pieceId": ""
     },
     {
       "player": "",
@@ -1106,8 +1347,42 @@ export const inCheckBothSides = [
   ],
   [
     {
+      "player": "black",
+      "pieceId": "queen"
+    },
+    {
+      "player": "",
+      "pieceId": ""
+    },
+    {
+      "player": "",
+      "pieceId": ""
+    },
+    {
       "player": "white",
-      "pieceId": "king"
+      "pieceId": "queen"
+    },
+    {
+      "player": "",
+      "pieceId": ""
+    },
+    {
+      "player": "",
+      "pieceId": ""
+    },
+    {
+      "player": "",
+      "pieceId": ""
+    },
+    {
+      "player": "",
+      "pieceId": ""
+    }
+  ],
+  [
+    {
+      "player": "",
+      "pieceId": ""
     },
     {
       "player": "",
@@ -1186,8 +1461,8 @@ export const inCheckBothSides = [
       "pieceId": "bishop-0"
     },
     {
-      "player": "",
-      "pieceId": ""
+      "player": "white",
+      "pieceId": "king"
     },
     {
       "player": "",
@@ -1207,3 +1482,278 @@ export const inCheckBothSides = [
     }
   ]
 ]
+
+export const inCheckCanBlockThreat = [
+  [
+    {
+      player: "black",
+      pieceId: "rook-1"
+    },
+    {
+      player: "black",
+      pieceId: "knight-1"
+    },
+    {
+      player: "black",
+      pieceId: "bishop-1"
+    },
+    {
+      player: "black",
+      pieceId: "king"
+    },
+    {
+      player: "black",
+      pieceId: "queen"
+    },
+    {
+      player: "black",
+      pieceId: "bishop-0"
+    },
+    {
+      player: "black",
+      pieceId: "knight-0"
+    },
+    {
+      player: "black",
+      pieceId: "rook-0"
+    }
+  ],
+  [
+    {
+      player: "",
+      pieceId: ""
+    },
+    {
+      player: "black",
+      pieceId: "pawn-6"
+    },
+    {
+      player: "black",
+      pieceId: "pawn-5"
+    },
+    {
+      player: "",
+      pieceId: ""
+    },
+    {
+      player: "black",
+      pieceId: "pawn-3"
+    },
+    {
+      player: "black",
+      pieceId: "pawn-2"
+    },
+    {
+      player: "black",
+      pieceId: "pawn-1"
+    },
+    {
+      player: "black",
+      pieceId: "pawn-0"
+    }
+  ],
+  [
+    {
+      player: "",
+      pieceId: ""
+    },
+    {
+      player: "",
+      pieceId: ""
+    },
+    {
+      player: "",
+      pieceId: ""
+    },
+    {
+      player: "",
+      pieceId: ""
+    },
+    {
+      player: "",
+      pieceId: ""
+    },
+    {
+      player: "",
+      pieceId: ""
+    },
+    {
+      player: "",
+      pieceId: ""
+    },
+    {
+      player: "",
+      pieceId: ""
+    }
+  ],
+  [
+    {
+      player: "",
+      pieceId: ""
+    },
+    {
+      player: "",
+      pieceId: ""
+    },
+    {
+      player: "",
+      pieceId: ""
+    },
+    {
+      player: "white",
+      pieceId: "queen"
+    },
+    {
+      player: "",
+      pieceId: ""
+    },
+    {
+      player: "",
+      pieceId: ""
+    },
+    {
+      player: "",
+      pieceId: ""
+    },
+    {
+      player: "",
+      pieceId: ""
+    }
+  ],
+  [
+    {
+      player: "",
+      pieceId: ""
+    },
+    {
+      player: "",
+      pieceId: ""
+    },
+    {
+      player: "",
+      pieceId: ""
+    },
+    {
+      player: "white",
+      pieceId: "pawn-3"
+    },
+    {
+      player: "",
+      pieceId: ""
+    },
+    {
+      player: "",
+      pieceId: ""
+    },
+    {
+      player: "",
+      pieceId: ""
+    },
+    {
+      player: "",
+      pieceId: ""
+    }
+  ],
+  [
+    {
+      player: "",
+      pieceId: ""
+    },
+    {
+      player: "",
+      pieceId: ""
+    },
+    {
+      player: "",
+      pieceId: ""
+    },
+    {
+      player: "",
+      pieceId: ""
+    },
+    {
+      player: "",
+      pieceId: ""
+    },
+    {
+      player: "",
+      pieceId: ""
+    },
+    {
+      player: "",
+      pieceId: ""
+    },
+    {
+      player: "",
+      pieceId: ""
+    }
+  ],
+  [
+    {
+      player: "white",
+      pieceId: "pawn-0"
+    },
+    {
+      player: "white",
+      pieceId: "pawn-1"
+    },
+    {
+      player: "white",
+      pieceId: "pawn-2"
+    },
+    {
+      player: "",
+      pieceId: ""
+    },
+    {
+      player: "white",
+      pieceId: "pawn-4"
+    },
+    {
+      player: "white",
+      pieceId: "pawn-5"
+    },
+    {
+      player: "white",
+      pieceId: "pawn-6"
+    },
+    {
+      player: "white",
+      pieceId: "pawn-7"
+    }
+  ],
+  [
+    {
+      player: "white",
+      pieceId: "rook-0"
+    },
+    {
+      player: "white",
+      pieceId: "knight-0"
+    },
+    {
+      player: "white",
+      pieceId: "bishop-0"
+    },
+    {
+      player: "white",
+      pieceId: "king"
+    },
+    {
+      player: "",
+      pieceId: ""
+    },
+    {
+      player: "white",
+      pieceId: "bishop-1"
+    },
+    {
+      player: "white",
+      pieceId: "knight-1"
+    },
+    {
+      player: "white",
+      pieceId: "rook-1"
+    }
+  ]
+];

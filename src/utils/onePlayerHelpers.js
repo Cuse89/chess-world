@@ -6,6 +6,8 @@ import {
 } from "./helpers";
 import { getKingStatus } from "rules/getKingStatus";
 
+// getThreats takes moving into check into consideration - a piece that would move into check if it performed the move is NOT a threat
+// use useDirectThreats to not take moving into check into consideration
 export const getThreats = (threatenedPlayer, threatenedPlayerCoords, board) => {
   let threats = [];
 

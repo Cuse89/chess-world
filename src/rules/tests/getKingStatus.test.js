@@ -3,8 +3,10 @@ import board from "lineups/defaultBoard";
 import {
   inCheckBoard,
   inCheckmateBoard,
-  inCheckCanTakeThreatBoard,
-  inCheckmateBoard2, inCheckBothSides
+  inCheckCanTakeThreatWithKing,
+  inCheckmateBoard2,
+  inCheckBothSides,
+  inCheckCanBlockThreat, inCheckCanTakeThreatWithNonKing
 } from "rules/tests/mockData";
 
 describe("getKingStatus", () => {
@@ -18,24 +20,24 @@ describe("getKingStatus", () => {
       expect(getKingStatus(inCheckBoard, "black")).toBe("check");
     });
     it("when king can escape by taking threat only", () => {
-      expect(getKingStatus(inCheckCanTakeThreatBoard, "black")).toBe(
-        "check"
-      );
+      expect(getKingStatus(inCheckCanTakeThreatWithKing, "black")).toBe("check");
     });
     it("when opponent would be in check if own king's threat took the king", () => {
-      expect(getKingStatus(inCheckBothSides, "black")).toBe(("check"))
-    })
+      expect(getKingStatus(inCheckBothSides, "black")).toBe("check");
+    });
+    it("when king is threatened by a piece which can be taken by non king piece", () => {
+      expect(getKingStatus(inCheckCanTakeThreatWithNonKing, "black")).toBe("check");
+    });
+    it("when king is threatened by a travelling piece which can be blocked", () => {
+      expect(getKingStatus(inCheckCanBlockThreat, "black")).toBe("check");
+    });
   });
   describe("it should return 'checkmate'", () => {
     it("when king is in checkmate, cannot take any threats", () => {
-      expect(getKingStatus(inCheckmateBoard, "black")).toBe(
-        "checkmate"
-      );
+      expect(getKingStatus(inCheckmateBoard, "black")).toBe("checkmate");
     });
     it("when king is in checkmate, can take a threat, however which is defended by another threat", () => {
-      expect(getKingStatus(inCheckmateBoard2, "black")).toBe(
-        "checkmate"
-      );
+      expect(getKingStatus(inCheckmateBoard2, "black")).toBe("checkmate");
     });
   });
 });
