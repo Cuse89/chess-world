@@ -1,6 +1,7 @@
 import { getNextBoard, getSquareDetails, loopBoard } from "../utils/helpers";
-import { getThreats } from "utils/onePlayerHelpers";
 import { kingValidation } from "rules/kingValidation";
+import { getDirectThreats } from "utils/helpers";
+import { getThreats } from "utils/onePlayerHelpers";
 // kingPlayer is the players colour that controls the king in question
 
 export const getKingStatus = (board, kingPlayer) => {
@@ -11,6 +12,8 @@ export const getKingStatus = (board, kingPlayer) => {
     }
   };
   loopBoard(board, getKingPos);
+
+  const isInCheck = () => kingPos && getDirectThreats(kingPlayer, kingPos, board).length > 0;
 
   const isCheckmate = () => {
     const potentialCoords = [11, -11, 10, -10, 9, -9, 1, -1, 0];
@@ -27,7 +30,6 @@ export const getKingStatus = (board, kingPlayer) => {
       const isOwnPlayer = squareDetails && squareDetails.player === kingPlayer;
       // except for itself (staying in same position)
       const isOwnKingPiece = destinationCoords === kingPos;
-      console.log("yyyy", kingPlayer, coord, destinationCoords, kingPos);
       if (
         (kingValidation({
           sourceCoords: kingPos,
@@ -44,25 +46,20 @@ export const getKingStatus = (board, kingPlayer) => {
 
     // filter available coords and take away any that could be threatened if landed on by king
     availableCoords = availableCoords.filter(destinationCoords => {
-      const threats = getThreats(
+      const threats = getDirectThreats(
         kingPlayer,
         destinationCoords,
         getNextBoard(board, kingPos, destinationCoords)
       );
       return threats.length < 1;
     });
-    console.log({ availableCoords });
     return availableCoords.length < 1;
   };
 
-  if (isCheckmate()) {
-    return "checkmate";
-  }
-
-  const isInCheck = () => {
-    return getThreats(kingPlayer, kingPos, board).length > 0;
-  };
   if (isInCheck()) {
+    if (isCheckmate()) {
+      return "checkmate";
+    }
     return "check";
   }
 

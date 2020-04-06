@@ -176,3 +176,31 @@ export const mirrorBoard = board => {
   boardMirrored.forEach(row => row.reverse());
   return boardMirrored;
 };
+
+// uses validateMove directly, does not consider whether the threat would move into check or not
+export const getDirectThreats = (
+  threatenedPlayer,
+  threatenedPlayerCoords,
+  board
+) => {
+  let threats = [];
+
+  loopBoard(board, ({ square, coords }) => {
+    const threateningPlayer =
+      square.player && square.player !== threatenedPlayer && square.player;
+    if (
+      threateningPlayer &&
+      getPieceProps(square.pieceId).validateMove({
+        sourceCoords: coords,
+        destinationCoords: threatenedPlayerCoords,
+        board,
+        player: threateningPlayer,
+        captureOnly: true,
+        baselinePlayer: "white"
+      })
+    ) {
+      threats.push(square.pieceId);
+    }
+  });
+  return threats;
+};

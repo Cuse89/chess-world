@@ -12,26 +12,23 @@ export const getThreats = (threatenedPlayer, threatenedPlayerCoords, board) => {
   loopBoard(board, ({ square, coords }) => {
     const threateningPlayer =
       square.player && square.player !== threatenedPlayer && square.player;
-    if (threateningPlayer) {
-      const sourceCoords = coords;
-      // const validateMove = getPieceProps(square.pieceId).validateMove;
-      // threat cant come from that square itself
-      if (
-        performValidation({
-          sourceCoords,
-          destinationCoords: threatenedPlayerCoords,
-          board,
-          player: threateningPlayer,
-          captureOnly: true,
-          baselinePlayer: "white"
-        })
-      ) {
-        threats.push(square.pieceId);
-      }
+    if (
+      threateningPlayer &&
+      performValidation({
+        sourceCoords: coords,
+        destinationCoords: threatenedPlayerCoords,
+        board,
+        player: threateningPlayer,
+        captureOnly: true,
+        baselinePlayer: "white"
+      })
+    ) {
+      threats.push(square.pieceId);
     }
   });
   return threats;
 };
+
 
 export const getBotMoves = board => {
   let moves = [];
@@ -96,7 +93,7 @@ export const getBotMoves = board => {
   return moves;
 };
 
-export const decideBotMove = (moves) => {
+export const decideBotMove = moves => {
   let selectedMove = { score: -100 };
 
   moves.forEach(move => {
@@ -176,6 +173,6 @@ export const decideBotMove = (moves) => {
     }
   }
 
-  console.log("selected move", selectedMove)
+  console.log("selected move", selectedMove);
   return selectedMove;
 };

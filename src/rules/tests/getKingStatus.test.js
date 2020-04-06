@@ -4,7 +4,7 @@ import {
   inCheckBoard,
   inCheckmateBoard,
   inCheckCanTakeThreatBoard,
-  inCheckmateBoard2
+  inCheckmateBoard2, inCheckBothSides
 } from "rules/tests/mockData";
 
 describe("getKingStatus", () => {
@@ -22,6 +22,9 @@ describe("getKingStatus", () => {
         "check"
       );
     });
+    it("when opponent would be in check if own king's threat took the king", () => {
+      expect(getKingStatus(inCheckBothSides, "black")).toBe(("check"))
+    })
   });
   describe("it should return 'checkmate'", () => {
     it("when king is in checkmate, cannot take any threats", () => {
