@@ -1,4 +1,4 @@
-import { getKingStatus } from "rules/getKingStatus";
+import { getKingStatus } from "piece-validation/getKingStatus";
 import board from "lineups/defaultBoard";
 import {
   inCheckBoard,
@@ -7,7 +7,7 @@ import {
   inCheckmateBoard2,
   inCheckBothSides,
   inCheckCanBlockThreat, inCheckCanTakeThreatWithNonKing
-} from "rules/tests/mockData";
+} from "piece-validation/tests/mockData";
 
 describe("getKingStatus", () => {
   describe("it should return false", () => {
@@ -39,5 +39,6 @@ describe("getKingStatus", () => {
     it("when king is in checkmate, can take a threat, however which is defended by another threat", () => {
       expect(getKingStatus(inCheckmateBoard2, "black")).toBe("checkmate");
     });
+
   });
 });

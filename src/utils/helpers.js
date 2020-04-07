@@ -6,13 +6,14 @@ import {
   faChessKing,
   faChessQueen
 } from "@fortawesome/free-solid-svg-icons";
-import { pawnValidation } from "../rules/pawnValidation";
-import { rookValidation } from "../rules/rookValidation";
-import { bishopValidation } from "../rules/bishopValidation";
-import { knightValidation } from "../rules/knightValidation";
-import { kingValidation } from "../rules/kingValidation";
-import { getKingStatus } from "../rules/getKingStatus";
+
+import { getRookPathway, rookValidation } from "piece-validation/rookValidation";
+import { bishopValidation, getBishopPathway } from "piece-validation/bishopValidation";
+import { knightValidation } from "piece-validation/knightValidation";
+import { kingValidation } from "piece-validation/kingValidation";
+import { getKingStatus } from "piece-validation/getKingStatus";
 import { EMPTY_SQUARE } from "utils/constants";
+import { pawnValidation } from "piece-validation/pawnValidation";
 
 export const getPieceProps = pieceId => {
   switch (pieceId && pieceId.split("-")[0]) {
@@ -26,6 +27,7 @@ export const getPieceProps = pieceId => {
       return {
         icon: faChessRook,
         validateMove: rookValidation,
+        getPathway: getRookPathway,
         strength: 5
       };
     case "knight":
@@ -38,6 +40,7 @@ export const getPieceProps = pieceId => {
       return {
         icon: faChessBishop,
         validateMove: bishopValidation,
+        getPathway: getBishopPathway,
         strength: 3
       };
     case "king":
@@ -49,8 +52,8 @@ export const getPieceProps = pieceId => {
     case "queen":
       return {
         icon: faChessQueen,
-        validateMove: (...params) => {
-          if (rookValidation(...params) || bishopValidation(...params)) {
+        validateMove: (params) => {
+          if (rookValidation(params) || bishopValidation(params)) {
             return true;
           }
         },

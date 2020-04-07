@@ -1,10 +1,8 @@
-import { kingValidation } from "rules/kingValidation";
-import { inCheckmateBoard2, testBoard } from "rules/tests/mockData";
+import { kingValidation } from "piece-validation/kingValidation";
+import { inCheckmateBoard2, testBoard } from "piece-validation/tests/mockData";
 
 const testBoardRow3 = testBoard("white", "king", 3);
 const testBoardRow2 = testBoard("white", "king", 2);
-const testBoardRow5 = testBoard("white", "king", 5);
-
 
 const tests = [
   {

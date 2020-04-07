@@ -1360,7 +1360,7 @@ export const inCheckCanTakeThreatWithNonKing = [
     },
     {
       "player": "white",
-      "pieceId": "queen"
+      "pieceId": "rook-1"
     },
     {
       "player": "",
@@ -1477,8 +1477,8 @@ export const inCheckCanTakeThreatWithNonKing = [
       "pieceId": "knight-1"
     },
     {
-      "player": "white",
-      "pieceId": "rook-1"
+      "player": "",
+      "pieceId": ""
     }
   ]
 ]
@@ -1601,7 +1601,7 @@ export const inCheckCanBlockThreat = [
     },
     {
       player: "white",
-      pieceId: "queen"
+      pieceId: "rook-1"
     },
     {
       player: "",
@@ -1752,8 +1752,8 @@ export const inCheckCanBlockThreat = [
       pieceId: "knight-1"
     },
     {
-      player: "white",
-      pieceId: "rook-1"
+      player: "",
+      pieceId: ""
     }
   ]
 ];

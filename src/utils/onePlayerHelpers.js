@@ -4,7 +4,7 @@ import {
   loopBoard,
   performValidation
 } from "./helpers";
-import { getKingStatus } from "rules/getKingStatus";
+import { getKingStatus } from "piece-validation/getKingStatus";
 
 // getThreats takes moving into check into consideration - a piece that would move into check if it performed the move is NOT a threat
 // use useDirectThreats to not take moving into check into consideration
@@ -12,10 +12,10 @@ export const getThreats = (threatenedPlayer, threatenedPlayerCoords, board) => {
   let threats = [];
 
   loopBoard(board, ({ square, coords }) => {
-    const threateningPlayer =
-      square.player && square.player !== threatenedPlayer && square.player;
+    const threateningPlayer = square.player;
     if (
       threateningPlayer &&
+      threateningPlayer !== threatenedPlayer &&
       performValidation({
         sourceCoords: coords,
         destinationCoords: threatenedPlayerCoords,
@@ -30,7 +30,6 @@ export const getThreats = (threatenedPlayer, threatenedPlayerCoords, board) => {
   });
   return threats;
 };
-
 
 export const getBotMoves = board => {
   let moves = [];

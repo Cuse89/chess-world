@@ -12,12 +12,11 @@ import {
 import { decideBotMove, getBotMoves } from "utils/onePlayerHelpers";
 import firebase from "../firebase";
 import { DEFAULT_FALLEN, DEFAULT_TURN, GAME_MODES } from "utils/constants";
-import { getKingStatus } from "rules/getKingStatus";
-import { inCheckBothSides, inCheckCanBlockThreat, inCheckCanTakeThreatWithNonKing } from "rules/tests/mockData";
+import { getKingStatus } from "piece-validation/getKingStatus";
 
 const useGameState = ({ gameMode, gameId, userId }) => {
   const [gameState, setGameState] = useState({
-    board: inCheckCanTakeThreatWithNonKing,
+    board: defaultBoard,
     turn: DEFAULT_TURN,
     fallen: DEFAULT_FALLEN,
     inCheck: "",
@@ -69,7 +68,7 @@ const useGameState = ({ gameMode, gameId, userId }) => {
 
   function getNextGameState(sourceCoords, destinationCoords) {
     const nextBoard = getNextBoard(board, sourceCoords, destinationCoords);
-    const opponentKingStatus = getKingStatus(nextBoard, opponent);
+    const opponentKingStatus = getKingStatus(nextBoard, opponent, baselinePlayer);
 
     return {
       board: handleMirroredBoard(nextBoard),
@@ -171,7 +170,6 @@ const useGameState = ({ gameMode, gameId, userId }) => {
       }
     };
     if (gameId && userId) {
-      console.log("www", {gameId, userId})
       gameListener();
     }
   }, [gameId, userId, isOnlinePlay]);

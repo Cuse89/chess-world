@@ -1,15 +1,17 @@
 import {
   getNextBoard,
   getOpponent,
+  getPieceProps,
   getSquareDetails,
-  loopBoard
+  loopBoard,
+  performValidation
 } from "../utils/helpers";
-import { kingValidation } from "rules/kingValidation";
+import { kingValidation } from "piece-validation/kingValidation";
 import { getDirectThreats } from "utils/helpers";
-import { getThreats } from "utils/onePlayerHelpers";
+
 // kingPlayer is the players colour that controls the king in question
 
-export const getKingStatus = (board, kingPlayer) => {
+export const getKingStatus = (board, kingPlayer, baselinePlayer) => {
   let kingPos = "";
   const getKingPos = ({ square, coords }) => {
     if (square.player === kingPlayer && square.pieceId === "king") {
@@ -18,7 +20,7 @@ export const getKingStatus = (board, kingPlayer) => {
   };
   loopBoard(board, getKingPos);
 
-  const directThreats = getDirectThreats(kingPlayer, kingPos, board);
+  let directThreats = getDirectThreats(kingPlayer, kingPos, board);
 
   const isInCheck = () => kingPos && directThreats.length > 0;
 
@@ -26,18 +28,47 @@ export const getKingStatus = (board, kingPlayer) => {
     const potentialCoords = [11, -11, 10, -10, 9, -9, 1, -1, 0];
     let availableCoords = [];
 
-    // can direct threats be taken?
-    const threatsCannotBeTaken = directThreats.filter(
+    // can directThreats be taken?
+    directThreats = directThreats.filter(
       ({ coords }) =>
         getDirectThreats(getOpponent(kingPlayer), coords, board).length === 0
     );
 
-    if (threatsCannotBeTaken.length === 0) {
-      return false;
-    }
+    // can directThreats be blocked instead?
+    directThreats = directThreats.filter(threat => {
+      let cannotBeBlocked = true;
+      const getThreatPathway = getPieceProps(threat.pieceId).getPathway;
+      if (getThreatPathway) {
+        const pathway = getThreatPathway(threat.coords, kingPos);
+        console.log({ pathway });
+        pathway.forEach(pathwayCoords => {
+          if (kingPos !== pathwayCoords) {
+            loopBoard(board, ({ square, coords }) => {
+              if (square.player === kingPlayer && square.pieceId !== "king") {
+                if (
+                  performValidation({
+                    board,
+                    kingPlayer,
+                    destinationCoords: pathwayCoords,
+                    sourceCoords: coords,
+                    baselinePlayer
+                  })
+                ) {
+                  // todo: only allow for 1 move to happen
 
-    // can threatsCannotBeTaken be blocked instead?
+                  cannotBeBlocked = false;
+                }
+              }
+            });
+          }
+        });
+      }
+      return cannotBeBlocked;
+    });
 
+    // if (directThreats.length === 0) {
+    //   return false;
+    // }
 
     potentialCoords.forEach(coord => {
       let destinationCoords = (kingPos - coord).toString();
@@ -66,12 +97,13 @@ export const getKingStatus = (board, kingPlayer) => {
 
     // filter available coords and take away any that could be threatened if landed on by king
     availableCoords = availableCoords.filter(destinationCoords => {
-      const threats = getDirectThreats(
-        kingPlayer,
-        destinationCoords,
-        getNextBoard(board, kingPos, destinationCoords)
+      return (
+        getDirectThreats(
+          kingPlayer,
+          destinationCoords,
+          getNextBoard(board, kingPos, destinationCoords)
+        ).length < 1
       );
-      return threats.length < 1;
     });
     return availableCoords.length < 1;
   };

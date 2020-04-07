@@ -1,5 +1,5 @@
-import { knightValidation } from "rules/knightValidation";
-import { testBoard } from "rules/tests/mockData";
+import { knightValidation } from "piece-validation/knightValidation";
+import { testBoard } from "piece-validation/tests/mockData";
 
 const testBoardRow3 = testBoard("white", "knight", 3);
 
