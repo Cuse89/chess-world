@@ -6,6 +6,7 @@ import NameInput from "components/dashboard-online/name-input";
 
 import useAvailableUsers from "hooks/useAvailableUsers";
 import UserAvailability from "components/dashboard-online/user-availability";
+import DashboardButton from "components/dashboard-button";
 
 const DashboardOnline = ({ history }) => {
   const { user } = useContext(Context);
@@ -43,6 +44,13 @@ const DashboardOnline = ({ history }) => {
         {!user.name && (
           <NameInput user={user} updateAvailableUser={updateAvailableUser} />
         )}
+        <DashboardButton
+          displayText="Click here to receive notifications"
+          onClick={firebase.getNotificationPermission}
+          fullLength
+          spaceTop
+          type="warning"
+        />
         {user.name && userAvailable && availableUsers.length > 0 && (
           <div>
             <h3>Users available</h3>
