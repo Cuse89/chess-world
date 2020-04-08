@@ -3,11 +3,15 @@ import firebase from "../firebase";
 
 const usePushNotifications = userId => {
   const [isSubscribed, setIsSubscribed] = useState(false);
+  const [message, setMessage] = useState("")
 
   const listenToNotificationsSubscribe = () => {
     firebase.getFromDatabaseListener(`users/${userId}`, user => {
-      if (!isSubscribed && user.messageToken) {
+      if (user.messageToken) {
         setIsSubscribed(true);
+        handleMessageListener()
+      } else if (!user.messageToken) {
+        setIsSubscribed(false)
       }
     });
   };
@@ -20,11 +24,21 @@ const usePushNotifications = userId => {
     console.log("unsubscribe");
   };
 
-  useEffect(() => {
-    listenToNotificationsSubscribe();
-  }, []);
+  const handleMessageListener = () => {
+    console.log("handleMessageListener")
+    firebase.messaging.onMessage(({message}) => {
+      console.log('Message received. ', message);
+      setMessage(message.notification.body)
+    });
+  }
 
-  return { isSubscribed, subscribeToNotifications, unsubscribeToNotifications };
+  useEffect(() => {
+    if (userId) {
+      listenToNotificationsSubscribe();
+    }
+  }, [userId]);
+
+  return { isSubscribed, subscribeToNotifications, unsubscribeToNotifications, message };
 };
 
 export default usePushNotifications;

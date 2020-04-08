@@ -12,6 +12,7 @@ class Firebase {
     firebaseApp.analytics();
     this.auth = firebaseApp.auth;
     this.database = firebaseApp.database();
+    this.messaging = firebaseApp.messaging();
   }
 
   async login() {
@@ -84,37 +85,35 @@ class Firebase {
   }
 
   async getGameSettings(gameId) {
-    return firebase.database
+    return this.database
       .ref(`games/${gameId}/settings`)
       .on("value", snapshot => snapshot.val());
   }
 
   async getNotificationPermission(userId) {
-    const messaging = firebaseApp.messaging();
-    messaging.usePublicVapidKey(publicVapidKey)
+    this.messaging.usePublicVapidKey(publicVapidKey)
     // Get Instance ID token. Initially this makes a network call, once retrieved
 // subsequent calls to getToken will return from cache.
-    messaging.getToken().then((currentToken) => {
+    console.log("getNotificationPermission")
+    this.messaging.getToken().then((currentToken) => {
       if (currentToken) {
         console.log({currentToken})
         firebase.setUser(userId, "messageToken", currentToken)
-
-
-        // sendTokenToServer(currentToken);
-        // updateUIForPushEnabled(currentToken);
       } else {
         // Show permission request.
         console.log('No Instance ID token available. Request permission to generate one.');
         // Show permission UI.
-        // updateUIForPushPermissionRequired();
-        // setTokenSentToServer(false);
+        // updateUIForPushPermissionRequired;
       }
     }).catch((err) => {
       console.log('An error occurred while retrieving token. ', err);
       // showToken('Error retrieving Instance ID token. ', err);
       // setTokenSentToServer(false);
     });
+
   }
+
+
 }
 
 const firebase = new Firebase();
