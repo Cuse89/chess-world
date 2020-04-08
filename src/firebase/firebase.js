@@ -20,28 +20,61 @@ class Firebase {
     await this.auth().signOut();
   }
 
+  async updateDatabase(url, value) {
+    try {
+      await this.database.ref(url).update(value);
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
+  async getFromDatabaseOnce(path, callback) {
+    try {
+      return await this.database
+        .ref(path)
+        .once("value")
+        .then(snapshot => callback(snapshot.val()));
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
+  getFromDatabaseListener(path, callback) {
+    try {
+      this.database
+        .ref(path)
+        .on("value", async result => callback(result.val()));
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
   async setUser(userId, key, value) {
-    await this.database.ref(`users/${userId}/${key}`).set(value);
+    try {
+      await this.database.ref(`users/${userId}/${key}`).set(value);
+    } catch (err) {
+      console.log(err);
+    }
   }
 
   async updateUser(userId, key, value) {
-    await this.database.ref(`users/${userId}/${key}`).update(value);
+    try {
+      await this.database.ref(`users/${userId}/${key}`).update(value);
+    } catch (err) {
+      console.log(err);
+    }
   }
 
   async getUsersFromIds(ids, filterFunc = () => true) {
     const users = [];
-    return await firebase.database
-      .ref("users")
-      .once("value")
-      .then(allUsers => {
-        ids.val() &&
-          Object.keys(ids.val()).forEach(userId => {
-            if (filterFunc(userId)) {
-              users.push({ ...allUsers.val()[userId], id: userId });
-            }
-          });
-        return users;
+    return await this.getFromDatabaseOnce("users", allUsers => {
+      Object.keys(ids).forEach(userId => {
+        if (filterFunc(userId)) {
+          users.push({ ...allUsers[userId], id: userId });
+        }
       });
+      return users;
+    });
   }
 
   async updateGame(gameId, value) {

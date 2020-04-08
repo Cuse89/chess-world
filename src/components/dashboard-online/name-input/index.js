@@ -4,12 +4,8 @@ import firebase from "../../../firebase";
 
 const NameInput = ({ user, updateAvailableUser }) => {
   const submitName = async name => {
-    try {
-      await firebase.setUser(user.id, "name", name);
-      await updateAvailableUser(user.id, true);
-    } catch (err) {
-      console.log(err);
-    }
+    await firebase.setUser(user.id, "name", name);
+    await updateAvailableUser(user.id, true);
   };
 
   return (

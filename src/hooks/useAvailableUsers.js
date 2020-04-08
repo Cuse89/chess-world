@@ -5,24 +5,18 @@ const useAvailableUsers = userId => {
   const [allAvailableUsers, setAvailableUsers] = useState([]);
   const [userAvailable, setUserAvailable] = useState(false);
   const availableUsers = allAvailableUsers.filter(user => user.id !== userId);
-  const getAvailableUsersIds = () =>
-    firebase.database
-      .ref("availableUsers")
-      .on("value", async allAvailableUsers => {
-        const getAvailableUsersFromIds = async () => {
-          const users = await firebase.getUsersFromIds(allAvailableUsers);
-          setAvailableUsers(users);
-        };
 
-        try {
-          await getAvailableUsersFromIds();
-        } catch (err) {
-          console.log(err);
-        }
-      });
+  const getAvailableUsersIds = () =>
+    firebase.getFromDatabaseListener(
+      "availableUsers",
+      async allAvailableUsers => {
+        const users = await firebase.getUsersFromIds(allAvailableUsers);
+        setAvailableUsers(users);
+      }
+    );
 
   const updateAvailableUser = async (userId, value) => {
-    await firebase.database.ref("availableUsers").update({ [userId]: value });
+    await firebase.updateDatabase("availableUsers", { [userId]: value })
   };
 
   useEffect(() => {
@@ -31,7 +25,9 @@ const useAvailableUsers = userId => {
     }
   }, [userId, allAvailableUsers]);
 
-  useEffect(getAvailableUsersIds, []);
+  useEffect(() => {
+    getAvailableUsersIds();
+  }, []);
 
   return { availableUsers, updateAvailableUser, userAvailable };
 };

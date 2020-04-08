@@ -68,7 +68,11 @@ const useGameState = ({ gameMode, gameId, userId }) => {
 
   function getNextGameState(sourceCoords, destinationCoords) {
     const nextBoard = getNextBoard(board, sourceCoords, destinationCoords);
-    const opponentKingStatus = getKingStatus(nextBoard, opponent, baselinePlayer);
+    const opponentKingStatus = getKingStatus(
+      nextBoard,
+      opponent,
+      baselinePlayer
+    );
 
     return {
       board: handleMirroredBoard(nextBoard),
@@ -143,8 +147,7 @@ const useGameState = ({ gameMode, gameId, userId }) => {
   useEffect(() => {
     const gameListener = () => {
       if (isOnlinePlay) {
-        firebase.database.ref(`games/${gameId}`).on("value", async snapshot => {
-          const game = snapshot.val();
+        firebase.getFromDatabaseListener(`games/${gameId}`, game => {
           if (game) {
             setGameState({
               ...game,
@@ -163,7 +166,7 @@ const useGameState = ({ gameMode, gameId, userId }) => {
               inCheckmate: game.inCheckmate
             });
           } else {
-            console.log("game doesnt exist")
+            console.log("game doesnt exist");
             setGameExists(false);
           }
         });
