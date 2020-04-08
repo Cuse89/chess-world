@@ -7,14 +7,19 @@ import NameInput from "components/dashboard-online/name-input";
 import useAvailableUsers from "hooks/useAvailableUsers";
 import UserAvailability from "components/dashboard-online/user-availability";
 import DashboardButton from "components/dashboard-button";
+import usePushNotifications from "hooks/usePushNotifications";
 
 const DashboardOnline = ({ history }) => {
   const { user } = useContext(Context);
-  const { availableUsers } = useAvailableUsers(user && user.id);
+  const userId = user && user.id;
+  const { availableUsers } = useAvailableUsers(userId);
+  const {
+    isSubscribed,
+    subscribeToNotifications,
+    unsubscribeToNotifications
+  } = usePushNotifications(userId);
 
-  const { userAvailable, updateAvailableUser } = useAvailableUsers(
-    user && user.id
-  );
+  const { userAvailable, updateAvailableUser } = useAvailableUsers(userId);
 
   const login = async () => {
     try {
@@ -45,8 +50,10 @@ const DashboardOnline = ({ history }) => {
           <NameInput user={user} updateAvailableUser={updateAvailableUser} />
         )}
         <DashboardButton
-          displayText="Click here to receive notifications"
-          onClick={firebase.getNotificationPermission}
+          displayText={`Turn ${isSubscribed ? "off" : "on"} notifications`}
+          onClick={
+            isSubscribed ? unsubscribeToNotifications : subscribeToNotifications
+          }
           fullLength
           spaceTop
           type="warning"

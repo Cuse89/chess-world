@@ -7,11 +7,9 @@ const useUser = () => {
   useEffect(() => {
     firebase.auth().onAuthStateChanged(user => {
       if (user) {
-        firebase.database
-          .ref(`users/${user.uid}`)
-          .on("value", snapshot =>
-            setUser({ id: user.uid, ...snapshot.val() })
-          );
+        firebase.getFromDatabaseListener(`users/${user.uid}`, snapshot => {
+          setUser({ id: user.uid, ...snapshot });
+        });
       } else {
         setUser(null);
       }

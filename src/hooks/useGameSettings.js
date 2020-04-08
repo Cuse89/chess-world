@@ -21,14 +21,12 @@ const useGameSettings = () => {
 
   useEffect(() => {
     const getGameSettingsFromDb = gameId => {
-      firebase.database
-        .ref(`games/${gameId}/settings`)
-        .on("value", snapshot => {
-          updateGameSettings({
-            ...snapshot.val(),
-            gameMode: GAME_MODES.ONLINE_PLAY.TECHNICAL_NAME
-          });
+      firebase.getFromDatabaseListener(`games/${gameId}/settings`, gameSettings => {
+        updateGameSettings({
+          ...gameSettings,
+          gameMode: GAME_MODES.ONLINE_PLAY.TECHNICAL_NAME
         });
+      });
     };
     if (gameId) {
       getGameSettingsFromDb(gameId);

@@ -89,7 +89,7 @@ class Firebase {
       .on("value", snapshot => snapshot.val());
   }
 
-  async getNotificationPermission() {
+  async getNotificationPermission(userId) {
     const messaging = firebaseApp.messaging();
     messaging.usePublicVapidKey(publicVapidKey)
     // Get Instance ID token. Initially this makes a network call, once retrieved
@@ -97,6 +97,9 @@ class Firebase {
     messaging.getToken().then((currentToken) => {
       if (currentToken) {
         console.log({currentToken})
+        firebase.setUser(userId, "messageToken", currentToken)
+
+
         // sendTokenToServer(currentToken);
         // updateUIForPushEnabled(currentToken);
       } else {
