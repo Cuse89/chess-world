@@ -6,14 +6,20 @@ import NameInput from "components/dashboard-online/name-input";
 
 import useAvailableUsers from "hooks/useAvailableUsers";
 import UserAvailability from "components/dashboard-online/user-availability";
+import DashboardButton from "components/dashboard-button";
+import usePushNotifications from "hooks/usePushNotifications";
 
 const DashboardOnline = ({ history }) => {
   const { user } = useContext(Context);
-  const { availableUsers } = useAvailableUsers(user && user.id);
+  const userId = user && user.id;
+  const { availableUsers } = useAvailableUsers(userId);
+  const {
+    isSubscribed,
+    subscribeToNotifications,
+    unsubscribeToNotifications
+  } = usePushNotifications(userId);
 
-  const { userAvailable, updateAvailableUser } = useAvailableUsers(
-    user && user.id
-  );
+  const { userAvailable, updateAvailableUser } = useAvailableUsers(userId);
 
   const login = async () => {
     try {
@@ -43,6 +49,15 @@ const DashboardOnline = ({ history }) => {
         {!user.name && (
           <NameInput user={user} updateAvailableUser={updateAvailableUser} />
         )}
+        <DashboardButton
+          displayText={`Turn ${isSubscribed ? "off" : "on"} notifications`}
+          onClick={
+            isSubscribed ? unsubscribeToNotifications : subscribeToNotifications
+          }
+          fullLength
+          spaceTop
+          type="warning"
+        />
         {user.name && userAvailable && availableUsers.length > 0 && (
           <div>
             <h3>Users available</h3>

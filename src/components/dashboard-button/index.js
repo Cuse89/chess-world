@@ -11,6 +11,7 @@ const DashboardButton = ({
   selected,
   spaceRight,
   spaceBottom,
+  spaceTop,
   useHtml,
   notAvailable
 }) => {
@@ -24,6 +25,7 @@ const DashboardButton = ({
     [styles.selected]: selected,
     [styles.spaceRight]: spaceRight,
     [styles.spaceBottom]: spaceBottom,
+    [styles.spaceTop]: spaceTop,
     [styles.notAvailable]: notAvailable
   });
 
