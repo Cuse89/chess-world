@@ -16,7 +16,8 @@ const DashboardOnline = ({ history }) => {
   const {
     isSubscribed,
     subscribeToNotifications,
-    unsubscribeToNotifications
+    unsubscribeToNotifications,
+    message
   } = usePushNotifications(userId);
 
   const { userAvailable, updateAvailableUser } = useAvailableUsers(userId);
@@ -46,6 +47,7 @@ const DashboardOnline = ({ history }) => {
             updateAvailableUser={updateAvailableUser}
           />
         )}
+        <p> message... {message}</p>
         {!user.name && (
           <NameInput user={user} updateAvailableUser={updateAvailableUser} />
         )}
