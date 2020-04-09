@@ -7,12 +7,13 @@ import firebaseConfig, { publicVapidKey } from "firebase/config";
 
 class Firebase {
   constructor() {
-    console.log("firebase constructor")
+    console.log("firebase constructor");
     firebaseApp.initializeApp(firebaseConfig);
     firebaseApp.analytics();
     this.auth = firebaseApp.auth;
     this.database = firebaseApp.database();
     this.messaging = firebaseApp.messaging();
+    this.messaging.usePublicVapidKey(publicVapidKey);
   }
 
   async login() {
@@ -91,29 +92,30 @@ class Firebase {
   }
 
   async getNotificationPermission(userId) {
-    this.messaging.usePublicVapidKey(publicVapidKey)
     // Get Instance ID token. Initially this makes a network call, once retrieved
-// subsequent calls to getToken will return from cache.
-    console.log("getNotificationPermission")
-    this.messaging.getToken().then((currentToken) => {
-      if (currentToken) {
-        console.log({currentToken})
-        firebase.setUser(userId, "messageToken", currentToken)
-      } else {
-        // Show permission request.
-        console.log('No Instance ID token available. Request permission to generate one.');
-        // Show permission UI.
-        // updateUIForPushPermissionRequired;
-      }
-    }).catch((err) => {
-      console.log('An error occurred while retrieving token. ', err);
-      // showToken('Error retrieving Instance ID token. ', err);
-      // setTokenSentToServer(false);
-    });
-
+    // subsequent calls to getToken will return from cache.
+    console.log("getNotificationPermission");
+    this.messaging
+      .getToken()
+      .then(currentToken => {
+        if (currentToken) {
+          console.log({ currentToken });
+          firebase.setUser(userId, "acceptsNotifications", true);
+        } else {
+          // Show permission request.
+          console.log(
+            "No Instance ID token available. Request permission to generate one."
+          );
+          // Show permission UI.
+          // updateUIForPushPermissionRequired;
+        }
+      })
+      .catch(err => {
+        console.log("An error occurred while retrieving token. ", err);
+        // showToken('Error retrieving Instance ID token. ', err);
+        // setTokenSentToServer(false);
+      });
   }
-
-
 }
 
 const firebase = new Firebase();

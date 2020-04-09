@@ -47,7 +47,7 @@ const DashboardOnline = ({ history }) => {
             updateAvailableUser={updateAvailableUser}
           />
         )}
-        <p> message... {message}</p>
+        {message && <p>{message}</p>}
         {!user.name && (
           <NameInput user={user} updateAvailableUser={updateAvailableUser} />
         )}
