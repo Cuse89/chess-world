@@ -8,7 +8,7 @@ const usePushNotifications = userId => {
 
   const listenToNotificationsSubscribe = () => {
     firebase.getFromDatabaseListener(`users/${userId}`, user => {
-      if (user.acceptsNotifications) {
+      if (!isSubscribed && user.acceptsNotifications) {
         // get new token (if on different device)
         subscribeToNotifications();
         setIsSubscribed(true);
@@ -19,12 +19,45 @@ const usePushNotifications = userId => {
     });
   };
 
+  const getToken = callback => {
+    firebase.messaging
+      .getToken()
+      .then(token => {
+        if (token) {
+          console.log({ token });
+          callback(token);
+        } else {
+          // Show permission request.
+          console.log(
+            "No Instance ID token available. Request permission to generate one."
+          );
+          // Show permission UI.
+          // updateUIForPushPermissionRequired;
+        }
+      })
+      .catch(err => {
+        console.log("An error occurred while retrieving token. ", err);
+        // showToken('Error retrieving Instance ID token. ', err);
+        // setTokenSentToServer(false);
+      });
+  };
+
+  const setAcceptsNotifications = accepts => {
+    firebase.setUser(userId, "acceptsNotifications", accepts);
+  };
+
   const subscribeToNotifications = () => {
-    firebase.getNotificationPermission(userId);
+    console.log("subscribeToNotifications");
+    getToken(() => setAcceptsNotifications(true));
   };
 
   const unsubscribeToNotifications = () => {
     console.log("unsubscribe");
+    getToken(token =>
+      firebase.messaging
+        .deleteToken(token)
+        .then(() => setAcceptsNotifications(false))
+    );
   };
 
   const handleMessageListener = () => {
@@ -34,8 +67,6 @@ const usePushNotifications = userId => {
       setMessage(payload.notification.body);
     });
   };
-
-  useEffect(() => {}, []);
 
   useEffect(() => {
     if (userId) {

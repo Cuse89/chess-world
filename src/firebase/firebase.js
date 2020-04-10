@@ -91,31 +91,7 @@ class Firebase {
       .on("value", snapshot => snapshot.val());
   }
 
-  async getNotificationPermission(userId) {
-    // Get Instance ID token. Initially this makes a network call, once retrieved
-    // subsequent calls to getToken will return from cache.
-    console.log("getNotificationPermission");
-    this.messaging
-      .getToken()
-      .then(currentToken => {
-        if (currentToken) {
-          console.log({ currentToken });
-          firebase.setUser(userId, "acceptsNotifications", true);
-        } else {
-          // Show permission request.
-          console.log(
-            "No Instance ID token available. Request permission to generate one."
-          );
-          // Show permission UI.
-          // updateUIForPushPermissionRequired;
-        }
-      })
-      .catch(err => {
-        console.log("An error occurred while retrieving token. ", err);
-        // showToken('Error retrieving Instance ID token. ', err);
-        // setTokenSentToServer(false);
-      });
-  }
+
 }
 
 const firebase = new Firebase();
