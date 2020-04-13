@@ -3,7 +3,8 @@ import PropTypes from "prop-types";
 import SelectGameType from "components/select-game-type";
 import DashboardButton from "components/dashboard-button";
 import useGameSettings from "hooks/useGameSettings";
-import { GAME_TYPES, TRAPDOOR_AMOUNTS } from "utils/constants";
+import { GAME_TYPES } from "utils/constants";
+import TrapdoorOptions from "components/create-game/trapdoor";
 
 import styles from "./CreateGame.module.scss";
 
@@ -21,22 +22,10 @@ const CreateGame = ({ onSubmit, noHeader, submitText }) => {
         gameType={gameType}
       />
       {gameType === GAME_TYPES.TRAPDOOR.TECHNICAL_NAME && (
-        <div>
-          <h4>Amount of trapdoors per player</h4>
-          <div className={styles.trapdoors}>
-            {TRAPDOOR_AMOUNTS.map(amount => (
-              <DashboardButton
-                key={`trapdoor-button-${amount}`}
-                displayText={amount}
-                onClick={() => updateGameSettings({ trapdoorsAmount: amount })}
-                selected={amount === trapdoorsAmount}
-                fullLength
-                spaceBottom
-                spaceRight
-              />
-            ))}
-          </div>
-        </div>
+        <TrapdoorOptions
+          updateGameSettings={updateGameSettings}
+          trapdoorsAmount={trapdoorsAmount}
+        />
       )}
       <DashboardButton
         displayText={submitText}

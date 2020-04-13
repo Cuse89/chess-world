@@ -16,9 +16,7 @@ exports.notifyUsersTurn = functions.database
           let userId = "";
           let opponentId = "";
           const game = gameSnapshot.val();
-          console.log("oooo", game);
           Object.keys(game.users).forEach(id => {
-            console.log("eee", id);
             if (game.users[id].color === game.turn) {
               userId = id;
             } else {
@@ -43,8 +41,8 @@ exports.notifyUsersTurn = functions.database
     const payload = {
       notification: {
         title: "It's your turn!",
-        body: `${opponentId} took their turn`
-        // icon: follower.photoURL
+        body: `${opponentId} took their turn`,
+        icon: "/android-chrome-192x192.png",
       }
     };
 

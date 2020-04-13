@@ -32,7 +32,7 @@ export const DEFAULT_TURN = "white";
 export const DEFAULT_FALLEN = {
   white: [],
   black: []
-}
+};
 
 export const EMPTY_SQUARE = {
   player: "",
@@ -56,5 +56,10 @@ export const GAME_MODE_HAS_GAME_TYPE = {
     GAME_TYPES.STANDARD.TECHNICAL_NAME,
     GAME_TYPES.TRAPDOOR.TECHNICAL_NAME,
     GAME_TYPES.TRIVIA.TECHNICAL_NAME
-  ],
+  ]
+};
+
+export const TRAPDOOR = {
+  AMOUNTS: [1, 2, 3, 4],
+  DEFAULT_AMOUNT: 1
 };

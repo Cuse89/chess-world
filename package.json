@@ -32,9 +32,7 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "deploy": "firebase deploy",
-    "dev": "run-p --race dev:firebase dev:react",
-    "dev:firebase": "firebase serve -p 4000",
-    "dev:react": "react-scripts start"
+    "firebase": "firebase serve -p 4000"
   },
   "eslintConfig": {
     "extends": "react-app"
