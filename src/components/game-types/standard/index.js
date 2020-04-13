@@ -56,7 +56,6 @@ const StandardChess = ({ history }) => {
       if (inCheckmate) {
         newMessage = `Checkmate. ${turn} wins`;
       }
-      console.log("xxxx", message, newMessage);
       if (message !== newMessage) {
         setMessage(newMessage);
       }

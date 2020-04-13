@@ -166,12 +166,12 @@ const useGameState = ({ gameMode, gameId, userId }) => {
               inCheckmate: game.inCheckmate
             });
           } else {
-            console.log("game doesnt exist");
             setGameExists(false);
           }
         });
       }
     };
+
     if (gameId && userId) {
       gameListener();
     }
