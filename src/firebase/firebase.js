@@ -17,11 +17,19 @@ class Firebase {
   }
 
   async login() {
-    await this.auth().signInWithPopup(new firebase.auth.GoogleAuthProvider());
+    try {
+      await this.auth().signInWithPopup(new firebase.auth.GoogleAuthProvider());
+    } catch (err) {
+      console.log(err);
+    }
   }
 
   async logout() {
-    await this.auth().signOut();
+    try {
+      await this.auth().signOut();
+    } catch (err) {
+      console.log(err);
+    }
   }
 
   async updateDatabase(url, value) {
@@ -90,8 +98,6 @@ class Firebase {
       .ref(`games/${gameId}/settings`)
       .on("value", snapshot => snapshot.val());
   }
-
-
 }
 
 const firebase = new Firebase();

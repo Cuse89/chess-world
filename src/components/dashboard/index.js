@@ -10,16 +10,11 @@ import styles from "./Dashboard.module.scss";
 
 const Dashboard = ({ history }) => {
   const { gameSettings } = useContext(Context);
+  const { gameMode } = gameSettings;
   const { updateGameSettings } = gameSettings;
-  const [section, setSection] = useState("selectGameMode");
 
   const onGameModeClick = gameMode => {
-    updateGameSettings({ gameMode });
-    if (gameMode === GAME_MODES.ONLINE_PLAY.TECHNICAL_NAME) {
-      setSection("online");
-    } else {
-      setSection("createGame");
-    }
+    updateGameSettings({ gameMode, gameType: "" });
   };
 
   const onCreateGameSubmit = settings => {
@@ -29,11 +24,17 @@ const Dashboard = ({ history }) => {
 
   return (
     <div className={styles.root}>
-      {section === "selectGameMode" && (
-        <SelectGameMode history={history} onGameModeClick={onGameModeClick} />
+      <SelectGameMode
+        onGameModeClick={onGameModeClick}
+        gameMode={gameSettings.gameMode}
+      />
+      {gameMode === GAME_MODES.ONLINE_PLAY.TECHNICAL_NAME && (
+        <DashboardOnline />
       )}
-      {section === "online" && <DashboardOnline history={history} />}
-      {section === "createGame" && <CreateGame onSubmit={onCreateGameSubmit} />}
+      {gameMode !== GAME_MODES.ONLINE_PLAY.TECHNICAL_NAME &&
+        gameMode !== "" && (
+          <CreateGame onSubmit={onCreateGameSubmit} submitText="Play game!" />
+        )}
     </div>
   );
 };

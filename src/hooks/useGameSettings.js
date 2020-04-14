@@ -10,8 +10,8 @@ import firebase from "../firebase";
 const useGameSettings = () => {
   const [gameId, setGameId] = useState("");
   const [gameSettings, setGameSettings] = useState({
-    gameMode: GAME_MODES.ONE_PLAYER.TECHNICAL_NAME,
-    gameType: GAME_TYPES.STANDARD.TECHNICAL_NAME,
+    gameMode: "",
+    gameType: "",
     trapdoorsAmount: DEFAULT_TRAPDOOR_AMOUNT
   });
 

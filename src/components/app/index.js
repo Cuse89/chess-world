@@ -1,6 +1,7 @@
 import React from "react";
 import { BrowserRouter, Switch, Route } from "react-router-dom";
 
+import Context from "context";
 import Dashboard from "components/dashboard";
 import StandardChess from "components/game-types/standard";
 import TrapdoorChess from "components/game-types/trapdoor";
@@ -8,10 +9,9 @@ import TriviaChess from "components/game-types/trivia";
 import Header from "components/header";
 import useGameSettings from "hooks/useGameSettings";
 import useUser from "hooks/useUser";
-import Context from "context";
-
-import styles from "./App.module.scss";
 import Footer from "components/footer";
+import styles from "./App.module.scss";
+
 
 const App = () => {
   const gameSettings = useGameSettings();

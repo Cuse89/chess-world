@@ -8,15 +8,14 @@ import TrapdoorOptions from "components/create-game/trapdoor";
 
 import styles from "./CreateGame.module.scss";
 
-const CreateGame = ({ onSubmit, noHeader, submitText }) => {
+const CreateGame = ({ onSubmit, submitText }) => {
   const { updateGameSettings, gameType, trapdoorsAmount } = useGameSettings();
   const handleOnSubmit = () => {
     onSubmit({ gameType, trapdoorsAmount });
   };
 
   return (
-    <div className={styles.root}>
-      {!noHeader && <h3>Create your game</h3>}
+    <div>
       <SelectGameType
         onChange={gameType => updateGameSettings({ gameType })}
         gameType={gameType}
@@ -32,6 +31,7 @@ const CreateGame = ({ onSubmit, noHeader, submitText }) => {
         onClick={handleOnSubmit}
         fullLength
         type="warning"
+        className={styles.submit}
       />
     </div>
   );
@@ -39,14 +39,12 @@ const CreateGame = ({ onSubmit, noHeader, submitText }) => {
 
 CreateGame.defaultProps = {
   useCompact: true,
-  noHeader: false,
   submitText: "Submit"
 };
 
 CreateGame.propTypes = {
   onSubmit: PropTypes.func.isRequired,
   useCompact: PropTypes.bool,
-  noHeader: PropTypes.bool,
   submitText: PropTypes.string
 };
 

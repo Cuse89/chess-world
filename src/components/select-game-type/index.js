@@ -8,6 +8,7 @@ import styles from "./SelectGameType.module.scss";
 const SelectGameType = ({ onChange, gameType }) => {
   const { gameSettings } = useContext(Context);
   const { gameMode } = gameSettings;
+  console.log("seelct game type , gameMode", gameMode)
   return (
     <div className={styles.root}>
       {GAME_MODE_HAS_GAME_TYPE[gameMode].includes(

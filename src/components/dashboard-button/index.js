@@ -13,9 +13,11 @@ const DashboardButton = ({
   spaceBottom,
   spaceTop,
   useHtml,
-  notAvailable
+  notAvailable,
+  className
 }) => {
-  const className = cx({
+  const rootClassName = cx({
+    [className]: className,
     [styles.root]: true,
     [styles.default]: type === "default",
     [styles.error]: type === "error",
@@ -30,7 +32,7 @@ const DashboardButton = ({
   });
 
   return (
-    <div className={className} onClick={onClick}>
+    <div className={rootClassName} onClick={onClick}>
       {!useHtml ? (
         displayText
       ) : (

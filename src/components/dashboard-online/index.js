@@ -9,7 +9,7 @@ import UserAvailability from "components/dashboard-online/user-availability";
 import DashboardButton from "components/dashboard-button";
 import usePushNotifications from "hooks/usePushNotifications";
 
-const DashboardOnline = ({ history }) => {
+const DashboardOnline = () => {
   const { user } = useContext(Context);
   const userId = user && user.id;
   const { availableUsers } = useAvailableUsers(userId);
@@ -23,11 +23,7 @@ const DashboardOnline = ({ history }) => {
   const { userAvailable, updateAvailableUser } = useAvailableUsers(userId);
 
   const login = async () => {
-    try {
-      await firebase.login();
-    } catch (err) {
-      console.log(err);
-    }
+    await firebase.login();
   };
 
   useEffect(() => {
@@ -66,7 +62,6 @@ const DashboardOnline = ({ history }) => {
             {availableUsers.map(availableUser => (
               <ChallengePlayer
                 key={`challenge-${availableUser.id}`}
-                history={history}
                 availableUser={availableUser}
               />
             ))}

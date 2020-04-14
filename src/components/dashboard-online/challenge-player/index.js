@@ -1,11 +1,13 @@
 import React, { useContext, useState } from "react";
+import { useHistory } from "react-router-dom";
 import CreateGame from "components/create-game";
 import ChallengeButton from "components/dashboard-online/challenge-button";
 import Context from "context";
 import firebase from "../../../firebase";
 import styles from "./ChallengePlayer.module.scss";
 
-const ChallengePlayer = ({ history, availableUser }) => {
+const ChallengePlayer = ({ availableUser }) => {
+  let history = useHistory();
   const { user } = useContext(Context);
   const [showCreateGame, toggleShowCreateGame] = useState(false);
 
@@ -29,11 +31,7 @@ const ChallengePlayer = ({ history, availableUser }) => {
 
   const onCreateGameSubmit = async (settings, opponentId) => {
     toggleShowCreateGame(false);
-    try {
-      await updateGameRequest(user.id, opponentId, { ...settings });
-    } catch (err) {
-      console.log(err);
-    }
+    await updateGameRequest(user.id, opponentId, { ...settings });
   };
 
   return (
@@ -50,7 +48,6 @@ const ChallengePlayer = ({ history, availableUser }) => {
       {showCreateGame && (
         <CreateGame
           onSubmit={settings => onCreateGameSubmit(settings, availableUser.id)}
-          noHeader
           submitText="Click here to challenge"
         />
       )}

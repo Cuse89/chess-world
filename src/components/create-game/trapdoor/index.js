@@ -1,12 +1,12 @@
-import React from "react";
-import styles from "components/create-game/CreateGame.module.scss";
+import React, {Fragment} from "react";
 import { TRAPDOOR_AMOUNTS } from "utils/constants";
 import DashboardButton from "components/dashboard-button";
+import styles from "./TrapdoorOptions.module.scss"
 
 const TrapdoorOptions = ({ updateGameSettings, trapdoorsAmount }) => (
-  <div>
+  <Fragment>
     <h4>Amount of trapdoors per player</h4>
-    <div className={styles.trapdoors}>
+    <div className={styles.root}>
       {TRAPDOOR_AMOUNTS.map(amount => (
         <DashboardButton
           key={`trapdoor-button-${amount}`}
@@ -19,7 +19,7 @@ const TrapdoorOptions = ({ updateGameSettings, trapdoorsAmount }) => (
         />
       ))}
     </div>
-  </div>
+  </Fragment>
 );
 
 export default TrapdoorOptions;
