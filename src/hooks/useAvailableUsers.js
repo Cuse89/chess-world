@@ -16,7 +16,11 @@ const useAvailableUsers = userId => {
     );
 
   const updateAvailableUser = async (userId, value) => {
-    await firebase.updateDatabase("availableUsers", { [userId]: value })
+    try {
+      await firebase.updateDatabase("availableUsers", { [userId]: value });
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   useEffect(() => {

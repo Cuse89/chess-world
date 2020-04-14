@@ -56,6 +56,21 @@
   }
 }
 
+.primary {
+  border: 1px $active-color solid;
+  color: $active-color;
+
+  &:hover,
+  &.selected {
+    background: $active-color;
+    color: white;
+  }
+}
+
+.spaceLeft {
+  margin-left: 10px;
+}
+
 .spaceRight {
   margin-right: 10px;
 }

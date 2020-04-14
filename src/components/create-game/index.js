@@ -28,12 +28,13 @@ const CreateGame = ({ onSubmit, submitText }) => {
       )}
       {gameType && (
         <DashboardButton
-          displayText={submitText}
           onClick={handleOnSubmit}
           fullLength
           type="warning"
           className={styles.submit}
-        />
+        >
+          {submitText}
+        </DashboardButton>
       )}
     </div>
   );

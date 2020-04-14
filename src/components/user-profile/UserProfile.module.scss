@@ -1,0 +1,24 @@
+
+.section {
+  margin-top: 10px;
+}
+
+.name {
+  display: flex;
+  align-items: baseline;
+}
+
+
+
+.pen {
+  margin-left: 10px;
+  cursor: pointer;
+}
+
+.positive {
+  color: green;
+}
+
+.negative {
+  color: red;
+}

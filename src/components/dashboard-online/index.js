@@ -5,7 +5,7 @@ import ChallengePlayer from "components/dashboard-online/challenge-player";
 import NameInput from "components/dashboard-online/name-input";
 
 import useAvailableUsers from "hooks/useAvailableUsers";
-import UserAvailability from "components/dashboard-online/user-availability";
+import UserAvailability from "components/user-profile/user-availability-setting";
 import DashboardButton from "components/dashboard-button";
 import usePushNotifications from "hooks/usePushNotifications";
 
@@ -20,7 +20,7 @@ const DashboardOnline = () => {
     message
   } = usePushNotifications(userId);
 
-  const { userAvailable, updateAvailableUser } = useAvailableUsers(userId);
+  const { userAvailable } = useAvailableUsers(userId);
 
   const login = async () => {
     await firebase.login();
@@ -36,26 +36,10 @@ const DashboardOnline = () => {
     return (
       <div>
         <h3>Online play</h3>
-        {user.name && (
-          <UserAvailability
-            user={user}
-            userAvailable={userAvailable}
-            updateAvailableUser={updateAvailableUser}
-          />
-        )}
         {message && <p>{message}</p>}
         {!user.name && (
-          <NameInput user={user} updateAvailableUser={updateAvailableUser} />
+          <NameInput user={user} />
         )}
-        <DashboardButton
-          displayText={`Turn ${isSubscribed ? "off" : "on"} notifications`}
-          onClick={
-            isSubscribed ? unsubscribeToNotifications : subscribeToNotifications
-          }
-          fullLength
-          spaceTop
-          type="warning"
-        />
         {user.name && userAvailable && availableUsers.length > 0 && (
           <div>
             <h3>Users available</h3>

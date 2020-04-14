@@ -52,20 +52,19 @@ const ChallengeButton = ({
 
   const getButton = () => {
     let button = (
-      <DashboardButton
-        displayText={"Challenge"}
-        onClick={() => toggleShowCreateGame(true)}
-        fullLength
-      />
+      <DashboardButton onClick={() => toggleShowCreateGame(true)} fullLength>
+        Challenge
+      </DashboardButton>
     );
     if (user.requestsOutgoing && user.requestsOutgoing[opponentId]) {
       button = (
         <DashboardButton
-          displayText={"Challenge request sent"}
           onClick={() => updateGameRequest(user.id, opponentId, null)}
           type={"warning"}
           fullLength
-        />
+        >
+          Challenge request sent
+        </DashboardButton>
       );
     }
     if (user.requestsIncoming && user.requestsIncoming[opponentId]) {
@@ -74,11 +73,10 @@ const ChallengeButton = ({
       const gameTypeText = getPrettyFromTechnicalName(GAME_TYPES, gameType);
       button = (
         <DashboardButton
-          displayText={`Incoming ${gameTypeText} request. Click to play!`}
           onClick={() => handleStartNewGame(opponentId, gameSettings)}
           type={"accept"}
           fullLength
-        />
+        >{`Incoming ${gameTypeText} request. Click to play!`}</DashboardButton>
       );
     }
 
@@ -87,11 +85,12 @@ const ChallengeButton = ({
       const gameType = gameState.settings.gameType;
       button = (
         <DashboardButton
-          displayText={"Game in progress. Join Game"}
           onClick={() => joinGame(gameType, gameId)}
           type={"accept"}
           fullLength
-        />
+        >
+          Game in progress. Join Game
+        </DashboardButton>
       );
     }
     return button;

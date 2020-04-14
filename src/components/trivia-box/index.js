@@ -45,7 +45,7 @@ const TriviaBox = ({
 
   useEffect(() => {
     const handleAnswerQuestion = () => {
-      console.log("handleAnswerQuestion")
+      console.log("handleAnswerQuestion");
       const answeredCorrect = answer === trivia.correct_answer;
       setTimeout(() => {
         if (answeredCorrect) {
@@ -61,12 +61,12 @@ const TriviaBox = ({
     // eslint-disable-next-line
   }, [answer]);
 
-  const getOptionType = (option) => {
+  const getOptionType = option => {
     if (answer) {
       return option === trivia.correct_answer ? "accept" : "error";
     }
     return "default";
-  }
+  };
 
   if (trivia.question) {
     return (
@@ -78,14 +78,15 @@ const TriviaBox = ({
         {options.map((option, i) => (
           <DashboardButton
             key={i}
-            displayText={option}
             onClick={() => !answer && setAnswer(option)}
             fullLength
             spaceBottom
             useHtml
             type={getOptionType(option)}
             notAvailable={answer}
-          />
+          >
+            {option}
+          </DashboardButton>
         ))}
       </div>
     );

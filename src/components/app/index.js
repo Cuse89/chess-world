@@ -15,10 +15,10 @@ import styles from "./App.module.scss";
 
 const App = () => {
   const gameSettings = useGameSettings();
-  const user = useUser();
+  const { user, fetchingUser } = useUser();
   return (
     <BrowserRouter>
-      <Context.Provider value={{ gameSettings, user }}>
+      <Context.Provider value={{ gameSettings, user, fetchingUser }}>
         <div className={styles.root}>
           <Header />
           <Switch>

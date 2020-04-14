@@ -18,6 +18,7 @@ class Firebase {
 
   async login() {
     try {
+      console.log("logiin")
       await this.auth().signInWithPopup(new firebase.auth.GoogleAuthProvider());
     } catch (err) {
       console.log(err);
@@ -26,7 +27,7 @@ class Firebase {
 
   async logout() {
     try {
-      await this.auth().signOut();
+      await firebaseApp.auth().signOut();
     } catch (err) {
       console.log(err);
     }

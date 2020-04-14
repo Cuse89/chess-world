@@ -7,29 +7,32 @@ const SelectGameMode = ({ onGameModeClick, gameMode }) => (
   <div className={styles.root}>
     <div className={styles.selects}>
       <DashboardButton
-        displayText={GAME_MODES.ONE_PLAYER.PRETTY}
         onClick={() => onGameModeClick(GAME_MODES.ONE_PLAYER.TECHNICAL_NAME)}
         selected={gameMode === GAME_MODES.ONE_PLAYER.TECHNICAL_NAME}
         spaceRight
         spaceBottom
         faded={gameMode && gameMode !== GAME_MODES.ONE_PLAYER.TECHNICAL_NAME}
-      />
+      >
+        {GAME_MODES.ONE_PLAYER.PRETTY}
+      </DashboardButton>
       <DashboardButton
-        displayText={GAME_MODES.TWO_PLAYER.PRETTY}
         onClick={() => onGameModeClick(GAME_MODES.TWO_PLAYER.TECHNICAL_NAME)}
         selected={gameMode === GAME_MODES.TWO_PLAYER.TECHNICAL_NAME}
         spaceRight
         spaceBottom
         faded={gameMode && gameMode !== GAME_MODES.TWO_PLAYER.TECHNICAL_NAME}
-      />
+      >
+        {GAME_MODES.TWO_PLAYER.PRETTY}
+      </DashboardButton>
       <DashboardButton
-        displayText={GAME_MODES.ONLINE_PLAY.PRETTY}
         onClick={() => onGameModeClick(GAME_MODES.ONLINE_PLAY.TECHNICAL_NAME)}
         selected={gameMode === GAME_MODES.ONLINE_PLAY.TECHNICAL_NAME}
         spaceRight
         spaceBottom
         faded={gameMode && gameMode !== GAME_MODES.ONLINE_PLAY.TECHNICAL_NAME}
-      />
+      >
+        {GAME_MODES.ONLINE_PLAY.PRETTY}
+      </DashboardButton>
     </div>
   </div>
 );

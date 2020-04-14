@@ -1,7 +1,7 @@
-import React, {Fragment} from "react";
+import React, { Fragment } from "react";
 import { TRAPDOOR_AMOUNTS } from "utils/constants";
 import DashboardButton from "components/dashboard-button";
-import styles from "./TrapdoorOptions.module.scss"
+import styles from "./TrapdoorOptions.module.scss";
 
 const TrapdoorOptions = ({ updateGameSettings, trapdoorsAmount }) => (
   <Fragment>
@@ -10,13 +10,14 @@ const TrapdoorOptions = ({ updateGameSettings, trapdoorsAmount }) => (
       {TRAPDOOR_AMOUNTS.map(amount => (
         <DashboardButton
           key={`trapdoor-button-${amount}`}
-          displayText={amount}
           onClick={() => updateGameSettings({ trapdoorsAmount: amount })}
           selected={amount === trapdoorsAmount}
           fullLength
           spaceBottom
           spaceRight
-        />
+        >
+          {amount}
+        </DashboardButton>
       ))}
     </div>
   </Fragment>

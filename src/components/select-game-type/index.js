@@ -14,37 +14,40 @@ const SelectGameType = ({ onChange, gameType }) => {
         GAME_TYPES.STANDARD.TECHNICAL_NAME
       ) && (
         <DashboardButton
-          displayText={GAME_TYPES.STANDARD.PRETTY}
           onClick={() => onChange(GAME_TYPES.STANDARD.TECHNICAL_NAME)}
           selected={gameType === GAME_TYPES.STANDARD.TECHNICAL_NAME}
           faded={gameType && gameType !== GAME_TYPES.STANDARD.TECHNICAL_NAME}
           spaceRight
           spaceBottom
-        />
+        >
+          {GAME_TYPES.STANDARD.PRETTY}
+        </DashboardButton>
       )}
       {GAME_MODE_HAS_GAME_TYPE[gameMode].includes(
         GAME_TYPES.TRAPDOOR.TECHNICAL_NAME
       ) && (
         <DashboardButton
-          displayText={GAME_TYPES.TRAPDOOR.PRETTY}
           onClick={() => onChange(GAME_TYPES.TRAPDOOR.TECHNICAL_NAME)}
           selected={gameType === GAME_TYPES.TRAPDOOR.TECHNICAL_NAME}
           faded={gameType && gameType !== GAME_TYPES.TRAPDOOR.TECHNICAL_NAME}
           spaceRight
           spaceBottom
-        />
+        >
+          {GAME_TYPES.TRAPDOOR.PRETTY}
+        </DashboardButton>
       )}
       {GAME_MODE_HAS_GAME_TYPE[gameMode].includes(
         GAME_TYPES.TRIVIA.TECHNICAL_NAME
       ) && (
         <DashboardButton
-          displayText={GAME_TYPES.TRIVIA.PRETTY}
           onClick={() => onChange(GAME_TYPES.TRIVIA.TECHNICAL_NAME)}
           selected={gameType === GAME_TYPES.TRIVIA.TECHNICAL_NAME}
           faded={gameType && gameType !== GAME_TYPES.TRIVIA.TECHNICAL_NAME}
           spaceRight
           spaceBottom
-        />
+        >
+          {GAME_TYPES.TRIVIA.PRETTY}
+        </DashboardButton>
       )}
     </div>
   );
