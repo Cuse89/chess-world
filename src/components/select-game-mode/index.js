@@ -12,6 +12,7 @@ const SelectGameMode = ({ onGameModeClick, gameMode }) => (
         selected={gameMode === GAME_MODES.ONE_PLAYER.TECHNICAL_NAME}
         spaceRight
         spaceBottom
+        faded={gameMode && gameMode !== GAME_MODES.ONE_PLAYER.TECHNICAL_NAME}
       />
       <DashboardButton
         displayText={GAME_MODES.TWO_PLAYER.PRETTY}
@@ -19,6 +20,7 @@ const SelectGameMode = ({ onGameModeClick, gameMode }) => (
         selected={gameMode === GAME_MODES.TWO_PLAYER.TECHNICAL_NAME}
         spaceRight
         spaceBottom
+        faded={gameMode && gameMode !== GAME_MODES.TWO_PLAYER.TECHNICAL_NAME}
       />
       <DashboardButton
         displayText={GAME_MODES.ONLINE_PLAY.PRETTY}
@@ -26,6 +28,7 @@ const SelectGameMode = ({ onGameModeClick, gameMode }) => (
         selected={gameMode === GAME_MODES.ONLINE_PLAY.TECHNICAL_NAME}
         spaceRight
         spaceBottom
+        faded={gameMode && gameMode !== GAME_MODES.ONLINE_PLAY.TECHNICAL_NAME}
       />
     </div>
   </div>

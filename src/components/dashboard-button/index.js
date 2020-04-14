@@ -14,6 +14,7 @@ const DashboardButton = ({
   spaceTop,
   useHtml,
   notAvailable,
+  faded,
   className
 }) => {
   const rootClassName = cx({
@@ -28,7 +29,8 @@ const DashboardButton = ({
     [styles.spaceRight]: spaceRight,
     [styles.spaceBottom]: spaceBottom,
     [styles.spaceTop]: spaceTop,
-    [styles.notAvailable]: notAvailable
+    [styles.notAvailable]: notAvailable,
+    [styles.faded]: faded
   });
 
   return (

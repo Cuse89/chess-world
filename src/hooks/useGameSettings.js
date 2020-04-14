@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import {
   DEFAULT_TRAPDOOR_AMOUNT,
   GAME_MODES,
-  GAME_TYPES
 } from "utils/constants";
 
 import firebase from "../firebase";

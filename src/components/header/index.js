@@ -10,9 +10,9 @@ const Header = () => {
     updateGameSettings({ gameMode: "", gameType: "" });
   };
   return (
-    <header className={styles.root}>
+    <header onClick={onHeaderClick} className={styles.root}>
       <NavLink to="/">
-        <h3 onClick={onHeaderClick}>Chess World</h3>
+        <h3>Chess World</h3>
       </NavLink>
     </header>
   );

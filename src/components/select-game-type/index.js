@@ -8,7 +8,6 @@ import styles from "./SelectGameType.module.scss";
 const SelectGameType = ({ onChange, gameType }) => {
   const { gameSettings } = useContext(Context);
   const { gameMode } = gameSettings;
-  console.log("seelct game type , gameMode", gameMode)
   return (
     <div className={styles.root}>
       {GAME_MODE_HAS_GAME_TYPE[gameMode].includes(
@@ -18,7 +17,7 @@ const SelectGameType = ({ onChange, gameType }) => {
           displayText={GAME_TYPES.STANDARD.PRETTY}
           onClick={() => onChange(GAME_TYPES.STANDARD.TECHNICAL_NAME)}
           selected={gameType === GAME_TYPES.STANDARD.TECHNICAL_NAME}
-          fullLength
+          faded={gameType && gameType !== GAME_TYPES.STANDARD.TECHNICAL_NAME}
           spaceRight
           spaceBottom
         />
@@ -30,7 +29,7 @@ const SelectGameType = ({ onChange, gameType }) => {
           displayText={GAME_TYPES.TRAPDOOR.PRETTY}
           onClick={() => onChange(GAME_TYPES.TRAPDOOR.TECHNICAL_NAME)}
           selected={gameType === GAME_TYPES.TRAPDOOR.TECHNICAL_NAME}
-          fullLength
+          faded={gameType && gameType !== GAME_TYPES.TRAPDOOR.TECHNICAL_NAME}
           spaceRight
           spaceBottom
         />
@@ -42,7 +41,7 @@ const SelectGameType = ({ onChange, gameType }) => {
           displayText={GAME_TYPES.TRIVIA.PRETTY}
           onClick={() => onChange(GAME_TYPES.TRIVIA.TECHNICAL_NAME)}
           selected={gameType === GAME_TYPES.TRIVIA.TECHNICAL_NAME}
-          fullLength
+          faded={gameType && gameType !== GAME_TYPES.TRIVIA.TECHNICAL_NAME}
           spaceRight
           spaceBottom
         />

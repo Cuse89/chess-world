@@ -26,13 +26,15 @@ const CreateGame = ({ onSubmit, submitText }) => {
           trapdoorsAmount={trapdoorsAmount}
         />
       )}
-      <DashboardButton
-        displayText={submitText}
-        onClick={handleOnSubmit}
-        fullLength
-        type="warning"
-        className={styles.submit}
-      />
+      {gameType && (
+        <DashboardButton
+          displayText={submitText}
+          onClick={handleOnSubmit}
+          fullLength
+          type="warning"
+          className={styles.submit}
+        />
+      )}
     </div>
   );
 };
