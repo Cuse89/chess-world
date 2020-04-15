@@ -9,7 +9,7 @@ import UserProfile from "components/user-profile";
 
 const Header = () => {
   const { gameSettings } = useContext(Context);
-  const { user, fetchingUser } = useContext(Context);
+  const { user } = useContext(Context);
   const { updateGameSettings } = gameSettings;
   const [showUserSettings, setShowUserSettings] = useState(false);
   const onHeaderClick = () => {
@@ -24,12 +24,12 @@ const Header = () => {
       <NavLink to="/">
         <h3>Chess World</h3>
       </NavLink>
-      {!fetchingUser && !user && (
+      {!user && (
         <DashboardButton onClick={login} fullLength type="inverse">
           Login
         </DashboardButton>
       )}
-      {!fetchingUser && user && (
+      {user && (
         <DashboardButton
           onClick={() => setShowUserSettings(true)}
           fullLength

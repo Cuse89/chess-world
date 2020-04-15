@@ -18,7 +18,7 @@ class Firebase {
 
   async login() {
     try {
-      console.log("logiin")
+      console.log("logiin");
       await this.auth().signInWithPopup(new firebase.auth.GoogleAuthProvider());
     } catch (err) {
       console.log(err);
@@ -80,14 +80,18 @@ class Firebase {
 
   async getUsersFromIds(ids, filterFunc = () => true) {
     const users = [];
-    return await this.getFromDatabaseOnce("users", allUsers => {
-      Object.keys(ids).forEach(userId => {
-        if (filterFunc(userId)) {
-          users.push({ ...allUsers[userId], id: userId });
-        }
+    try {
+      return await this.getFromDatabaseOnce("users", allUsers => {
+        Object.keys(ids).forEach(userId => {
+          if (filterFunc(userId)) {
+            users.push({ ...allUsers[userId], id: userId });
+          }
+        });
+        return users;
       });
-      return users;
-    });
+    } catch (err) {
+      console.log(err);
+    }
   }
 
   async updateGame(gameId, value) {

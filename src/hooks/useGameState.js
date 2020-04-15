@@ -27,7 +27,7 @@ const useGameState = ({ gameMode, gameId, userId }) => {
 
   const [gameExists, setGameExists] = useState(true);
 
-  const { board, turn, fallen, users } = gameState;
+  const { board, turn, fallen, users, inCheckmate } = gameState;
 
   const isOnePlayer = gameMode === GAME_MODES.ONE_PLAYER.TECHNICAL_NAME;
   const isTwoPlayer = gameMode === GAME_MODES.TWO_PLAYER.TECHNICAL_NAME;
@@ -144,6 +144,29 @@ const useGameState = ({ gameMode, gameId, userId }) => {
     }
   }
 
+  async function handleGameEnded()  {
+    if (isOnlinePlay) {
+      console.log("eeee", users, userId)
+      const lostGame = users[userId].color === inCheckmate;
+      const user = await firebase.getFromDatabaseOnce(`users/${userId}`, user => user);
+      const gamesWon = user.gameStats ? user.gameStats.won : 0;
+      const gamesLost = user.gameStats ? user.gameStats.lost : 0;
+      console.log({ lostGame });
+      try {
+        // remove game from user
+        await firebase.updateUser(userId, "games", { [gameId]: null });
+        // update wins or losses
+        await firebase.updateUser(userId, "gameStats", {
+          played: user.gameStats ? user.gameStats.played + 1 : 1,
+          won: lostGame ? gamesWon : gamesWon + 1,
+          lost: lostGame ? gamesLost + 1 : gamesLost
+        });
+      } catch (err) {
+        console.log(err);
+      }
+    }
+  }
+
   useEffect(() => {
     const gameListener = () => {
       if (isOnlinePlay) {
@@ -188,7 +211,8 @@ const useGameState = ({ gameMode, gameId, userId }) => {
     performMove,
     updateBoard,
     gameExists,
-    switchTurns
+    switchTurns,
+    handleGameEnded
   };
 };
 

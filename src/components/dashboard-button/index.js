@@ -2,6 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import cx from "classnames";
 import styles from "components/dashboard-button/DashboardButton.module.scss";
+import Loader from "components/loader";
 
 const DashboardButton = ({
   children,
@@ -14,9 +15,10 @@ const DashboardButton = ({
   spaceBottom,
   spaceTop,
   useHtml,
-  notAvailable,
+  disabled,
   faded,
-  className
+  className,
+  isLoading
 }) => {
   const rootClassName = cx({
     [className]: className,
@@ -33,23 +35,26 @@ const DashboardButton = ({
     [styles.spaceRight]: spaceRight,
     [styles.spaceBottom]: spaceBottom,
     [styles.spaceTop]: spaceTop,
-    [styles.notAvailable]: notAvailable,
+    [styles.disabled]: disabled,
     [styles.faded]: faded
   });
 
   return (
-    <div className={rootClassName} onClick={onClick}>
-      {!useHtml ? (
-        children
-      ) : (
-        <div dangerouslySetInnerHTML={{ __html: children }} />
-      )}
-    </div>
+    <Loader size="small" isContained show={isLoading} delay={500}>
+      <div className={rootClassName} onClick={onClick}>
+        {!useHtml ? (
+          children
+        ) : (
+          <div dangerouslySetInnerHTML={{ __html: children }} />
+        )}
+      </div>{" "}
+    </Loader>
   );
 };
 
 DashboardButton.defaultProps = {
-  type: "default"
+  type: "default",
+  isLoading: false
 };
 
 DashboardButton.propTypes = {
@@ -61,7 +66,8 @@ DashboardButton.propTypes = {
     "accept",
     "primary",
     "inverse"
-  ])
+  ]),
+  isLoading: PropTypes.bool
 };
 
 export default DashboardButton;

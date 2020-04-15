@@ -83,7 +83,7 @@ const TriviaBox = ({
             spaceBottom
             useHtml
             type={getOptionType(option)}
-            notAvailable={answer}
+            disabled={answer}
           >
             {option}
           </DashboardButton>

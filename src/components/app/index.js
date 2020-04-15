@@ -17,21 +17,20 @@ import Loader from "components/loader";
 const App = () => {
   const gameSettings = useGameSettings();
   const { user, fetchingUser } = useUser();
-  if (fetchingUser) {
-    return <Loader size="large"/>
-  }
   return (
     <BrowserRouter>
       <Context.Provider value={{ gameSettings, user, fetchingUser }}>
         <div className={styles.root}>
-          <Header />
-          <Switch>
-            <Route exact path="/" component={Dashboard} />
-            <Route path="/standard" component={StandardChess} />
-            <Route path="/trapdoor" component={TrapdoorChess} />
-            <Route path="/trivia" component={TriviaChess} />
-          </Switch>
-          <Footer />
+          <Loader show={fetchingUser} size="large">
+            <Header />
+            <Switch>
+              <Route exact path="/" component={Dashboard} />
+              <Route path="/standard" component={StandardChess} />
+              <Route path="/trapdoor" component={TrapdoorChess} />
+              <Route path="/trivia" component={TriviaChess} />
+            </Switch>
+            <Footer />
+          </Loader>
         </div>
       </Context.Provider>
     </BrowserRouter>

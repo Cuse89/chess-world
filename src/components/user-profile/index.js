@@ -10,6 +10,7 @@ import PushNotificationSetting from "components/user-profile/push-notification-s
 import DashboardButton from "components/dashboard-button";
 
 import styles from "./UserProfile.module.scss";
+import GameStats from "components/user-profile/game-stats";
 
 const UserProfile = () => {
   const { user } = useContext(Context);
@@ -46,6 +47,9 @@ const UserProfile = () => {
         </div>
         <div className={styles.section}>
           <PushNotificationSetting userId={userId} />
+        </div>
+        <div className={styles.section}>
+          <GameStats />
         </div>
         <div className={cx(styles.section, styles.logout)}>
           <DashboardButton onClick={firebase.logout} fullLength spaceTop>

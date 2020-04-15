@@ -5,7 +5,7 @@ import DashboardButton from "components/dashboard-button";
 import styles from "./UserAvailability.module.scss";
 
 const UserAvailabilitySetting = ({ userId }) => {
-  const { userAvailable, updateAvailableUser } = useAvailableUsers(userId);
+  const { userAvailable, updateAvailableUser, isFetching } = useAvailableUsers(userId);
 
   return (
     <div className={styles.root}>
@@ -17,6 +17,9 @@ const UserAvailabilitySetting = ({ userId }) => {
           type="accept"
           fullLength
           spaceLeft
+          disabled={isFetching}
+          faded={isFetching}
+          isLoading={isFetching}
         >
           Yes
         </DashboardButton>
@@ -28,6 +31,10 @@ const UserAvailabilitySetting = ({ userId }) => {
           type="error"
           fullLength
           spaceLeft
+          disabled={isFetching}
+          faded={isFetching}
+          isLoading={isFetching}
+
         >
           No
         </DashboardButton>

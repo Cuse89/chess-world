@@ -20,7 +20,8 @@ const StandardChess = ({ history }) => {
     handlePerformMove,
     performBotMove,
     canMovePiece,
-    gameExists
+    gameExists,
+    handleGameEnded
   } = useGameState({
     gameMode,
     userId,
@@ -64,31 +65,31 @@ const StandardChess = ({ history }) => {
   }, [turn, inCheck, inCheckmate]);
 
   useEffect(() => {
-    const handleGameEnded = async () => {
-      if (isOnlinePlay) {
-        const lostGame = users[userId].color === inCheckmate;
-        const gamesWon = user.gameStats ? user.gameStats.won : 0;
-        const gamesLost = user.gameStats ? user.gameStats.lost : 0;
-        console.log({ lostGame });
-        try {
-          // remove game from user
-          await firebase.updateUser(userId, "games", { [gameId]: null });
-          // update wins or losses
-          await firebase.updateUser(userId, "gameStats", {
-            played: user.gameStats ? user.gameStats.played + 1 : 1,
-            won: lostGame ? gamesWon : gamesWon + 1,
-            lost: lostGame ? gamesLost + 1 : gamesLost
-          });
-        } catch (err) {
-          console.log(err);
-        }
-      }
-    };
-    if (inCheckmate) {
-      console.log("in checkmaate");
+    // const handleGameEnded = async () => {
+    //   if (isOnlinePlay) {
+    //     const lostGame = users[userId].color === inCheckmate;
+    //     const gamesWon = user.gameStats ? user.gameStats.won : 0;
+    //     const gamesLost = user.gameStats ? user.gameStats.lost : 0;
+    //     console.log({ lostGame });
+    //     try {
+    //       // remove game from user
+    //       await firebase.updateUser(userId, "games", { [gameId]: null });
+    //       // update wins or losses
+    //       await firebase.updateUser(userId, "gameStats", {
+    //         played: user.gameStats ? user.gameStats.played + 1 : 1,
+    //         won: lostGame ? gamesWon : gamesWon + 1,
+    //         lost: lostGame ? gamesLost + 1 : gamesLost
+    //       });
+    //     } catch (err) {
+    //       console.log(err);
+    //     }
+    //   }
+    // };
+    if (turn === "white" && gameState.users) {
+      console.log("in checkmaate", userId);
       handleGameEnded();
     }
-  }, [inCheckmate]);
+  }, [turn]);
 
   useEffect(() => {
     if (!gameExists) {
