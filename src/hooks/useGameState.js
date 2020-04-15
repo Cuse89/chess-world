@@ -20,12 +20,11 @@ const useGameState = ({ gameMode, gameId, userId }) => {
     turn: DEFAULT_TURN,
     fallen: DEFAULT_FALLEN,
     inCheck: "",
-    inCheckmate: ""
+    inCheckmate: "",
+    status: "ready"
   });
 
   console.log({ gameState });
-
-  const [gameExists, setGameExists] = useState(true);
 
   const { board, turn, fallen, users, inCheckmate } = gameState;
 
@@ -40,6 +39,8 @@ const useGameState = ({ gameMode, gameId, userId }) => {
   function handlePerformMove(sourceCoords, destinationCoords) {
     if (validateMove(sourceCoords, destinationCoords)) {
       performMove(sourceCoords, destinationCoords);
+    } else {
+      window.navigator.vibrate([100,100])
     }
   }
 
@@ -146,12 +147,10 @@ const useGameState = ({ gameMode, gameId, userId }) => {
 
   async function handleGameEnded()  {
     if (isOnlinePlay) {
-      console.log("eeee", users, userId)
       const lostGame = users[userId].color === inCheckmate;
       const user = await firebase.getFromDatabaseOnce(`users/${userId}`, user => user);
       const gamesWon = user.gameStats ? user.gameStats.won : 0;
       const gamesLost = user.gameStats ? user.gameStats.lost : 0;
-      console.log({ lostGame });
       try {
         // remove game from user
         await firebase.updateUser(userId, "games", { [gameId]: null });
@@ -171,6 +170,7 @@ const useGameState = ({ gameMode, gameId, userId }) => {
     const gameListener = () => {
       if (isOnlinePlay) {
         firebase.getFromDatabaseListener(`games/${gameId}`, game => {
+          console.log("game change", game, gameId)
           if (game) {
             setGameState({
               ...game,
@@ -189,7 +189,7 @@ const useGameState = ({ gameMode, gameId, userId }) => {
               inCheckmate: game.inCheckmate
             });
           } else {
-            setGameExists(false);
+            setGameState({...gameState, status: "ended"})
           }
         });
       }
@@ -210,7 +210,6 @@ const useGameState = ({ gameMode, gameId, userId }) => {
     updateSquare,
     performMove,
     updateBoard,
-    gameExists,
     switchTurns,
     handleGameEnded
   };

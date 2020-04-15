@@ -35,7 +35,6 @@ const TrapdoorChess = ({ history }) => {
     canMovePiece,
     validateMove,
     performMove,
-    gameExists
   } = useGameState({
     gameMode,
     userId,
@@ -119,10 +118,10 @@ const TrapdoorChess = ({ history }) => {
   }, [isOnePlayer]);
 
   useEffect(() => {
-    if (!gameExists) {
+    if (gameState.status === "ended") {
       history.push("/");
     }
-  }, [gameExists, history]);
+  }, [gameState, history]);
 
   function onDrop(move) {
     const sourceCoords = move.source.droppableId;

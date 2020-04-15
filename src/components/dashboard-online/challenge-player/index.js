@@ -5,6 +5,8 @@ import ChallengeButton from "components/dashboard-online/challenge-button";
 import Context from "context";
 import firebase from "../../../firebase";
 import styles from "./ChallengePlayer.module.scss";
+import { v4 as uuid } from "uuid";
+import defaultBoard from "lineups/defaultBoard";
 
 const ChallengePlayer = ({ availableUser }) => {
   let history = useHistory();
@@ -34,6 +36,31 @@ const ChallengePlayer = ({ availableUser }) => {
     await updateGameRequest(user.id, opponentId, { ...settings });
   };
 
+  const handleStartNewGame = async (gameSettings) => {
+    const newGameId = `game-${uuid().split("-")[0]}`;
+    try {
+      await firebase.updateGame(newGameId, {
+        users: {
+          [user.id]: {
+            color: "white"
+          },
+          [availableUser.id]: {
+            color: "black"
+          }
+        },
+        board: defaultBoard,
+        turn: "white",
+        settings: { ...gameSettings }
+      });
+      await updateGameRequest(availableUser.id, user.id, null);
+      await firebase.updateUser(user.id, "games", { [newGameId]: availableUser.id });
+      await firebase.updateUser(availableUser.id, "games", { [newGameId]: user.id });
+    } catch (err) {
+      console.log(err);
+    }
+    joinGame(gameSettings.gameType, newGameId);
+  };
+
   return (
     <div className={styles.root}>
       <p>{availableUser.name}</p>
@@ -43,6 +70,7 @@ const ChallengePlayer = ({ availableUser }) => {
           toggleShowCreateGame={toggleShowCreateGame}
           updateGameRequest={updateGameRequest}
           joinGame={joinGame}
+          handleStartNewGame={handleStartNewGame}
         />
       )}
       {showCreateGame && (

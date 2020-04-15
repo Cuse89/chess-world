@@ -12,7 +12,8 @@ const ChallengeButton = ({
   opponentId,
   updateGameRequest,
   joinGame,
-  toggleShowCreateGame
+  toggleShowCreateGame,
+  handleStartNewGame
 }) => {
   const { user } = useContext(Context);
   const gameId =
@@ -24,31 +25,6 @@ const ChallengeButton = ({
     gameId,
     userId: user.id
   });
-
-  const handleStartNewGame = async (opponentId, gameSettings) => {
-    const newGameId = `game-${uuid().split("-")[0]}`;
-    try {
-      await firebase.updateGame(newGameId, {
-        users: {
-          [user.id]: {
-            color: "white"
-          },
-          [opponentId]: {
-            color: "black"
-          }
-        },
-        board: defaultBoard,
-        turn: "white",
-        settings: { ...gameSettings }
-      });
-      await updateGameRequest(opponentId, user.id, null);
-      await firebase.updateUser(user.id, "games", { [newGameId]: opponentId });
-      await firebase.updateUser(opponentId, "games", { [newGameId]: user.id });
-    } catch (err) {
-      console.log(err);
-    }
-    joinGame(gameSettings.gameType, newGameId);
-  };
 
   const getButton = () => {
     let button = (
@@ -73,7 +49,7 @@ const ChallengeButton = ({
       const gameTypeText = getPrettyFromTechnicalName(GAME_TYPES, gameType);
       button = (
         <DashboardButton
-          onClick={() => handleStartNewGame(opponentId, gameSettings)}
+          onClick={() => handleStartNewGame(gameSettings)}
           type={"accept"}
           fullLength
         >{`Incoming ${gameTypeText} request. Click to play!`}</DashboardButton>
@@ -81,7 +57,6 @@ const ChallengeButton = ({
     }
 
     if (gameState.users) {
-      // Todo: fetch gametype from game object
       const gameType = gameState.settings.gameType;
       button = (
         <DashboardButton

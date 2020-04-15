@@ -25,7 +25,6 @@ const TriviaChess = ({ history }) => {
   const {
     gameState,
     canMovePiece,
-    gameExists,
     validateMove,
     performMove,
     switchTurns,
@@ -81,10 +80,10 @@ const TriviaChess = ({ history }) => {
   }, [turn, inCheck, inCheckmate]);
 
   useEffect(() => {
-    if (!gameExists) {
+    if (gameState.status === "ended") {
       history.push("/");
     }
-  }, [gameExists, history]);
+  }, [gameState, history]);
 
   function onDrop(move) {
     const sourceCoords = move.source.droppableId;

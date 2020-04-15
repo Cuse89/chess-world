@@ -13,7 +13,7 @@ const PushNotificationSetting = ({ userId }) => {
 
   return (
     <div className={styles.root}>
-      Allow push notifications:{" "}
+      Allow game notifications:{" "}
       {isSubscribed && (
         <DashboardButton
           className={styles.button}
