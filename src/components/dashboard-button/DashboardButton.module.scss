@@ -67,6 +67,17 @@
   }
 }
 
+.inverse {
+  border: 1px $off-white solid;
+  color: $off-white;
+
+  &:hover,
+  &.selected {
+    background: $off-white;
+    color: $dark-grey;
+  }
+}
+
 .spaceLeft {
   margin-left: 10px;
 }
@@ -88,9 +99,9 @@
 }
 
 .faded {
-  opacity: 50%;
+  opacity: 0.5;
   &:hover {
-    opacity: 100%;
+    opacity: 1;
   }
 }
 

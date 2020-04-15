@@ -26,6 +26,7 @@ const DashboardButton = ({
     [styles.warning]: type === "warning",
     [styles.accept]: type === "accept",
     [styles.primary]: type === "primary",
+    [styles.inverse]: type === "inverse",
     [styles.fullLength]: fullLength,
     [styles.selected]: selected,
     [styles.spaceLeft]: spaceLeft,
@@ -53,7 +54,14 @@ DashboardButton.defaultProps = {
 
 DashboardButton.propTypes = {
   id: PropTypes.string,
-  type: PropTypes.oneOf(["default", "error", "warning", "accept", "primary"])
+  type: PropTypes.oneOf([
+    "default",
+    "error",
+    "warning",
+    "accept",
+    "primary",
+    "inverse"
+  ])
 };
 
 export default DashboardButton;

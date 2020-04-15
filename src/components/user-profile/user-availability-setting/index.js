@@ -17,7 +17,7 @@ const UserAvailabilitySetting = ({ userId }) => {
           fullLength
           spaceLeft
         >
-          Available
+          Yes
         </DashboardButton>
       )}
       {!userAvailable && (
@@ -27,7 +27,7 @@ const UserAvailabilitySetting = ({ userId }) => {
           fullLength
           spaceLeft
         >
-          Unavailable
+          No
         </DashboardButton>
       )}
     </div>

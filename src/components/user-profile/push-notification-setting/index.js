@@ -1,20 +1,18 @@
 import React from "react";
 import usePushNotifications from "hooks/usePushNotifications";
-
-import styles from "./PushNotificationSetting.module.scss";
 import DashboardButton from "components/dashboard-button";
+import styles from "./PushNotificationSetting.module.scss";
 
 const PushNotificationSetting = ({ userId }) => {
   const {
     isSubscribed,
     subscribeToNotifications,
     unsubscribeToNotifications,
-    message
   } = usePushNotifications(userId);
 
   return (
     <div className={styles.root}>
-      Allow Push Notifications:{" "}
+      Allow push notifications:{" "}
       {isSubscribed && (
         <DashboardButton
           onClick={unsubscribeToNotifications}

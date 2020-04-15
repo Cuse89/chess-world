@@ -25,31 +25,36 @@ const UserProfile = () => {
   );
   console.log({ user });
 
-  return (
-    <Fragment>
-      <div className={styles.name}>
-        Name:{" "}
-        {!editName && (
-          <Fragment>
-            {user.name}
-            {pen(() => setEditName(true))}{" "}
-          </Fragment>
-        )}
-        {editName && (
-          <NameInput user={user} onSubmit={() => setEditName(false)} />
-        )}
-      </div>
-      <div className={styles.section}>
-        <UserAvailabilitySetting userId={userId} />
-      </div>
-      <div className={styles.section}>
-        <PushNotificationSetting userId={userId} />
-      </div>
-      <div className={styles.section}>
-        <DashboardButton onClick={firebase.logout}>Logout</DashboardButton>
-      </div>
-    </Fragment>
-  );
+  if (userId) {
+    return (
+      <Fragment>
+        <div className={styles.name}>
+          Name:{" "}
+          {!editName && (
+            <Fragment>
+              {user.name}
+              {pen(() => setEditName(true))}{" "}
+            </Fragment>
+          )}
+          {editName && (
+            <NameInput user={user} onSubmit={() => setEditName(false)} />
+          )}
+        </div>
+        <div className={styles.section}>
+          <UserAvailabilitySetting userId={userId} />
+        </div>
+        <div className={styles.section}>
+          <PushNotificationSetting userId={userId} />
+        </div>
+        <div className={styles.section}>
+          <DashboardButton onClick={firebase.logout} fullLength>
+            Logout
+          </DashboardButton>
+        </div>
+      </Fragment>
+    );
+  }
+  return null;
 };
 
 export default UserProfile;

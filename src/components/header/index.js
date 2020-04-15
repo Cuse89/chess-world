@@ -25,12 +25,16 @@ const Header = () => {
         <h3>Chess World</h3>
       </NavLink>
       {!fetchingUser && !user && (
-        <DashboardButton onClick={login} fullLength>
+        <DashboardButton onClick={login} fullLength type="inverse">
           Login
         </DashboardButton>
       )}
       {!fetchingUser && user && (
-        <DashboardButton onClick={() => setShowUserSettings(true)} fullLength>
+        <DashboardButton
+          onClick={() => setShowUserSettings(true)}
+          fullLength
+          type="inverse"
+        >
           User settings
         </DashboardButton>
       )}
