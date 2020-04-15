@@ -1,4 +1,5 @@
 import React, { useContext, useState, Fragment } from "react";
+import cx from "classnames";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome/index";
 import { faPen } from "@fortawesome/free-solid-svg-icons";
 import Context from "context";
@@ -46,8 +47,8 @@ const UserProfile = () => {
         <div className={styles.section}>
           <PushNotificationSetting userId={userId} />
         </div>
-        <div className={styles.section}>
-          <DashboardButton onClick={firebase.logout} fullLength>
+        <div className={cx(styles.section, styles.logout)}>
+          <DashboardButton onClick={firebase.logout} fullLength spaceTop>
             Logout
           </DashboardButton>
         </div>

@@ -12,6 +12,7 @@ const UserAvailabilitySetting = ({ userId }) => {
       Available for online games:
       {userAvailable && (
         <DashboardButton
+          className={styles.button}
           onClick={() => updateAvailableUser(userId, null)}
           type="accept"
           fullLength
@@ -22,6 +23,7 @@ const UserAvailabilitySetting = ({ userId }) => {
       )}
       {!userAvailable && (
         <DashboardButton
+          className={styles.button}
           onClick={() => updateAvailableUser(userId, true)}
           type="error"
           fullLength

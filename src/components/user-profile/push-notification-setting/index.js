@@ -15,6 +15,7 @@ const PushNotificationSetting = ({ userId }) => {
       Allow push notifications:{" "}
       {isSubscribed && (
         <DashboardButton
+          className={styles.button}
           onClick={unsubscribeToNotifications}
           type="accept"
           fullLength
@@ -25,6 +26,7 @@ const PushNotificationSetting = ({ userId }) => {
       )}
       {!isSubscribed && (
         <DashboardButton
+          className={styles.button}
           onClick={subscribeToNotifications}
           type="error"
           fullLength

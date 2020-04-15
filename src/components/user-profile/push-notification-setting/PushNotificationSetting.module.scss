@@ -1,7 +1,13 @@
 .root {
   display: flex;
+  justify-content: space-between;
   align-items: center;
+
   p {
     cursor: pointer;
+  }
+
+  .button {
+    float: right;
   }
 }

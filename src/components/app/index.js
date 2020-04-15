@@ -11,11 +11,15 @@ import useGameSettings from "hooks/useGameSettings";
 import useUser from "hooks/useUser";
 import Footer from "components/footer";
 import styles from "./App.module.scss";
+import Loader from "components/loader";
 
 
 const App = () => {
   const gameSettings = useGameSettings();
   const { user, fetchingUser } = useUser();
+  if (fetchingUser) {
+    return <Loader size="large"/>
+  }
   return (
     <BrowserRouter>
       <Context.Provider value={{ gameSettings, user, fetchingUser }}>
