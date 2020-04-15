@@ -8,6 +8,7 @@ const PushNotificationSetting = ({ userId }) => {
     isSubscribed,
     subscribeToNotifications,
     unsubscribeToNotifications,
+    isFetching
   } = usePushNotifications(userId);
 
   return (
@@ -20,6 +21,7 @@ const PushNotificationSetting = ({ userId }) => {
           type="accept"
           fullLength
           spaceLeft
+          isLoading={isFetching}
         >
           Yes
         </DashboardButton>
@@ -31,6 +33,7 @@ const PushNotificationSetting = ({ userId }) => {
           type="error"
           fullLength
           spaceLeft
+          isLoading={isFetching}
         >
           No
         </DashboardButton>

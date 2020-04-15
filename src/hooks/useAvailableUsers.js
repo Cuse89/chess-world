@@ -12,10 +12,10 @@ const useAvailableUsers = userId => {
   const getAvailableUsersIds = () =>
     firebase.getFromDatabaseListener(
       "availableUsers",
-      async allAvailableUsers => {
+      allAvailableUsers => {
         setFetchingUsers(true);
         try {
-          await firebase.getUsersFromIds(allAvailableUsers).then(users => {
+          firebase.getUsersFromIds(allAvailableUsers).then(users => {
             setAvailableUsers(users);
             setFetchingUsers(false);
           });
@@ -31,7 +31,7 @@ const useAvailableUsers = userId => {
       setUpdatingAvailableUsers(true);
       await firebase
         .updateDatabase("availableUsers", { [userId]: value })
-        .then(() => {});
+        .then(() => setUpdatingAvailableUsers(false));
     } catch (err) {
       setUpdatingAvailableUsers(false);
       console.log(err);

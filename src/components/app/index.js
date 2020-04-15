@@ -21,7 +21,7 @@ const App = () => {
     <BrowserRouter>
       <Context.Provider value={{ gameSettings, user, fetchingUser }}>
         <div className={styles.root}>
-          <Loader show={fetchingUser} size="large">
+          <Loader show={fetchingUser} size="large" delay={0}>
             <Header />
             <Switch>
               <Route exact path="/" component={Dashboard} />

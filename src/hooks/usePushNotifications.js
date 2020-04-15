@@ -4,12 +4,17 @@ import firebase from "../firebase";
 const usePushNotifications = userId => {
   const [isSubscribed, setIsSubscribed] = useState(false);
   const [message, setMessage] = useState("");
+  const [updatingSubscription, setUpdatingSubscription] = useState(false);
+  const [fetchingSubscription, setFetchingSubscription] = useState(false);
+  const isFetching = updatingSubscription || fetchingSubscription;
 
   const listenToNotificationsSubscribe = () => {
     firebase.getFromDatabaseListener(
       `users/${userId}/notificationTokens`,
       notificationTokens => {
+        setFetchingSubscription(true)
         firebase.messaging.getToken().then(token => {
+          setFetchingSubscription(false)
           const acceptsNotifications =
             notificationTokens && notificationTokens[token];
           if (!isSubscribed && acceptsNotifications) {
@@ -24,7 +29,15 @@ const usePushNotifications = userId => {
   };
 
   const setAcceptsNotifications = (token, value) => {
-    firebase.updateUser(userId, "notificationTokens", { [token]: value });
+    setUpdatingSubscription(true);
+    try {
+      firebase
+        .updateUser(userId, "notificationTokens", { [token]: value })
+        .then(a => setUpdatingSubscription(false));
+    } catch (err) {
+      setUpdatingSubscription(false);
+      console.log(err);
+    }
   };
 
   const subscribeToNotifications = () => {
@@ -59,7 +72,8 @@ const usePushNotifications = userId => {
     isSubscribed,
     subscribeToNotifications,
     unsubscribeToNotifications,
-    message
+    message,
+    isFetching
   };
 };
 

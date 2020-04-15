@@ -35,12 +35,12 @@ const DashboardButton = ({
     [styles.spaceRight]: spaceRight,
     [styles.spaceBottom]: spaceBottom,
     [styles.spaceTop]: spaceTop,
-    [styles.disabled]: disabled,
+    [styles.disabled]: disabled || isLoading,
     [styles.faded]: faded
   });
 
   return (
-    <Loader size="small" isContained show={isLoading} delay={500}>
+    <Loader size="small" isContained show={isLoading}>
       <div className={rootClassName} onClick={onClick}>
         {!useHtml ? (
           children

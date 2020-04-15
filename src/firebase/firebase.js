@@ -7,7 +7,6 @@ import firebaseConfig, { publicVapidKey } from "firebase/config";
 
 class Firebase {
   constructor() {
-    console.log("firebase constructor");
     firebaseApp.initializeApp(firebaseConfig);
     firebaseApp.analytics();
     this.auth = firebaseApp.auth;
