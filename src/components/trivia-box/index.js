@@ -6,7 +6,7 @@ import styles from "./TriviaBox.module.scss";
 
 const TriviaBox = ({
   difficulty,
-  categoryId,
+  category,
   onAnswerCorrect,
   onAnswerIncorrect
 }) => {
@@ -14,10 +14,13 @@ const TriviaBox = ({
   const [options, setOptions] = useState([]);
   const [answer, setAnswer] = useState("");
 
+
   useEffect(() => {
     const getQuestion = () => {
+      const difficultyParams = difficulty === "random" ? "" : `&difficulty=${difficulty}`;
+      const categoryParams = category === "random" ? "" : `&category=${category}`;
       fetch(
-        `https://opentdb.com/api.php?amount=10&type=multiple&difficulty=${difficulty}&category=${categoryId}&amount=1`,
+        `https://opentdb.com/api.php?amount=10&type=multiple&amount=1${difficultyParams}${categoryParams}`,
         {
           method: "GET"
         }
@@ -27,7 +30,7 @@ const TriviaBox = ({
         .catch(err => console.log(err));
     };
     getQuestion();
-  }, [difficulty, categoryId]);
+  }, [difficulty, category]);
 
   useEffect(() => {
     const getMixedOptions = () => {

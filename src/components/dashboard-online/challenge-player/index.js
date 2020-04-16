@@ -7,6 +7,7 @@ import firebase from "../../../firebase";
 import styles from "./ChallengePlayer.module.scss";
 import { v4 as uuid } from "uuid";
 import defaultBoard from "lineups/defaultBoard";
+import Modal from "components/modal";
 
 const ChallengePlayer = ({ availableUser }) => {
   let history = useHistory();
@@ -36,7 +37,7 @@ const ChallengePlayer = ({ availableUser }) => {
     await updateGameRequest(user.id, opponentId, { ...settings });
   };
 
-  const handleStartNewGame = async (gameSettings) => {
+  const handleStartNewGame = async gameSettings => {
     const newGameId = `game-${uuid().split("-")[0]}`;
     try {
       await firebase.updateGame(newGameId, {
@@ -53,8 +54,12 @@ const ChallengePlayer = ({ availableUser }) => {
         settings: { ...gameSettings }
       });
       await updateGameRequest(availableUser.id, user.id, null);
-      await firebase.updateUser(user.id, "games", { [newGameId]: availableUser.id });
-      await firebase.updateUser(availableUser.id, "games", { [newGameId]: user.id });
+      await firebase.updateUser(user.id, "games", {
+        [newGameId]: availableUser.id
+      });
+      await firebase.updateUser(availableUser.id, "games", {
+        [newGameId]: user.id
+      });
     } catch (err) {
       console.log(err);
     }
@@ -64,21 +69,22 @@ const ChallengePlayer = ({ availableUser }) => {
   return (
     <div className={styles.root}>
       <p>{availableUser.name}</p>
-      {!showCreateGame && (
-        <ChallengeButton
-          opponentId={availableUser.id}
-          toggleShowCreateGame={toggleShowCreateGame}
-          updateGameRequest={updateGameRequest}
-          joinGame={joinGame}
-          handleStartNewGame={handleStartNewGame}
-        />
-      )}
-      {showCreateGame && (
+
+      <ChallengeButton
+        opponentId={availableUser.id}
+        toggleShowCreateGame={toggleShowCreateGame}
+        updateGameRequest={updateGameRequest}
+        joinGame={joinGame}
+        handleStartNewGame={handleStartNewGame}
+      />
+
+      <Modal open={showCreateGame} onClose={() => toggleShowCreateGame(false)}>
+        <h3>Challenge {availableUser.name}</h3>
         <CreateGame
           onSubmit={settings => onCreateGameSubmit(settings, availableUser.id)}
           submitText="Click here to challenge"
         />
-      )}
+      </Modal>
     </div>
   );
 };

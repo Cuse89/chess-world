@@ -4,14 +4,21 @@ import SelectGameType from "components/select-game-type";
 import DashboardButton from "components/dashboard-button";
 import useGameSettings from "hooks/useGameSettings";
 import { GAME_TYPES } from "utils/constants";
-import TrapdoorOptions from "components/create-game/trapdoor";
+import TrapdoorOptions from "components/create-game/trapdoor-options";
+import TriviaOptions from "components/create-game/trivia-options";
 
 import styles from "./CreateGame.module.scss";
 
 const CreateGame = ({ onSubmit, submitText }) => {
-  const { updateGameSettings, gameType, trapdoorsAmount } = useGameSettings();
+  const {
+    updateGameSettings,
+    gameType,
+    trapdoorsAmount,
+    triviaDifficulty,
+    triviaCategory
+  } = useGameSettings();
   const handleOnSubmit = () => {
-    onSubmit({ gameType, trapdoorsAmount });
+    onSubmit({ gameType, trapdoorsAmount, triviaDifficulty, triviaCategory });
   };
 
   return (
@@ -22,8 +29,15 @@ const CreateGame = ({ onSubmit, submitText }) => {
       />
       {gameType === GAME_TYPES.TRAPDOOR.TECHNICAL_NAME && (
         <TrapdoorOptions
-          updateGameSettings={updateGameSettings}
+          onChange={updateGameSettings}
           trapdoorsAmount={trapdoorsAmount}
+        />
+      )}
+      {gameType === GAME_TYPES.TRIVIA.TECHNICAL_NAME && (
+        <TriviaOptions
+          onChange={updateGameSettings}
+          triviaDifficulty={triviaDifficulty}
+          triviaCategory={triviaCategory}
         />
       )}
       {gameType && (

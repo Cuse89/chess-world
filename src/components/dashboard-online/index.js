@@ -26,10 +26,13 @@ const DashboardOnline = () => {
     }
   }, [user]);
 
+  if (message) {
+    console.log(message)
+  }
+
   if (user) {
     return (
       <div>
-        {message && <p>{message}</p>}
         {!user.name && (
           <NameInput user={user} />
         )}

@@ -23,7 +23,6 @@ import styles from "./TrapdoorChess.module.scss";
 const TrapdoorChess = ({ history }) => {
   const { user, gameSettings } = useContext(Context);
   const { gameMode, trapdoorsAmount, setGameId } = gameSettings;
-  console.log("sss", gameSettings, gameMode);
   const gameId = getUrlParam("game");
   const userId = user && user.id;
   const [message, setMessage] = useState("");

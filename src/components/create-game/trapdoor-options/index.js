@@ -3,14 +3,14 @@ import { TRAPDOOR_AMOUNTS } from "utils/constants";
 import DashboardButton from "components/dashboard-button";
 import styles from "./TrapdoorOptions.module.scss";
 
-const TrapdoorOptions = ({ updateGameSettings, trapdoorsAmount }) => (
+const TrapdoorOptions = ({ onChange, trapdoorsAmount }) => (
   <Fragment>
-    <h4>Amount of trapdoors per player</h4>
-    <div className={styles.root}>
+    <h4>Amount of trapdoors per player:</h4>
+    <div className={styles.options}>
       {TRAPDOOR_AMOUNTS.map(amount => (
         <DashboardButton
           key={`trapdoor-button-${amount}`}
-          onClick={() => updateGameSettings({ trapdoorsAmount: amount })}
+          onClick={() => onChange({ trapdoorsAmount: amount })}
           selected={amount === trapdoorsAmount}
           fullLength
           spaceBottom

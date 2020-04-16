@@ -1,4 +1,6 @@
 import React, { useContext, useState } from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome/index";
+import { faCog } from "@fortawesome/free-solid-svg-icons";
 import { NavLink } from "react-router-dom";
 import Context from "context";
 import firebase from "../../firebase";
@@ -30,13 +32,11 @@ const Header = () => {
         </DashboardButton>
       )}
       {user && (
-        <DashboardButton
+        <FontAwesomeIcon
+          icon={faCog}
           onClick={() => setShowUserSettings(true)}
-          fullLength
-          type="inverse"
-        >
-          User settings
-        </DashboardButton>
+          className={styles.cog}
+        />
       )}
       {user && (
         <Modal

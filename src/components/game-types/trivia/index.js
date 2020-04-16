@@ -16,7 +16,7 @@ import { decideBotMove, getBotMoves } from "utils/onePlayerHelpers";
 
 const TriviaChess = ({ history }) => {
   const { user, gameSettings } = useContext(Context);
-  const { gameMode, setGameId } = gameSettings;
+  const { gameMode, setGameId, triviaDifficulty, triviaCategory } = gameSettings;
   const gameId = getUrlParam("game");
   const userId = user && user.id;
   const [message, setMessage] = useState("");
@@ -156,6 +156,8 @@ const TriviaChess = ({ history }) => {
       <Fallen fallen={getFallen(true)} />
       {pendingMove && (
         <TriviaBox
+          difficulty={triviaDifficulty}
+          category={triviaCategory}
           onAnswerCorrect={() => handleAnswer(true)}
           onAnswerIncorrect={() => handleAnswer(false)}
         />
