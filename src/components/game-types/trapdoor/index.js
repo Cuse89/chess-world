@@ -23,6 +23,7 @@ import styles from "./TrapdoorChess.module.scss";
 const TrapdoorChess = ({ history }) => {
   const { user, gameSettings } = useContext(Context);
   const { gameMode, trapdoorsAmount, setGameId } = gameSettings;
+  console.log("sss", gameSettings, gameMode);
   const gameId = getUrlParam("game");
   const userId = user && user.id;
   const [message, setMessage] = useState("");
@@ -35,6 +36,7 @@ const TrapdoorChess = ({ history }) => {
     canMovePiece,
     validateMove,
     performMove,
+    handleGameEnded
   } = useGameState({
     gameMode,
     userId,
@@ -61,11 +63,7 @@ const TrapdoorChess = ({ history }) => {
         handleTrapdoor(source.coords, destination.coords);
       }
     };
-    handleNextTurn();
-    // eslint-disable-next-line
-  }, [turn]);
 
-  useEffect(() => {
     const handleSetMessage = () => {
       let newMessage = "";
       if (inCheck) {
@@ -80,9 +78,13 @@ const TrapdoorChess = ({ history }) => {
       if (message !== newMessage) {
         setMessage(newMessage);
       }
-
     };
+    handleNextTurn();
     handleSetMessage();
+    if (inCheckmate) {
+      handleGameEnded();
+    }
+    // eslint-disable-next-line
   }, [turn, inCheck, inCheckmate, trapdoorsLeft]);
 
   useEffect(() => {
@@ -111,11 +113,11 @@ const TrapdoorChess = ({ history }) => {
       });
       updateBoard(newBoard);
     };
-    if (isOnePlayer && trapdoorsAmount === 0) {
+    if (isOnePlayer && trapdoorsLeft === 0) {
       setBotTrapdoors();
     }
     // eslint-disable-next-line
-  }, [isOnePlayer]);
+  }, [isOnePlayer, trapdoorsLeft]);
 
   useEffect(() => {
     if (gameState.status === "ended") {

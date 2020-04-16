@@ -43,11 +43,6 @@ const StandardChess = ({ history }) => {
         performBotMove();
       }
     };
-    handleNextTurn();
-    // eslint-disable-next-line
-  }, [turn]);
-
-  useEffect(() => {
     const handleSetMessage = () => {
       let newMessage = "";
       if (inCheck) {
@@ -60,14 +55,12 @@ const StandardChess = ({ history }) => {
         setMessage(newMessage);
       }
     };
-    handleSetMessage();
-  }, [turn, inCheck, inCheckmate]);
-
-  useEffect(() => {
     if (inCheckmate) {
       handleGameEnded();
     }
-  }, [turn]);
+    handleNextTurn();
+    handleSetMessage();
+  }, [turn, inCheck, inCheckmate]);
 
   useEffect(() => {
     if (gameState.status === "ended") {
@@ -78,7 +71,6 @@ const StandardChess = ({ history }) => {
   function onDrop(a) {
     const sourceCoords = a.source.droppableId;
     const destinationCoords = a.destination.droppableId;
-    console.log("on drop", sourceCoords, destinationCoords);
     handlePerformMove(sourceCoords, destinationCoords);
   }
 

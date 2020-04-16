@@ -26,52 +26,49 @@ const ChallengeButton = ({
     userId: user.id
   });
 
-  const getButton = () => {
-    let button = (
-      <DashboardButton onClick={() => toggleShowCreateGame(true)} fullLength>
-        Challenge
+  let button = (
+    <DashboardButton onClick={() => toggleShowCreateGame(true)} fullLength>
+      Challenge
+    </DashboardButton>
+  );
+  if (user.requestsOutgoing && user.requestsOutgoing[opponentId]) {
+    button = (
+      <DashboardButton
+        onClick={() => updateGameRequest(user.id, opponentId, null)}
+        type={"warning"}
+        fullLength
+      >
+        Challenge request sent
       </DashboardButton>
     );
-    if (user.requestsOutgoing && user.requestsOutgoing[opponentId]) {
-      button = (
-        <DashboardButton
-          onClick={() => updateGameRequest(user.id, opponentId, null)}
-          type={"warning"}
-          fullLength
-        >
-          Challenge request sent
-        </DashboardButton>
-      );
-    }
-    if (user.requestsIncoming && user.requestsIncoming[opponentId]) {
-      const gameSettings = user.requestsIncoming[opponentId];
-      const gameType = gameSettings.gameType;
-      const gameTypeText = getPrettyFromTechnicalName(GAME_TYPES, gameType);
-      button = (
-        <DashboardButton
-          onClick={() => handleStartNewGame(gameSettings)}
-          type={"accept"}
-          fullLength
-        >{`Incoming ${gameTypeText} request. Click to play!`}</DashboardButton>
-      );
-    }
+  }
+  if (user.requestsIncoming && user.requestsIncoming[opponentId]) {
+    const gameSettings = user.requestsIncoming[opponentId];
+    const gameType = gameSettings.gameType;
+    const gameTypeText = getPrettyFromTechnicalName(GAME_TYPES, gameType);
+    button = (
+      <DashboardButton
+        onClick={() => handleStartNewGame(gameSettings)}
+        type={"accept"}
+        fullLength
+      >{`Incoming ${gameTypeText} request. Click to play!`}</DashboardButton>
+    );
+  }
 
-    if (gameState.users) {
-      const gameType = gameState.settings.gameType;
-      button = (
-        <DashboardButton
-          onClick={() => joinGame(gameType, gameId)}
-          type={"accept"}
-          fullLength
-        >
-          Game in progress. Join Game
-        </DashboardButton>
-      );
-    }
-    return button;
-  };
+  if (gameState.users) {
+    const gameType = gameState.settings.gameType;
+    button = (
+      <DashboardButton
+        onClick={() => joinGame(gameType, gameId)}
+        type={"accept"}
+        fullLength
+      >
+        Game in progress. Join Game
+      </DashboardButton>
+    );
+  }
 
-  return <Fragment>{getButton()}</Fragment>;
+  return <Fragment>{button}</Fragment>;
 };
 
 export default ChallengeButton;

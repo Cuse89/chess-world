@@ -28,7 +28,8 @@ const TriviaChess = ({ history }) => {
     validateMove,
     performMove,
     switchTurns,
-    handlePerformMove
+    handlePerformMove,
+    handleGameEnded
   } = useGameState({
     gameMode,
     userId,
@@ -77,6 +78,9 @@ const TriviaChess = ({ history }) => {
       }
     };
     handleSetMessage();
+    if (inCheckmate) {
+      handleGameEnded();
+    }
   }, [turn, inCheck, inCheckmate]);
 
   useEffect(() => {
