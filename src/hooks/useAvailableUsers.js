@@ -12,13 +12,19 @@ const useAvailableUsers = userId => {
   const getAvailableUsersIds = () =>
     firebase.getFromDatabaseListener(
       "availableUsers",
-      allAvailableUsers => {
+      async allAvailableUsers => {
         setFetchingUsers(true);
         try {
-          firebase.getUsersFromIds(allAvailableUsers).then(users => {
-            setAvailableUsers(users);
+          const users = await firebase.getFromDatabaseOnce("users", allUsers =>
+            Object.keys(allAvailableUsers).map(userId => ({
+              ...allUsers[userId],
+              id: userId
+            }))
+          );
+          setAvailableUsers(users);
+          if (users) {
             setFetchingUsers(false);
-          });
+          }
         } catch (err) {
           console.log(err);
           setFetchingUsers(false);

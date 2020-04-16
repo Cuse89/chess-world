@@ -40,7 +40,7 @@ const useGameState = ({ gameMode, gameId, userId }) => {
     if (validateMove(sourceCoords, destinationCoords)) {
       performMove(sourceCoords, destinationCoords);
     } else {
-      window.navigator.vibrate([100,100])
+      window.navigator.vibrate([100, 50, 100]);
     }
   }
 
@@ -145,10 +145,14 @@ const useGameState = ({ gameMode, gameId, userId }) => {
     }
   }
 
-  async function handleGameEnded()  {
+  async function handleGameEnded() {
+    window.navigator.vibrate([1000, 300, 1000]);
     if (isOnlinePlay) {
       const lostGame = users[userId].color === inCheckmate;
-      const user = await firebase.getFromDatabaseOnce(`users/${userId}`, user => user);
+      const user = await firebase.getFromDatabaseOnce(
+        `users/${userId}`,
+        user => user
+      );
       const gamesWon = user.gameStats ? user.gameStats.won : 0;
       const gamesLost = user.gameStats ? user.gameStats.lost : 0;
       try {
@@ -170,7 +174,6 @@ const useGameState = ({ gameMode, gameId, userId }) => {
     const gameListener = () => {
       if (isOnlinePlay) {
         firebase.getFromDatabaseListener(`games/${gameId}`, game => {
-          console.log("game change", game, gameId)
           if (game) {
             setGameState({
               ...game,
@@ -189,7 +192,7 @@ const useGameState = ({ gameMode, gameId, userId }) => {
               inCheckmate: game.inCheckmate
             });
           } else {
-            setGameState({...gameState, status: "ended"})
+            setGameState({ ...gameState, status: "ended" });
           }
         });
       }

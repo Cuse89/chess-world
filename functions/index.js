@@ -37,12 +37,16 @@ exports.notifyUsersTurn = functions.database
     if (!tokensSnapshot.hasChildren()) {
       return console.log("There are no notification tokens to send to.");
     }
+    const opponentName = await admin.database()
+      .ref(`users/${opponentId}/name`)
+      .once("value")
+      .then(snapshot => snapshot.val());
     const tokens = Object.keys(tokensSnapshot.val());
     const payload = {
       notification: {
         title: "It's your turn!",
-        body: `${opponentId} took their turn`,
-        icon: "/android-chrome-192x192.png",
+        body: `${opponentName} just made a move`,
+        icon: "/android-chrome-192x192.png"
       }
     };
 
