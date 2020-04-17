@@ -3,7 +3,6 @@
 .board {
   display: grid;
   grid-gap: 0;
-  grid-template-columns: $square-width $square-width $square-width $square-width $square-width $square-width $square-width $square-width;
   width: fit-content;
   border: 2px $board-color solid;
 
@@ -13,6 +12,13 @@
   &.baselineActive {
     border-bottom: 2px $active-color solid;
   }
+}
+
+.columns5 {
+  grid-template-columns: $square-width $square-width $square-width $square-width $square-width;
+}
+.columns8 {
+  grid-template-columns: $square-width $square-width $square-width $square-width $square-width $square-width $square-width $square-width;
 }
 
 .indicator {

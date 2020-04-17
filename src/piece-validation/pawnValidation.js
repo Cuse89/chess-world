@@ -18,7 +18,7 @@ export const pawnValidation = ({
     return !targetSquareOccupied;
     // moved 2 spaces forward
   } else if (move === (player === baselinePlayer ? 20 : -20)) {
-    const eligibleColumn = player === baselinePlayer ? 6 : 1;
+    const eligibleColumn = player === baselinePlayer ? board.length -2 : 1;
     // was moving 2 spaces eligible?
     // Todo: Dont allow pawn to jump over piece when moving 2 squares
     return (

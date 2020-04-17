@@ -116,7 +116,8 @@ const Board = ({
         className={cx({
           [styles.board]: true,
           [styles.topActive]: topActive,
-          [styles.baselineActive]: baselineActive
+          [styles.baselineActive]: baselineActive,
+          [styles[`columns${board[0].length}`]]: true
         })}
       >
         {rows}

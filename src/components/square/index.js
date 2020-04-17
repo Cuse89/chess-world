@@ -5,7 +5,15 @@ import cx from "classnames";
 import styles from "./Square.module.scss";
 
 const Square = memo(
-  ({ children, coords, handleOnClick, isGreen, isDraggingOver, position }) => {
+  ({
+    children,
+    coords,
+    handleOnClick,
+    isGreen,
+    isDraggingOver,
+    position,
+    showPositions
+  }) => {
     const className = cx({
       [styles.root]: true,
       [styles.green]: isGreen,
@@ -16,12 +24,15 @@ const Square = memo(
         [styles.position]: true,
         [styles.letter]: isNaN(pos),
         [styles.number]: !isNaN(pos),
-        [styles.white]: isGreen
+        [styles.white]: isGreen,
+        [styles.dark]: !isGreen
       });
     return (
       <div className={className} onClick={() => handleOnClick(coords)}>
-        <p className={positionClassName(position[0])}>{position[0]}</p>
-        {position.length > 1 && (
+        {showPositions && (
+          <p className={positionClassName(position[0])}>{position[0]}</p>
+        )}
+        {showPositions && position.length > 1 && (
           <p className={positionClassName(position[1])}>{position[1]}</p>
         )}
         {children}
@@ -31,12 +42,14 @@ const Square = memo(
 );
 
 Square.defaultProps = {
-  handleOnClick: () => {}
+  handleOnClick: () => {},
+  showPositions: true
 };
 
 Square.propTypes = {
   coords: PropTypes.string.isRequired,
-  handleOnClick: PropTypes.func
+  handleOnClick: PropTypes.func,
+  showPositions: PropTypes.bool
 };
 
 export default Square;

@@ -7,13 +7,15 @@ import {
 } from "utils/constants";
 
 import firebase from "../firebase";
+import defaultBoard from "lineups/defaultBoard";
 
 export const defaultGameSettings = {
   gameMode: "",
   gameType: "",
   trapdoorsAmount: DEFAULT_TRAPDOOR_AMOUNT,
   triviaDifficulty: DEFAULT_TRIVIA_DIFFICULTY,
-  triviaCategory: DEFAULT_TRIVIA_CATEGORY
+  triviaCategory: DEFAULT_TRIVIA_CATEGORY,
+  lineup: defaultBoard
 };
 
 const useGameSettings = () => {

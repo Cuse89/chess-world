@@ -14,9 +14,9 @@ import firebase from "../firebase";
 import { DEFAULT_FALLEN, DEFAULT_TURN, GAME_MODES } from "utils/constants";
 import { getKingStatus } from "piece-validation/getKingStatus";
 
-const useGameState = ({ gameMode, gameId, userId }) => {
+const useGameState = ({ gameMode, gameId, userId, lineup }) => {
   const [gameState, setGameState] = useState({
-    board: defaultBoard,
+    board: lineup,
     turn: DEFAULT_TURN,
     fallen: DEFAULT_FALLEN,
     inCheck: "",

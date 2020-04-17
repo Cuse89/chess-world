@@ -16,7 +16,7 @@ import { decideBotMove, getBotMoves } from "utils/onePlayerHelpers";
 
 const TriviaChess = ({ history }) => {
   const { user, gameSettings } = useContext(Context);
-  const { gameMode, setGameId, triviaDifficulty, triviaCategory } = gameSettings;
+  const { gameMode, setGameId, triviaDifficulty, triviaCategory, lineup } = gameSettings;
   const gameId = getUrlParam("game");
   const userId = user && user.id;
   const [message, setMessage] = useState("");
@@ -33,7 +33,8 @@ const TriviaChess = ({ history }) => {
   } = useGameState({
     gameMode,
     userId,
-    gameId
+    gameId,
+    lineup
   });
 
   const isOnePlayer = gameMode === GAME_MODES.ONE_PLAYER.TECHNICAL_NAME;

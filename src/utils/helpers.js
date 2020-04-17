@@ -7,8 +7,14 @@ import {
   faChessQueen
 } from "@fortawesome/free-solid-svg-icons";
 
-import { getRookPathway, rookValidation } from "piece-validation/rookValidation";
-import { bishopValidation, getBishopPathway } from "piece-validation/bishopValidation";
+import {
+  getRookPathway,
+  rookValidation
+} from "piece-validation/rookValidation";
+import {
+  bishopValidation,
+  getBishopPathway
+} from "piece-validation/bishopValidation";
 import { knightValidation } from "piece-validation/knightValidation";
 import { kingValidation } from "piece-validation/kingValidation";
 import { getKingStatus } from "piece-validation/getKingStatus";
@@ -52,7 +58,7 @@ export const getPieceProps = pieceId => {
     case "queen":
       return {
         icon: faChessQueen,
-        validateMove: (params) => {
+        validateMove: params => {
           if (rookValidation(params) || bishopValidation(params)) {
             return true;
           }
@@ -69,14 +75,15 @@ export const getCoords = (row, col) => {
 };
 
 export const getSquareDetails = (coords, board) => {
-  if (
-    coords[0] > 7 ||
+  const boardLengthIndex = board.length - 1;
+  const outOfBoard =
+    coords[0] > boardLengthIndex ||
     coords[0] < 0 ||
-    coords[1] > 7 ||
+    coords[1] > boardLengthIndex ||
     coords[1] < 0 ||
     coords < 0 ||
-    coords > 78
-  ) {
+    coords > boardLengthIndex.toString() + board[0].length;
+  if (outOfBoard) {
     return false;
   }
   return board[coords[0]][coords[1]];
@@ -202,7 +209,7 @@ export const getDirectThreats = (
         baselinePlayer: "white"
       })
     ) {
-      threats.push({coords, pieceId: square.pieceId});
+      threats.push({ coords, pieceId: square.pieceId });
     }
   });
   return threats;

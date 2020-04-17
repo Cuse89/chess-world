@@ -38,7 +38,8 @@ export const bishopValidation = ({
 
   for (let i = 0; i < pathway.length; i++) {
     let coords = pathway[i];
-    if (coords[0] > 7 || coords[0] < 0 || coords[1] > 7 || coords[1] < 0) {
+    const square = getSquareDetails(coords, board);
+    if (!square) {
       // square is outside of board boundary
       return false;
     }
@@ -49,7 +50,7 @@ export const bishopValidation = ({
     // dont check first square
     if (coords !== sourceCoords) {
       // if piece is on this square
-      const square = getSquareDetails(coords, board);
+
       if (square.pieceId && coords !== destinationCoords) {
         return false;
       }
