@@ -3,7 +3,7 @@ import DashboardButton from "components/dashboard-button";
 import { BOARDS } from "utils/constants";
 import styles from "./BoardOptions.module.scss";
 
-const boards = [BOARDS.default, BOARDS.withoutPartners];
+const boards = [BOARDS.default, BOARDS.withoutPartners, BOARDS.royalFrontline];
 
 const BoardOptions = ({ onChange, selectedBoard }) => (
   <Fragment>

@@ -1,5 +1,6 @@
 import defaultBoard from "boards/defaultBoard";
 import withoutPartners from "boards/withoutPartners";
+import royalFrontline from "boards/royalFrontline";
 
 export const GAME_MODES = {
   ONE_PLAYER: {
@@ -96,8 +97,15 @@ export const BOARDS = {
   },
   withoutPartners: {
     technicalName: "withoutPartners",
-    pretty: "5x7 - single pieces only",
+    pretty: "Mini Battle",
     whitePawnStartingRow: 5,
     board: withoutPartners
+  },
+  royalFrontline: {
+    technicalName: "royalFrontline",
+    pretty: "Royal front line",
+    whitePawnStartingRow: 7,
+    board: royalFrontline
+
   }
 };
