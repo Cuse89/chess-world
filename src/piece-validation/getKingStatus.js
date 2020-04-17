@@ -11,7 +11,12 @@ import { getDirectThreats } from "utils/helpers";
 
 // kingPlayer is the players colour that controls the king in question
 
-export const getKingStatus = (board, kingPlayer, baselinePlayer, boardTechnicalName) => {
+export const getKingStatus = (
+  board,
+  kingPlayer,
+  baselinePlayer,
+  boardVariant
+) => {
   let kingPos = "";
   const getKingPos = ({ square, coords }) => {
     if (square.player === kingPlayer && square.pieceId === "king") {
@@ -20,7 +25,12 @@ export const getKingStatus = (board, kingPlayer, baselinePlayer, boardTechnicalN
   };
   loopBoard(board, getKingPos);
 
-  let directThreats = getDirectThreats(kingPlayer, kingPos, board, boardTechnicalName);
+  let directThreats = getDirectThreats(
+    kingPlayer,
+    kingPos,
+    board,
+    boardVariant
+  );
 
   const isInCheck = () => kingPos && directThreats.length > 0;
 
@@ -31,7 +41,8 @@ export const getKingStatus = (board, kingPlayer, baselinePlayer, boardTechnicalN
     // can directThreats be taken?
     directThreats = directThreats.filter(
       ({ coords }) =>
-        getDirectThreats(getOpponent(kingPlayer), coords, board, boardTechnicalName).length === 0
+        getDirectThreats(getOpponent(kingPlayer), coords, board, boardVariant)
+          .length === 0
     );
 
     // can directThreats be blocked instead?
@@ -48,7 +59,7 @@ export const getKingStatus = (board, kingPlayer, baselinePlayer, boardTechnicalN
                 if (
                   performValidation({
                     board,
-                    boardTechnicalName,
+                    boardVariant,
                     kingPlayer,
                     destinationCoords: pathwayCoords,
                     sourceCoords: coords,
@@ -87,7 +98,7 @@ export const getKingStatus = (board, kingPlayer, baselinePlayer, boardTechnicalN
           sourceCoords: kingPos,
           destinationCoords,
           board,
-            boardTechnicalName,
+          boardVariant,
           player: kingPlayer
         }) &&
           !isOwnPlayer) ||
@@ -104,7 +115,7 @@ export const getKingStatus = (board, kingPlayer, baselinePlayer, boardTechnicalN
           kingPlayer,
           destinationCoords,
           getNextBoard(board, kingPos, destinationCoords),
-          boardTechnicalName
+          boardVariant
         ).length < 1
       );
     });

@@ -4,9 +4,10 @@ import CreateGame from "components/create-game";
 import ChallengeButton from "components/dashboard-online/challenge-button";
 import Context from "context";
 import firebase from "../../../firebase";
-import styles from "./ChallengePlayer.module.scss";
 import { v4 as uuid } from "uuid";
 import Modal from "components/modal";
+import { BOARDS } from "utils/constants";
+import styles from "./ChallengePlayer.module.scss";
 
 const ChallengePlayer = ({ availableUser }) => {
   let history = useHistory();
@@ -40,6 +41,8 @@ const ChallengePlayer = ({ availableUser }) => {
     const newGameId = `game-${uuid().split("-")[0]}`;
     try {
       await firebase.updateGame(newGameId, {
+        ...gameSettings,
+        board: BOARDS[gameSettings.boardVariant].board,
         users: {
           [user.id]: {
             color: "white"
@@ -48,10 +51,7 @@ const ChallengePlayer = ({ availableUser }) => {
             color: "black"
           }
         },
-        board: gameSettings.boardSettings.board,
-        boardTechnicalName: gameSettings.boardSettings.technicalName,
-        turn: "white",
-        settings: { ...gameSettings }
+        turn: "white"
       });
       await updateGameRequest(availableUser.id, user.id, null);
       await firebase.updateUser(user.id, "games", {

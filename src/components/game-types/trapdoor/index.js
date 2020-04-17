@@ -22,7 +22,7 @@ import styles from "./TrapdoorChess.module.scss";
 
 const TrapdoorChess = ({ history }) => {
   const { user, gameSettings } = useContext(Context);
-  const { gameMode, trapdoorsAmount, setGameId, boardSettings } = gameSettings;
+  const { gameMode, trapdoorsAmount, setGameId, boardVariant } = gameSettings;
   const gameId = getUrlParam("game");
   const userId = user && user.id;
   const [message, setMessage] = useState("");
@@ -40,7 +40,7 @@ const TrapdoorChess = ({ history }) => {
     gameMode,
     userId,
     gameId,
-    boardSettings
+    boardVariant
   });
 
   const isOnePlayer = gameMode === GAME_MODES.ONE_PLAYER.TECHNICAL_NAME;

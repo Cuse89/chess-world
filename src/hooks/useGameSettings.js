@@ -9,18 +9,13 @@ import {
 
 import firebase from "../firebase";
 
-export const defaultBoardSettings = {
-  board: BOARDS.default.board,
-  technicalName: BOARDS.default.technicalName
-};
-
 export const defaultGameSettings = {
   gameMode: "",
   gameType: "",
   trapdoorsAmount: DEFAULT_TRAPDOOR_AMOUNT,
   triviaDifficulty: DEFAULT_TRIVIA_DIFFICULTY,
   triviaCategory: DEFAULT_TRIVIA_CATEGORY,
-  boardSettings: defaultBoardSettings
+  boardVariant: BOARDS.default.technicalName
 };
 
 const useGameSettings = () => {
@@ -33,7 +28,7 @@ const useGameSettings = () => {
   useEffect(() => {
     const getGameSettingsFromDb = gameId => {
       firebase.getFromDatabaseListener(
-        `games/${gameId}/settings`,
+        `games/${gameId}`,
         gameSettings => {
           updateGameSettings({
             ...gameSettings,
@@ -47,7 +42,6 @@ const useGameSettings = () => {
     }
     // eslint-disable-next-line
   }, [gameId]);
-
   return { updateGameSettings, setGameId, ...gameSettings };
 };
 export default useGameSettings;

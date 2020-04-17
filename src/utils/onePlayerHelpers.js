@@ -12,7 +12,7 @@ export const getThreats = (
   threatenedPlayer,
   threatenedPlayerCoords,
   board,
-  boardTechnicalName
+  boardVariant
 ) => {
   let threats = [];
 
@@ -25,7 +25,7 @@ export const getThreats = (
         sourceCoords: coords,
         destinationCoords: threatenedPlayerCoords,
         board,
-        boardTechnicalName,
+        boardVariant,
         player: threateningPlayer,
         captureOnly: true,
         baselinePlayer: "white"
@@ -37,7 +37,7 @@ export const getThreats = (
   return threats;
 };
 
-export const getBotMoves = (board, boardTechnicalName) => {
+export const getBotMoves = (board, boardVariant) => {
   let moves = [];
   // find black piece
   loopBoard(board, ({ square: prevSquare, coords }) => {
@@ -53,7 +53,7 @@ export const getBotMoves = (board, boardTechnicalName) => {
         if (
           performValidation({
             board,
-            boardTechnicalName,
+            boardVariant,
             player: "black",
             sourceCoords,
             destinationCoords,
@@ -75,7 +75,7 @@ export const getBotMoves = (board, boardTechnicalName) => {
                 "black",
                 sourceCoords,
                 board,
-                boardTechnicalName
+                boardVariant
               )
             },
             destination: {
@@ -88,25 +88,25 @@ export const getBotMoves = (board, boardTechnicalName) => {
                 nextBoard,
                 "black",
                 "white",
-                boardTechnicalName
+                boardVariant
               ),
               kingStatusOpponent: getKingStatus(
                 nextBoard,
                 "white",
                 "white",
-                boardTechnicalName
+                boardVariant
               ),
               threats: getThreats(
                 "black",
                 destinationCoords,
                 nextBoard,
-                boardTechnicalName
+                boardVariant
               ),
               defenders: getThreats(
                 "white",
                 destinationCoords,
                 nextBoard,
-                boardTechnicalName
+                boardVariant
               )
             }
           };

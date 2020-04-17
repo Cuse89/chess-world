@@ -13,14 +13,9 @@ const BoardOptions = ({ onChange, selectedBoard }) => (
         <DashboardButton
           key={`board-button-${boardDetails.technicalName}`}
           onClick={() =>
-            onChange({
-              boardSettings: {
-                board: boardDetails.board,
-                technicalName: boardDetails.technicalName
-              }
-            })
+            onChange({boardVariant: boardDetails.technicalName})
           }
-          selected={boardDetails.technicalName === selectedBoard.technicalName}
+          selected={boardDetails.technicalName === selectedBoard}
           fullLength
           spaceBottom
           spaceRight

@@ -10,7 +10,7 @@ import { getOpponent, getPieceProps, getUrlParam } from "utils/helpers";
 
 const StandardChess = ({ history }) => {
   const { user, gameSettings } = useContext(Context);
-  const { gameMode, setGameId, boardSettings } = gameSettings;
+  const { gameMode, setGameId, boardVariant} = gameSettings;
   const gameId = getUrlParam("game");
   const userId = user && user.id;
   const [message, setMessage] = useState("");
@@ -25,7 +25,7 @@ const StandardChess = ({ history }) => {
     gameMode,
     userId,
     gameId,
-    boardSettings
+    boardVariant
   });
 
   const isOnePlayer = gameMode === GAME_MODES.ONE_PLAYER.TECHNICAL_NAME;

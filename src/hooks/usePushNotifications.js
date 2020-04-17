@@ -8,26 +8,6 @@ const usePushNotifications = userId => {
   const [fetchingSubscription, setFetchingSubscription] = useState(false);
   const isFetching = updatingSubscription || fetchingSubscription;
 
-  const listenToNotificationsSubscribe = () => {
-    firebase.getFromDatabaseListener(
-      `users/${userId}/notificationTokens`,
-      notificationTokens => {
-        setFetchingSubscription(true)
-        firebase.messaging.getToken().then(token => {
-          setFetchingSubscription(false)
-          const acceptsNotifications =
-            notificationTokens && notificationTokens[token];
-          if (!isSubscribed && acceptsNotifications) {
-            setIsSubscribed(true);
-            handleMessageListener();
-          } else if (!acceptsNotifications) {
-            setIsSubscribed(false);
-          }
-        });
-      }
-    );
-  };
-
   const setAcceptsNotifications = (token, value) => {
     setUpdatingSubscription(true);
     try {
@@ -63,9 +43,30 @@ const usePushNotifications = userId => {
   };
 
   useEffect(() => {
+    const listenToNotificationsSubscribe = () => {
+      firebase.getFromDatabaseListener(
+        `users/${userId}/notificationTokens`,
+        notificationTokens => {
+          setFetchingSubscription(true);
+          firebase.messaging.getToken().then(token => {
+            setFetchingSubscription(false);
+            const acceptsNotifications =
+              notificationTokens && notificationTokens[token];
+            if (!isSubscribed && acceptsNotifications) {
+              setIsSubscribed(true);
+              handleMessageListener();
+            } else if (!acceptsNotifications) {
+              setIsSubscribed(false);
+            }
+          });
+        }
+      );
+    };
     if (userId) {
       listenToNotificationsSubscribe();
     }
+    return () =>
+      firebase.listenerUnsubscribe(`users/${userId}/notificationTokens`);
   }, [userId]);
 
   return {

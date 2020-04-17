@@ -62,7 +62,7 @@ const ChallengeButton = ({
   }
 
   if (gameState.users) {
-    const gameType = gameState.settings.gameType;
+    const gameType = gameState.gameType;
     button = (
       <DashboardButton
         onClick={() => joinGame(gameType, gameId)}

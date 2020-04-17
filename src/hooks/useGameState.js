@@ -10,20 +10,13 @@ import {
 } from "utils/helpers";
 import { decideBotMove, getBotMoves } from "utils/onePlayerHelpers";
 import firebase from "../firebase";
-import { DEFAULT_FALLEN, DEFAULT_TURN, GAME_MODES } from "utils/constants";
+import { BOARDS, DEFAULT_FALLEN, DEFAULT_TURN, GAME_MODES } from "utils/constants";
 import { getKingStatus } from "piece-validation/getKingStatus";
-import { defaultBoardSettings } from "hooks/useGameSettings";
 
-const useGameState = ({
-  gameMode,
-  gameId,
-  userId,
-  boardSettings = defaultBoardSettings
-}) => {
+const useGameState = ({ gameMode, gameId, userId, boardVariant }) => {
 
   const [gameState, setGameState] = useState({
-    board: boardSettings.board,
-    boardTechnicalName: boardSettings.technicalName,
+    board: BOARDS[boardVariant].board,
     turn: DEFAULT_TURN,
     fallen: DEFAULT_FALLEN,
     inCheck: "",
@@ -35,7 +28,6 @@ const useGameState = ({
 
   const {
     board,
-    boardTechnicalName,
     turn,
     fallen,
     users,
@@ -61,7 +53,7 @@ const useGameState = ({
   function validateMove(sourceCoords, destinationCoords) {
     return performValidation({
       board,
-      boardTechnicalName,
+      boardVariant,
       sourceCoords,
       destinationCoords,
       player: turn,
@@ -88,7 +80,7 @@ const useGameState = ({
       nextBoard,
       opponent,
       baselinePlayer,
-      boardTechnicalName
+      boardVariant
     );
 
     return {
@@ -105,7 +97,7 @@ const useGameState = ({
   }
 
   function performBotMove() {
-    const selectedMove = decideBotMove(getBotMoves(board, boardTechnicalName));
+    const selectedMove = decideBotMove(getBotMoves(board, boardVariant));
     const nextGameState = getNextGameState(
       selectedMove.source.coords,
       selectedMove.destination.coords
@@ -197,7 +189,7 @@ const useGameState = ({
               game.users[userId].color === "black"
                 ? mirrorBoard(game.board)
                 : game.board,
-            boardTechnicalName: game.boardTechnicalName,
+            boardVariant: game.boardVariant,
             fallen: game.fallen
               ? {
                   black: game.fallen.black || [],

@@ -97,7 +97,7 @@ export const BOARDS = {
   },
   withoutPartners: {
     technicalName: "withoutPartners",
-    pretty: "Mini Battle",
+    pretty: "Mini battle",
     whitePawnStartingRow: 5,
     board: withoutPartners
   },
@@ -106,6 +106,5 @@ export const BOARDS = {
     pretty: "Royal front line",
     whitePawnStartingRow: 7,
     board: royalFrontline
-
   }
 };
