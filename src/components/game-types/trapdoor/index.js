@@ -142,6 +142,7 @@ const TrapdoorChess = ({ history }) => {
   }
 
   function handleFallenInTrapdoor(sourceCoords) {
+    window.navigator.vibrate([500, 50, 500, 50, 500]);
     const updatedBoard = getUpdatedBoard(board, sourceCoords, EMPTY_SQUARE);
     const updatedFallen = getUpdatedFallen(
       getSquareDetails(sourceCoords, board),

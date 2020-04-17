@@ -12,16 +12,24 @@
     align-self: center;
     text-decoration: none;
 
-
     h3 {
       cursor: pointer;
       color: $off-white;
     }
   }
 
-  .cog {
-    cursor: pointer;
-    color: $off-white;
-  }
+  .icons {
+    display: flex;
+    align-items: center;
 
+    .icon {
+      cursor: pointer;
+      color: $off-white;
+      margin-left: 20px;
+    }
+
+    .login {
+      margin-left: 10px;
+    }
+  }
 }

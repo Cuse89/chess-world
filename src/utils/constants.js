@@ -83,3 +83,15 @@ export const GAME_MODE_HAS_GAME_TYPE = {
     GAME_TYPES.TRIVIA.TECHNICAL_NAME
   ]
 };
+
+const SQUARE_POSITION = {
+  "POS-00": [8],
+  "POS-10": [7],
+  "POS-20": [6],
+  "POS-30": [5],
+  "POS-40": [4],
+  "POS-50": [3],
+  "POS-60": [2],
+  "POS-70": [1, "a"],
+
+}

@@ -44,6 +44,18 @@ const Board = ({
     }
   };
 
+  const getPosition = coords => {
+    const alphabet = "abcdefgh".split("");
+    const positions = [];
+    if (coords[1] === "0") {
+      positions.push(board.length - coords[0]);
+    }
+    if (coords[0] === (board.length - 1).toString()) {
+      positions.push(alphabet[coords[1]]);
+    }
+    return positions
+  };
+
   board.forEach((row, rowIdx) => {
     const squares = [];
 
@@ -63,6 +75,7 @@ const Board = ({
                   isGreen={isGreen(coords)}
                   isDraggingOver={snapshot.isDraggingOver}
                   handleOnClick={onSquareSelect}
+                  position={getPosition(coords)}
                 >
                   {getSquaresChild(square)}
                 </Square>

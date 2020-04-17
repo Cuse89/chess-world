@@ -8,16 +8,17 @@ import {
 
 import firebase from "../firebase";
 
+export const defaultGameSettings = {
+  gameMode: "",
+  gameType: "",
+  trapdoorsAmount: DEFAULT_TRAPDOOR_AMOUNT,
+  triviaDifficulty: DEFAULT_TRIVIA_DIFFICULTY,
+  triviaCategory: DEFAULT_TRIVIA_CATEGORY
+};
+
 const useGameSettings = () => {
   const [gameId, setGameId] = useState("");
-  const [gameSettings, setGameSettings] = useState({
-    gameMode: "",
-    gameType: "",
-    trapdoorsAmount: DEFAULT_TRAPDOOR_AMOUNT,
-    triviaDifficulty: DEFAULT_TRIVIA_DIFFICULTY,
-    triviaCategory: DEFAULT_TRIVIA_CATEGORY
-  });
-
+  const [gameSettings, setGameSettings] = useState(defaultGameSettings);
   const updateGameSettings = setting => {
     setGameSettings({ ...gameSettings, ...setting });
   };

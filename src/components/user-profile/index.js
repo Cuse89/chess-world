@@ -8,9 +8,9 @@ import NameInput from "components/dashboard-online/name-input";
 import UserAvailabilitySetting from "components/user-profile/user-availability-setting";
 import PushNotificationSetting from "components/user-profile/push-notification-setting";
 import DashboardButton from "components/dashboard-button";
+import GameStats from "components/user-profile/game-stats";
 
 import styles from "./UserProfile.module.scss";
-import GameStats from "components/user-profile/game-stats";
 
 const UserProfile = () => {
   const { user } = useContext(Context);
@@ -25,7 +25,6 @@ const UserProfile = () => {
       onClick={onClick}
     />
   );
-  console.log({ user });
 
   if (userId) {
     return (

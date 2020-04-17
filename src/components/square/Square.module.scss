@@ -4,7 +4,22 @@
   text-align: center;
   width: 40px;
   height: 40px;
-  //padding: 4px;
+  position: relative;
+
+  .position {
+    position: absolute;
+    font-size: 12px;
+  }
+
+  .number {
+    left: 1px;
+  }
+
+  .letter {
+    bottom: 0;
+    right: 1px;
+  }
+
 }
 
 .green {
@@ -13,4 +28,8 @@
 
 .highlighted {
   border: 2px $active-color solid;
+}
+
+.white {
+  color: white;
 }

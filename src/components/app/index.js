@@ -10,18 +10,17 @@ import Header from "components/header";
 import useGameSettings from "hooks/useGameSettings";
 import useUser from "hooks/useUser";
 import Footer from "components/footer";
-import styles from "./App.module.scss";
 import Loader from "components/loader";
-
+import styles from "./App.module.scss";
 
 const App = () => {
   const gameSettings = useGameSettings();
-  const { user, fetchingUser } = useUser();
+  const { user, isFetching, userOnline } = useUser();
   return (
     <BrowserRouter>
-      <Context.Provider value={{ gameSettings, user, fetchingUser }}>
+      <Context.Provider value={{ gameSettings, user, userOnline }}>
         <div className={styles.root}>
-          <Loader show={fetchingUser} size="large" delay={0}>
+          <Loader show={isFetching} size="large" delay={0}>
             <Header />
             <Switch>
               <Route exact path="/" component={Dashboard} />

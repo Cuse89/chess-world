@@ -16,6 +16,7 @@ const ChallengeButton = ({
   handleStartNewGame
 }) => {
   const { user } = useContext(Context);
+  console.log("rrr", user)
   const gameId =
     user.games &&
     Object.keys(user.games).filter(id => user.games[id] === opponentId)[0];
