@@ -53,7 +53,7 @@ const Board = ({
     if (coords[0] === (board.length - 1).toString()) {
       positions.push(alphabet[coords[1]]);
     }
-    return positions
+    return positions;
   };
 
   board.forEach((row, rowIdx) => {
@@ -108,21 +108,24 @@ const Board = ({
       [styles.indicator]: true,
       [styles.active]: baseline ? baselineActive : topActive
     });
+  const columnClassName = styles[`columns${board[0].length}`];
 
   return (
     <DragDropContext onDragEnd={handleOnDragEnd} onDragStart={onDragStart}>
-      <div className={indicatorClassname()} />
-      <div
-        className={cx({
-          [styles.board]: true,
-          [styles.topActive]: topActive,
-          [styles.baselineActive]: baselineActive,
-          [styles[`columns${board[0].length}`]]: true
-        })}
-      >
-        {rows}
+      <div className={columnClassName}>
+        <div className={indicatorClassname()} />
+        <div
+          className={cx({
+            [styles.board]: true,
+            [styles.topActive]: topActive,
+            [styles.baselineActive]: baselineActive,
+            [columnClassName]: true
+          })}
+        >
+          {rows}
+        </div>
+        <div className={indicatorClassname(true)} />
       </div>
-      <div className={indicatorClassname(true)} />
     </DragDropContext>
   );
 };

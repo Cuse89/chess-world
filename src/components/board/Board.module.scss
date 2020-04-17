@@ -1,4 +1,4 @@
-@import 'src/styles/base/variables';
+@import "src/styles/base/variables";
 
 .board {
   display: grid;
@@ -16,13 +16,15 @@
 
 .columns5 {
   grid-template-columns: $square-width $square-width $square-width $square-width $square-width;
+  width: 205px;
 }
 .columns8 {
   grid-template-columns: $square-width $square-width $square-width $square-width $square-width $square-width $square-width $square-width;
+  width: 324px;
 }
 
 .indicator {
-  width: 324px;
+  width: 100%;
   height: 4px;
 
   &.active {
