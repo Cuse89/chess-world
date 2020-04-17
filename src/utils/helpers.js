@@ -107,7 +107,7 @@ export const getUpdatedBoard = (board, coords, value) => {
 
 export const performValidation = ({
   board,
-                                    boardTechnicalName,
+  boardTechnicalName,
   player,
   sourceCoords,
   destinationCoords,
@@ -141,7 +141,8 @@ export const performValidation = ({
   }
   const nextBoard = getNextBoard(board, sourceCoords, destinationCoords);
   const movedSelfIntoCheck =
-    getKingStatus(nextBoard, player, baselinePlayer, boardTechnicalName) === "check";
+    getKingStatus(nextBoard, player, baselinePlayer, boardTechnicalName) ===
+    "check";
   return !movedSelfIntoCheck;
 };
 

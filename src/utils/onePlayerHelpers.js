@@ -8,7 +8,12 @@ import { getKingStatus } from "piece-validation/getKingStatus";
 
 // getThreats takes moving into check into consideration - a piece that would move into check if it performed the move is NOT a threat
 // use useDirectThreats to not take moving into check into consideration
-export const getThreats = (threatenedPlayer, threatenedPlayerCoords, board, boardTechnicalName) => {
+export const getThreats = (
+  threatenedPlayer,
+  threatenedPlayerCoords,
+  board,
+  boardTechnicalName
+) => {
   let threats = [];
 
   loopBoard(board, ({ square, coords }) => {
@@ -66,7 +71,12 @@ export const getBotMoves = (board, boardTechnicalName) => {
               pieceId: prevSquare.pieceId,
               coords: sourceCoords,
               strength: getPieceProps(prevSquare.pieceId).strength,
-              threats: getThreats("black", sourceCoords, board, boardTechnicalName)
+              threats: getThreats(
+                "black",
+                sourceCoords,
+                board,
+                boardTechnicalName
+              )
             },
             destination: {
               pieceId: nextSquare.pieceId && nextSquare.pieceId,
@@ -74,10 +84,30 @@ export const getBotMoves = (board, boardTechnicalName) => {
               strength:
                 nextSquare.pieceId &&
                 getPieceProps(nextSquare.pieceId).strength,
-              kingStatusYou: getKingStatus(nextBoard, "black", "white", boardTechnicalName),
-              kingStatusOpponent: getKingStatus(nextBoard, "white", "white"),
-              threats: getThreats("black", destinationCoords, nextBoard, boardTechnicalName),
-              defenders: getThreats("white", destinationCoords, nextBoard, boardTechnicalName)
+              kingStatusYou: getKingStatus(
+                nextBoard,
+                "black",
+                "white",
+                boardTechnicalName
+              ),
+              kingStatusOpponent: getKingStatus(
+                nextBoard,
+                "white",
+                "white",
+                boardTechnicalName
+              ),
+              threats: getThreats(
+                "black",
+                destinationCoords,
+                nextBoard,
+                boardTechnicalName
+              ),
+              defenders: getThreats(
+                "white",
+                destinationCoords,
+                nextBoard,
+                boardTechnicalName
+              )
             }
           };
 

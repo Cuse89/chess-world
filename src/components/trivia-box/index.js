@@ -48,7 +48,6 @@ const TriviaBox = ({
 
   useEffect(() => {
     const handleAnswerQuestion = () => {
-      console.log("handleAnswerQuestion");
       const answeredCorrect = answer === trivia.correct_answer;
       setTimeout(() => {
         if (answeredCorrect) {

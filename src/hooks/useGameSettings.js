@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import {
+  BOARDS,
   DEFAULT_TRAPDOOR_AMOUNT,
   DEFAULT_TRIVIA_CATEGORY,
   DEFAULT_TRIVIA_DIFFICULTY,
@@ -7,11 +8,10 @@ import {
 } from "utils/constants";
 
 import firebase from "../firebase";
-import defaultBoard from "boards/defaultBoard";
 
 export const defaultBoardSettings = {
-  board: defaultBoard.board,
-  technicalName: defaultBoard.technicalName
+  board: BOARDS.default.board,
+  technicalName: BOARDS.default.technicalName
 };
 
 export const defaultGameSettings = {

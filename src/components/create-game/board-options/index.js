@@ -1,10 +1,9 @@
 import React, { Fragment } from "react";
 import DashboardButton from "components/dashboard-button";
-import defaultBoard from "boards/defaultBoard";
-import withoutPartners from "boards/withoutPartners";
+import { BOARDS } from "utils/constants";
 import styles from "./BoardOptions.module.scss";
 
-const boards = [defaultBoard, withoutPartners];
+const boards = [BOARDS.default, BOARDS.withoutPartners];
 
 const BoardOptions = ({ onChange, selectedBoard }) => (
   <Fragment>

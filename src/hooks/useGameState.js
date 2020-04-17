@@ -20,6 +20,7 @@ const useGameState = ({
   userId,
   boardSettings = defaultBoardSettings
 }) => {
+
   const [gameState, setGameState] = useState({
     board: boardSettings.board,
     boardTechnicalName: boardSettings.technicalName,
@@ -91,6 +92,7 @@ const useGameState = ({
     );
 
     return {
+      ...gameState,
       board: handleMirroredBoard(nextBoard),
       turn: opponentKingStatus !== "checkmate" ? opponent : turn,
       fallen: getUpdatedFallen(

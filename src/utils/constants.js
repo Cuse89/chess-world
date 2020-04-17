@@ -1,3 +1,6 @@
+import defaultBoard from "boards/defaultBoard";
+import withoutPartners from "boards/withoutPartners";
+
 export const GAME_MODES = {
   ONE_PLAYER: {
     TECHNICAL_NAME: "onePlayer",
@@ -63,7 +66,7 @@ export const TRIVIA_CATEGORIES = [
   { pretty: "Politics", id: 24 },
   { pretty: "Art", id: 25 },
   { pretty: "Celebrities", id: 26 },
-  { pretty: "Animals", id: 27 },
+  { pretty: "Animals", id: 27 }
 ];
 export const DEFAULT_TRIVIA_CATEGORY = "random";
 
@@ -84,3 +87,17 @@ export const GAME_MODE_HAS_GAME_TYPE = {
   ]
 };
 
+export const BOARDS = {
+  default: {
+    technicalName: "default",
+    pretty: "Default",
+    whitePawnStartingRow: 6,
+    board: defaultBoard
+  },
+  withoutPartners: {
+    technicalName: "withoutPartners",
+    pretty: "5x7 - single pieces only",
+    whitePawnStartingRow: 5,
+    board: withoutPartners
+  }
+};

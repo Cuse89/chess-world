@@ -1,11 +1,13 @@
 import { getSquareDetails } from "utils/helpers";
+import { BOARDS } from "utils/constants";
 
 export const pawnValidation = ({
   sourceCoords,
   destinationCoords,
   board,
   captureOnly,
-  baselinePlayer
+  baselinePlayer,
+  boardTechnicalName
 }) => {
   const player = getSquareDetails(sourceCoords, board).player;
   // captureOnly is validation to see if it can capture only
@@ -18,7 +20,8 @@ export const pawnValidation = ({
     return !targetSquareOccupied;
     // moved 2 spaces forward
   } else if (move === (player === baselinePlayer ? 20 : -20)) {
-    const eligibleColumn = player === baselinePlayer ? board.length -2 : 1;
+    const pawnStartingRow = BOARDS[boardTechnicalName].whitePawnStartingRow;
+    const eligibleColumn = player === baselinePlayer ? pawnStartingRow : 1;
     // was moving 2 spaces eligible?
     // Todo: Dont allow pawn to jump over piece when moving 2 squares
     return (
