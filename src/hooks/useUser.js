@@ -16,7 +16,7 @@ const useUser = () => {
     setIsFetching(true);
     const unsubscribe = firebase.auth().onAuthStateChanged(user => {
       if (user) {
-        firebase.getFromDatabaseOnce(`users/${user.uid}`, userDetails => {
+        firebase.getFromDatabaseListener(`users/${user.uid}`, userDetails => {
           setUser({ id: user.uid, ...userDetails });
           setIsFetching(false);
         });
