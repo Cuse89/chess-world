@@ -22,7 +22,7 @@ import styles from "./TrapdoorChess.module.scss";
 
 const TrapdoorChess = ({ history }) => {
   const { user, gameSettings } = useContext(Context);
-  const { gameMode, trapdoorsAmount, setGameId, lineup } = gameSettings;
+  const { gameMode, trapdoorsAmount, setGameId, boardSettings } = gameSettings;
   const gameId = getUrlParam("game");
   const userId = user && user.id;
   const [message, setMessage] = useState("");
@@ -40,7 +40,7 @@ const TrapdoorChess = ({ history }) => {
     gameMode,
     userId,
     gameId,
-    lineup
+    boardSettings
   });
 
   const isOnePlayer = gameMode === GAME_MODES.ONE_PLAYER.TECHNICAL_NAME;
@@ -143,7 +143,7 @@ const TrapdoorChess = ({ history }) => {
   }
 
   function handleFallenInTrapdoor(sourceCoords) {
-    window.navigator.vibrate([500, 50, 500, 50, 500]);
+    navigator.vibrate([500, 50, 500, 50, 500]);
     const updatedBoard = getUpdatedBoard(board, sourceCoords, EMPTY_SQUARE);
     const updatedFallen = getUpdatedFallen(
       getSquareDetails(sourceCoords, board),

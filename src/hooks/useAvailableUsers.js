@@ -9,28 +9,7 @@ const useAvailableUsers = userId => {
   const isFetching = updatingAvailableUsers || fetchingUsers;
   const availableUsers = allAvailableUsers.filter(user => user.id !== userId);
 
-  const getAvailableUsersIds = () =>
-    firebase.getFromDatabaseListener(
-      "availableUsers",
-      async allAvailableUsers => {
-        setFetchingUsers(true);
-        try {
-          const users = await firebase.getFromDatabaseOnce("users", allUsers =>
-            Object.keys(allAvailableUsers).map(userId => ({
-              ...allUsers[userId],
-              id: userId
-            }))
-          );
-          setAvailableUsers(users);
-          if (users) {
-            setFetchingUsers(false);
-          }
-        } catch (err) {
-          console.log(err);
-          setFetchingUsers(false);
-        }
-      }
-    );
+
 
   const updateAvailableUser = async (userId, value) => {
     try {
@@ -51,7 +30,30 @@ const useAvailableUsers = userId => {
   }, [userId, allAvailableUsers]);
 
   useEffect(() => {
+    const getAvailableUsersIds = () =>
+      firebase.getFromDatabaseListener(
+        "availableUsers",
+        async allAvailableUsers => {
+          setFetchingUsers(true);
+          try {
+            const users = await firebase.getFromDatabaseOnce("users", allUsers =>
+              Object.keys(allAvailableUsers).map(userId => ({
+                ...allUsers[userId],
+                id: userId
+              }))
+            );
+            setAvailableUsers(users);
+            if (users) {
+              setFetchingUsers(false);
+            }
+          } catch (err) {
+            console.log(err);
+            setFetchingUsers(false);
+          }
+        }
+      );
     getAvailableUsersIds();
+    return () => firebase.listenerUnsubscribe("availableUsers")
   }, []);
 
   return { availableUsers, updateAvailableUser, userAvailable, isFetching };

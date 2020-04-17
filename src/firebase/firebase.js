@@ -60,6 +60,10 @@ class Firebase {
     }
   }
 
+  listenerUnsubscribe(path) {
+    this.database.ref(path).off()
+  }
+
   async setUser(userId, key, value) {
     try {
       await this.database.ref(`users/${userId}/${key}`).set(value);

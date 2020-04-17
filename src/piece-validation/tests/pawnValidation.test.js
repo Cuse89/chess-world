@@ -1,5 +1,5 @@
 import { pawnValidation } from "piece-validation/pawnValidation";
-import defaultBoard from "lineups/defaultBoard";
+import defaultBoard from "src/boards/defaultBoard";
 import { testBoard } from "piece-validation/tests/mockData";
 
 const testBoardRow5 = testBoard("black", "pawn", 5);

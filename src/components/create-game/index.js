@@ -16,7 +16,7 @@ const CreateGame = ({ onSubmit, submitText }) => {
     trapdoorsAmount,
     triviaDifficulty,
     triviaCategory,
-    lineup
+    boardSettings
   } = useGameSettings();
   const handleOnSubmit = () => {
     onSubmit({
@@ -24,7 +24,7 @@ const CreateGame = ({ onSubmit, submitText }) => {
       trapdoorsAmount,
       triviaDifficulty,
       triviaCategory,
-      lineup
+      boardSettings
     });
   };
 
@@ -35,7 +35,7 @@ const CreateGame = ({ onSubmit, submitText }) => {
         gameType={gameType}
       />
       {gameType && (
-        <BoardOptions onChange={updateGameSettings} selectedBoard={lineup} />
+        <BoardOptions onChange={updateGameSettings} selectedBoard={boardSettings} />
       )}
       {gameType === GAME_TYPES.TRAPDOOR.TECHNICAL_NAME && (
         <TrapdoorOptions

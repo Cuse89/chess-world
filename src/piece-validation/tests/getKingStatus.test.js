@@ -1,5 +1,5 @@
 import { getKingStatus } from "piece-validation/getKingStatus";
-import board from "lineups/defaultBoard";
+import board from "src/boards/defaultBoard";
 import {
   inCheckBoard,
   inCheckmateBoard,

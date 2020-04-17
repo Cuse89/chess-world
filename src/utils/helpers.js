@@ -107,6 +107,7 @@ export const getUpdatedBoard = (board, coords, value) => {
 
 export const performValidation = ({
   board,
+                                    boardTechnicalName,
   player,
   sourceCoords,
   destinationCoords,
@@ -131,6 +132,7 @@ export const performValidation = ({
       sourceCoords,
       destinationCoords,
       board,
+      boardTechnicalName,
       baselinePlayer,
       captureOnly
     })
@@ -139,7 +141,7 @@ export const performValidation = ({
   }
   const nextBoard = getNextBoard(board, sourceCoords, destinationCoords);
   const movedSelfIntoCheck =
-    getKingStatus(nextBoard, player, baselinePlayer) === "check";
+    getKingStatus(nextBoard, player, baselinePlayer, boardTechnicalName) === "check";
   return !movedSelfIntoCheck;
 };
 
@@ -191,7 +193,8 @@ export const mirrorBoard = board => {
 export const getDirectThreats = (
   threatenedPlayer,
   threatenedPlayerCoords,
-  board
+  board,
+  boardTechnicalName
 ) => {
   let threats = [];
 
@@ -204,6 +207,7 @@ export const getDirectThreats = (
         sourceCoords: coords,
         destinationCoords: threatenedPlayerCoords,
         board,
+        boardTechnicalName,
         player: threateningPlayer,
         captureOnly: true,
         baselinePlayer: "white"

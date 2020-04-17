@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import defaultBoard from "lineups/defaultBoard";
 import {
   getNextBoard,
   getOpponent,
@@ -13,10 +12,17 @@ import { decideBotMove, getBotMoves } from "utils/onePlayerHelpers";
 import firebase from "../firebase";
 import { DEFAULT_FALLEN, DEFAULT_TURN, GAME_MODES } from "utils/constants";
 import { getKingStatus } from "piece-validation/getKingStatus";
+import { defaultBoardSettings } from "hooks/useGameSettings";
 
-const useGameState = ({ gameMode, gameId, userId, lineup }) => {
+const useGameState = ({
+  gameMode,
+  gameId,
+  userId,
+  boardSettings = defaultBoardSettings
+}) => {
   const [gameState, setGameState] = useState({
-    board: lineup,
+    board: boardSettings.board,
+    boardTechnicalName: boardSettings.technicalName,
     turn: DEFAULT_TURN,
     fallen: DEFAULT_FALLEN,
     inCheck: "",
@@ -26,7 +32,14 @@ const useGameState = ({ gameMode, gameId, userId, lineup }) => {
 
   console.log({ gameState });
 
-  const { board, turn, fallen, users, inCheckmate } = gameState;
+  const {
+    board,
+    boardTechnicalName,
+    turn,
+    fallen,
+    users,
+    inCheckmate
+  } = gameState;
 
   const isOnePlayer = gameMode === GAME_MODES.ONE_PLAYER.TECHNICAL_NAME;
   const isTwoPlayer = gameMode === GAME_MODES.TWO_PLAYER.TECHNICAL_NAME;
@@ -47,6 +60,7 @@ const useGameState = ({ gameMode, gameId, userId, lineup }) => {
   function validateMove(sourceCoords, destinationCoords) {
     return performValidation({
       board,
+      boardTechnicalName,
       sourceCoords,
       destinationCoords,
       player: turn,
@@ -72,7 +86,8 @@ const useGameState = ({ gameMode, gameId, userId, lineup }) => {
     const opponentKingStatus = getKingStatus(
       nextBoard,
       opponent,
-      baselinePlayer
+      baselinePlayer,
+      boardTechnicalName
     );
 
     return {
@@ -88,7 +103,7 @@ const useGameState = ({ gameMode, gameId, userId, lineup }) => {
   }
 
   function performBotMove() {
-    const selectedMove = decideBotMove(getBotMoves(board));
+    const selectedMove = decideBotMove(getBotMoves(board, boardTechnicalName));
     const nextGameState = getNextGameState(
       selectedMove.source.coords,
       selectedMove.destination.coords
@@ -172,35 +187,36 @@ const useGameState = ({ gameMode, gameId, userId, lineup }) => {
 
   useEffect(() => {
     const gameListener = () => {
-      if (isOnlinePlay) {
-        firebase.getFromDatabaseListener(`games/${gameId}`, game => {
-          if (game) {
-            setGameState({
-              ...game,
-              board:
-                game.users[userId].color === "black"
-                  ? mirrorBoard(game.board)
-                  : game.board,
-              fallen: game.fallen
-                ? {
-                    black: game.fallen.black || [],
-                    white: game.fallen.white || []
-                  }
-                : DEFAULT_FALLEN,
-              users: game.users,
-              inCheck: game.inCheck,
-              inCheckmate: game.inCheckmate
-            });
-          } else {
-            setGameState({ ...gameState, status: "ended" });
-          }
-        });
-      }
+      firebase.getFromDatabaseListener(`games/${gameId}`, game => {
+        if (game) {
+          setGameState({
+            ...game,
+            board:
+              game.users[userId].color === "black"
+                ? mirrorBoard(game.board)
+                : game.board,
+            boardTechnicalName: game.boardTechnicalName,
+            fallen: game.fallen
+              ? {
+                  black: game.fallen.black || [],
+                  white: game.fallen.white || []
+                }
+              : DEFAULT_FALLEN,
+            users: game.users,
+            inCheck: game.inCheck,
+            inCheckmate: game.inCheckmate
+          });
+        } else {
+          setGameState({ ...gameState, status: "ended" });
+        }
+      });
     };
 
-    if (gameId && userId) {
+    if (gameId && userId && isOnlinePlay) {
       gameListener();
     }
+
+    return () => firebase.listenerUnsubscribe(`games/${gameId}`);
   }, [gameId, userId, isOnlinePlay]);
 
   return {

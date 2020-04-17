@@ -1,11 +1,8 @@
-import React, { Fragment, useContext } from "react";
+import React, { Fragment, useContext, useEffect } from "react";
 import DashboardButton from "components/dashboard-button";
 import { getPrettyFromTechnicalName } from "utils/helpers";
 import { GAME_MODES, GAME_TYPES } from "utils/constants";
 import Context from "context";
-import { v4 as uuid } from "uuid";
-import firebase from "../../../firebase";
-import defaultBoard from "lineups/defaultBoard";
 import useGameState from "hooks/useGameState";
 
 const ChallengeButton = ({
@@ -15,8 +12,9 @@ const ChallengeButton = ({
   toggleShowCreateGame,
   handleStartNewGame
 }) => {
-  const { user } = useContext(Context);
-  console.log("rrr", user)
+  const { user, gameSettings } = useContext(Context);
+  const { setGameId, boardSettings } = gameSettings;
+
   const gameId =
     user.games &&
     Object.keys(user.games).filter(id => user.games[id] === opponentId)[0];
@@ -24,8 +22,15 @@ const ChallengeButton = ({
   const { gameState } = useGameState({
     gameMode: GAME_MODES.ONLINE_PLAY.TECHNICAL_NAME,
     gameId,
-    userId: user.id
+    userId: user.id,
+    boardSettings
   });
+
+  useEffect(() => {
+    if (gameId) {
+      setGameId(gameId);
+    }
+  }, [setGameId, gameId]);
 
   let button = (
     <DashboardButton onClick={() => toggleShowCreateGame(true)} fullLength>

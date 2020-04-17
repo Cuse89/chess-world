@@ -8,7 +8,7 @@ import { getKingStatus } from "piece-validation/getKingStatus";
 
 // getThreats takes moving into check into consideration - a piece that would move into check if it performed the move is NOT a threat
 // use useDirectThreats to not take moving into check into consideration
-export const getThreats = (threatenedPlayer, threatenedPlayerCoords, board) => {
+export const getThreats = (threatenedPlayer, threatenedPlayerCoords, board, boardTechnicalName) => {
   let threats = [];
 
   loopBoard(board, ({ square, coords }) => {
@@ -20,6 +20,7 @@ export const getThreats = (threatenedPlayer, threatenedPlayerCoords, board) => {
         sourceCoords: coords,
         destinationCoords: threatenedPlayerCoords,
         board,
+        boardTechnicalName,
         player: threateningPlayer,
         captureOnly: true,
         baselinePlayer: "white"
@@ -31,7 +32,7 @@ export const getThreats = (threatenedPlayer, threatenedPlayerCoords, board) => {
   return threats;
 };
 
-export const getBotMoves = board => {
+export const getBotMoves = (board, boardTechnicalName) => {
   let moves = [];
   // find black piece
   loopBoard(board, ({ square: prevSquare, coords }) => {
@@ -47,6 +48,7 @@ export const getBotMoves = board => {
         if (
           performValidation({
             board,
+            boardTechnicalName,
             player: "black",
             sourceCoords,
             destinationCoords,
@@ -64,7 +66,7 @@ export const getBotMoves = board => {
               pieceId: prevSquare.pieceId,
               coords: sourceCoords,
               strength: getPieceProps(prevSquare.pieceId).strength,
-              threats: getThreats("black", sourceCoords, board)
+              threats: getThreats("black", sourceCoords, board, boardTechnicalName)
             },
             destination: {
               pieceId: nextSquare.pieceId && nextSquare.pieceId,
@@ -72,10 +74,10 @@ export const getBotMoves = board => {
               strength:
                 nextSquare.pieceId &&
                 getPieceProps(nextSquare.pieceId).strength,
-              kingStatusYou: getKingStatus(nextBoard, "black", "white"),
+              kingStatusYou: getKingStatus(nextBoard, "black", "white", boardTechnicalName),
               kingStatusOpponent: getKingStatus(nextBoard, "white", "white"),
-              threats: getThreats("black", destinationCoords, nextBoard),
-              defenders: getThreats("white", destinationCoords, nextBoard)
+              threats: getThreats("black", destinationCoords, nextBoard, boardTechnicalName),
+              defenders: getThreats("white", destinationCoords, nextBoard, boardTechnicalName)
             }
           };
 

@@ -6,7 +6,6 @@ import Context from "context";
 import firebase from "../../../firebase";
 import styles from "./ChallengePlayer.module.scss";
 import { v4 as uuid } from "uuid";
-import defaultBoard from "lineups/defaultBoard";
 import Modal from "components/modal";
 
 const ChallengePlayer = ({ availableUser }) => {
@@ -49,7 +48,8 @@ const ChallengePlayer = ({ availableUser }) => {
             color: "black"
           }
         },
-        board: defaultBoard,
+        board: gameSettings.boardSettings.board,
+        boardTechnicalName: gameSettings.boardSettings.technicalName,
         turn: "white",
         settings: { ...gameSettings }
       });

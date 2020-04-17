@@ -11,7 +11,7 @@ import { getDirectThreats } from "utils/helpers";
 
 // kingPlayer is the players colour that controls the king in question
 
-export const getKingStatus = (board, kingPlayer, baselinePlayer) => {
+export const getKingStatus = (board, kingPlayer, baselinePlayer, boardTechnicalName) => {
   let kingPos = "";
   const getKingPos = ({ square, coords }) => {
     if (square.player === kingPlayer && square.pieceId === "king") {
@@ -20,7 +20,7 @@ export const getKingStatus = (board, kingPlayer, baselinePlayer) => {
   };
   loopBoard(board, getKingPos);
 
-  let directThreats = getDirectThreats(kingPlayer, kingPos, board);
+  let directThreats = getDirectThreats(kingPlayer, kingPos, board, boardTechnicalName);
 
   const isInCheck = () => kingPos && directThreats.length > 0;
 
@@ -31,7 +31,7 @@ export const getKingStatus = (board, kingPlayer, baselinePlayer) => {
     // can directThreats be taken?
     directThreats = directThreats.filter(
       ({ coords }) =>
-        getDirectThreats(getOpponent(kingPlayer), coords, board).length === 0
+        getDirectThreats(getOpponent(kingPlayer), coords, board, boardTechnicalName).length === 0
     );
 
     // can directThreats be blocked instead?
@@ -48,6 +48,7 @@ export const getKingStatus = (board, kingPlayer, baselinePlayer) => {
                 if (
                   performValidation({
                     board,
+                    boardTechnicalName,
                     kingPlayer,
                     destinationCoords: pathwayCoords,
                     sourceCoords: coords,
@@ -86,6 +87,7 @@ export const getKingStatus = (board, kingPlayer, baselinePlayer) => {
           sourceCoords: kingPos,
           destinationCoords,
           board,
+            boardTechnicalName,
           player: kingPlayer
         }) &&
           !isOwnPlayer) ||
@@ -101,7 +103,8 @@ export const getKingStatus = (board, kingPlayer, baselinePlayer) => {
         getDirectThreats(
           kingPlayer,
           destinationCoords,
-          getNextBoard(board, kingPos, destinationCoords)
+          getNextBoard(board, kingPos, destinationCoords),
+          boardTechnicalName
         ).length < 1
       );
     });
