@@ -141,18 +141,17 @@ export const performValidation = ({
   }
   const nextBoard = getNextBoard(board, sourceCoords, destinationCoords);
   const movedSelfIntoCheck =
-    getKingStatus(nextBoard, player, baselinePlayer, boardVariant) ===
-    "check";
+    getKingStatus(nextBoard, player, baselinePlayer, boardVariant) === "check";
   return !movedSelfIntoCheck;
 };
 
 export const loopBoard = (board, func) =>
-  board.forEach((row, rowIdx) => {
+  board.forEach((row, rowIdx) =>
     row.forEach((square, squareIdx) => {
       const coords = rowIdx.toString().concat(squareIdx);
-      func({ square, coords });
-    });
-  });
+      return func({ square, coords });
+    })
+  );
 
 export const getOpponent = player => (player === "white" ? "black" : "white");
 

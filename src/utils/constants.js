@@ -1,6 +1,10 @@
 import defaultBoard from "boards/defaultBoard";
 import withoutPartners from "boards/withoutPartners";
 import royalFrontline from "boards/royalFrontline";
+import {
+  checkMateCannotDefendThreatsInSingleMove, inCheckCanBlockThreat,
+  inCheckCannotBlockMultipleThreats, inCheckCanTakeThreatWithNonKing, inCheckmateBoard2
+} from "piece-validation/tests/mockData";
 
 export const GAME_MODES = {
   ONE_PLAYER: {
@@ -93,7 +97,7 @@ export const BOARDS = {
     technicalName: "default",
     pretty: "Default",
     whitePawnStartingRow: 6,
-    board: defaultBoard
+    board: inCheckCanTakeThreatWithNonKing
   },
   withoutPartners: {
     technicalName: "withoutPartners",

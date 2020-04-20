@@ -262,14 +262,14 @@ export const inCheckmateBoard2 = [
     EMPTY_SQUARE,
     EMPTY_SQUARE,
     EMPTY_SQUARE,
-    { player: "white", pieceId: "rook-1" }
+    EMPTY_SQUARE
   ],
   emptyRow,
   emptyRow,
   emptyRow,
   [
     { player: "white", pieceId: "pawn-0" },
-    { player: "white", pieceId: "pawn-1" },
+    { player: "white", pieceId: "rook-1" },
     { player: "white", pieceId: "pawn-2" },
     { player: "white", pieceId: "pawn-3" },
     { player: "white", pieceId: "pawn-4" },
@@ -508,7 +508,7 @@ export const inCheckCanTakeThreatWithNonKing = [
     EMPTY_SQUARE,
     { player: "black", pieceId: "bishop-1" },
     EMPTY_SQUARE,
-    EMPTY_SQUARE,
+    { player: "black", pieceId: "bishop-0" },
     EMPTY_SQUARE,
     { player: "black", pieceId: "knight-0" },
     { player: "black", pieceId: "rook-0" }
@@ -517,8 +517,8 @@ export const inCheckCanTakeThreatWithNonKing = [
     EMPTY_SQUARE,
     { player: "black", pieceId: "pawn-6" },
     { player: "black", pieceId: "pawn-5" },
-    EMPTY_SQUARE,
-    { player: "black", pieceId: "bishop-0" },
+    { player: "black", pieceId: "king" },
+    { player: "black", pieceId: "pawn-3" },
     { player: "black", pieceId: "pawn-2" },
     { player: "black", pieceId: "pawn-1" },
     { player: "black", pieceId: "pawn-0" }
@@ -527,7 +527,7 @@ export const inCheckCanTakeThreatWithNonKing = [
     EMPTY_SQUARE,
     EMPTY_SQUARE,
     { player: "black", pieceId: "knight-1" },
-    { player: "black", pieceId: "king" },
+    EMPTY_SQUARE,
     { player: "black", pieceId: "pawn-3" },
     EMPTY_SQUARE,
     EMPTY_SQUARE,

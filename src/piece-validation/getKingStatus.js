@@ -1,6 +1,5 @@
 import {
   getNextBoard,
-  getOpponent,
   getPieceProps,
   getSquareDetails,
   loopBoard,
@@ -63,6 +62,7 @@ export const getKingStatus = (
         availableCoords.push(destinationCoords);
       }
     });
+
     // filter available coords and take away any that could be threatened if landed on by king
     availableCoords = availableCoords.filter(destinationCoords => {
       return (
@@ -74,7 +74,7 @@ export const getKingStatus = (
         ).length < 1
       );
     });
-
+    
     if (availableCoords.length > 0) {
       return false;
     }
@@ -87,19 +87,19 @@ export const getKingStatus = (
         pathway.forEach(pathwayCoords => {
           if (kingPos !== pathwayCoords) {
             loopBoard(board, ({ square, coords }) => {
-              if (square.player === kingPlayer && square.pieceId !== "king") {
-                if (
-                  performValidation({
-                    board,
-                    boardVariant,
-                    player: kingPlayer,
-                    destinationCoords: pathwayCoords,
-                    sourceCoords: coords,
-                    baselinePlayer
-                  })
-                ) {
-                  threat.canBeBlocked = true;
-                }
+              if (
+                square.player === kingPlayer &&
+                square.pieceId !== "king" &&
+                performValidation({
+                  board,
+                  boardVariant,
+                  player: kingPlayer,
+                  destinationCoords: pathwayCoords,
+                  sourceCoords: coords,
+                  baselinePlayer
+                })
+              ) {
+                threat.canBeBlocked = true;
               }
             });
           }
@@ -110,26 +110,26 @@ export const getKingStatus = (
     const directThreatsCanTravel = directThreats.filter(
       threat => threat.canTravel
     );
-    const directThreatsCannotTravel = directThreats.filter(
-      threat => !threat.canTravel
-    );
-    const directThreatsCannotTravelCannotBeTaken = directThreatsCannotTravel.filter(
-      ({ coords }) =>
-        getDirectThreats(getOpponent(kingPlayer), coords, board, boardVariant)
-          .length === 0
-    );
 
-
-    if (directThreatsCannotTravelCannotBeTaken.length > 0) {
-      return true;
-    }
-
-    if (
-      directThreatsCannotTravel.length > 0 &&
-      directThreatsCanTravel.length > 0
-    ) {
-      return true;
-    }
+    const directThreatsCanBeTaken = directThreats.filter(threat => {
+      let canBeTaken = false;
+      loopBoard(board, ({ square, coords }) => {
+        if (
+          square.player === kingPlayer &&
+          performValidation({
+            board,
+            player: kingPlayer,
+            destinationCoords: threat.coords,
+            sourceCoords: coords,
+            baselinePlayer,
+            boardVariant
+          })
+        ) {
+          canBeTaken = true;
+        }
+      });
+      return canBeTaken;
+    });
 
     if (directThreatsCanTravel.length > 1) {
       return true;
@@ -142,16 +142,18 @@ export const getKingStatus = (
       return false;
     }
 
+    if (directThreatsCanBeTaken.length > 0) {
+      return false;
+    }
+
     // availableCoords.length must be < 1
     return true;
   };
 
   if (isInCheck()) {
     if (isCheckmate()) {
-      console.log("checkmate")
       return "checkmate";
     }
-    console.log("check")
     return "check";
   }
 
