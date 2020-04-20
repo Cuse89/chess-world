@@ -1,5 +1,5 @@
 import { pawnValidation } from "piece-validation/pawnValidation";
-import defaultBoard from "src/boards/defaultBoard";
+import defaultBoard from "boards/defaultBoard";
 import { testBoard } from "piece-validation/tests/mockData";
 
 const testBoardRow5 = testBoard("black", "pawn", 5);
@@ -83,7 +83,8 @@ describe("pawnValidation", () => {
           destinationCoords,
           board,
           player: player || "white",
-          baselinePlayer: "white"
+          baselinePlayer: "white",
+          boardVariant: "default"
         })
       ).toBe(testObj.expect);
     });

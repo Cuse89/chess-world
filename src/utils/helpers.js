@@ -198,7 +198,6 @@ export const getDirectThreats = (
   boardVariant
 ) => {
   let threats = [];
-
   loopBoard(board, ({ square, coords }) => {
     const threateningPlayer =
       square.player && square.player !== threatenedPlayer && square.player;

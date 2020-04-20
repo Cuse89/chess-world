@@ -27,7 +27,14 @@ export const getRookPathway = (sourceCoords, destinationCoords) => {
       } else {
         coords = destinationCoords[0] + position;
       }
-      pathway.push(coords);
+      // do not include initial square
+      if (coords !== sourceCoords) {
+        // Convert single digit to 2 (1 to 01)
+        if (coords.length === 1) {
+          coords = "0" + coords;
+        }
+        pathway.push(coords);
+      }
     }
   }
   return pathway;
@@ -39,15 +46,14 @@ export const rookValidation = ({ sourceCoords, destinationCoords, board }) => {
   for (let i = 0; i < pathway.length; i++) {
     let coords = pathway[i];
     // dont check first square
-    if (coords !== sourceCoords) {
-      const square = getSquareDetails(coords, board);
 
-      if (square.pieceId && coords !== destinationCoords) {
-        return false;
-      }
-      if (coords === destinationCoords) {
-        return true;
-      }
+    const square = getSquareDetails(coords, board);
+
+    if (square.pieceId && coords !== destinationCoords) {
+      return false;
+    }
+    if (coords === destinationCoords) {
+      return true;
     }
   }
   return false;

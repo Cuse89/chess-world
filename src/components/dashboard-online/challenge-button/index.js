@@ -13,7 +13,7 @@ const ChallengeButton = ({
   handleStartNewGame
 }) => {
   const { user, gameSettings } = useContext(Context);
-  const { setGameId, boardSettings } = gameSettings;
+  const { setGameId, boardVariant } = gameSettings;
 
   const gameId =
     user.games &&
@@ -23,7 +23,7 @@ const ChallengeButton = ({
     gameMode: GAME_MODES.ONLINE_PLAY.TECHNICAL_NAME,
     gameId,
     userId: user.id,
-    boardSettings
+    boardVariant
   });
 
   useEffect(() => {

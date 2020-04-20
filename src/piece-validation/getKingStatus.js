@@ -38,50 +38,6 @@ export const getKingStatus = (
     const potentialCoords = [11, -11, 10, -10, 9, -9, 1, -1, 0];
     let availableCoords = [];
 
-    // can directThreats be taken?
-    directThreats = directThreats.filter(
-      ({ coords }) =>
-        getDirectThreats(getOpponent(kingPlayer), coords, board, boardVariant)
-          .length === 0
-    );
-
-    // can directThreats be blocked instead?
-    directThreats = directThreats.filter(threat => {
-      let cannotBeBlocked = true;
-      const getThreatPathway = getPieceProps(threat.pieceId).getPathway;
-      if (getThreatPathway) {
-        const pathway = getThreatPathway(threat.coords, kingPos);
-        console.log({ pathway });
-        pathway.forEach(pathwayCoords => {
-          if (kingPos !== pathwayCoords) {
-            loopBoard(board, ({ square, coords }) => {
-              if (square.player === kingPlayer && square.pieceId !== "king") {
-                if (
-                  performValidation({
-                    board,
-                    boardVariant,
-                    kingPlayer,
-                    destinationCoords: pathwayCoords,
-                    sourceCoords: coords,
-                    baselinePlayer
-                  })
-                ) {
-                  // todo: only allow for 1 move to happen
-
-                  cannotBeBlocked = false;
-                }
-              }
-            });
-          }
-        });
-      }
-      return cannotBeBlocked;
-    });
-
-    // if (directThreats.length === 0) {
-    //   return false;
-    // }
-
     potentialCoords.forEach(coord => {
       let destinationCoords = (kingPos - coord).toString();
       // convert to 2 digits - "1" to "01"
@@ -107,7 +63,6 @@ export const getKingStatus = (
         availableCoords.push(destinationCoords);
       }
     });
-
     // filter available coords and take away any that could be threatened if landed on by king
     availableCoords = availableCoords.filter(destinationCoords => {
       return (
@@ -119,13 +74,84 @@ export const getKingStatus = (
         ).length < 1
       );
     });
-    return availableCoords.length < 1;
+
+    if (availableCoords.length > 0) {
+      return false;
+    }
+
+    directThreats.forEach(threat => {
+      const getThreatPathway = getPieceProps(threat.pieceId).getPathway;
+      if (getThreatPathway) {
+        const pathway = getThreatPathway(threat.coords, kingPos);
+        threat.canTravel = true;
+        pathway.forEach(pathwayCoords => {
+          if (kingPos !== pathwayCoords) {
+            loopBoard(board, ({ square, coords }) => {
+              if (square.player === kingPlayer && square.pieceId !== "king") {
+                if (
+                  performValidation({
+                    board,
+                    boardVariant,
+                    player: kingPlayer,
+                    destinationCoords: pathwayCoords,
+                    sourceCoords: coords,
+                    baselinePlayer
+                  })
+                ) {
+                  threat.canBeBlocked = true;
+                }
+              }
+            });
+          }
+        });
+      }
+    });
+
+    const directThreatsCanTravel = directThreats.filter(
+      threat => threat.canTravel
+    );
+    const directThreatsCannotTravel = directThreats.filter(
+      threat => !threat.canTravel
+    );
+    const directThreatsCannotTravelCannotBeTaken = directThreatsCannotTravel.filter(
+      ({ coords }) =>
+        getDirectThreats(getOpponent(kingPlayer), coords, board, boardVariant)
+          .length === 0
+    );
+
+
+    if (directThreatsCannotTravelCannotBeTaken.length > 0) {
+      return true;
+    }
+
+    if (
+      directThreatsCannotTravel.length > 0 &&
+      directThreatsCanTravel.length > 0
+    ) {
+      return true;
+    }
+
+    if (directThreatsCanTravel.length > 1) {
+      return true;
+    }
+
+    if (
+      directThreatsCanTravel.length === 1 &&
+      directThreatsCanTravel[0].canBeBlocked
+    ) {
+      return false;
+    }
+
+    // availableCoords.length must be < 1
+    return true;
   };
 
   if (isInCheck()) {
     if (isCheckmate()) {
+      console.log("checkmate")
       return "checkmate";
     }
+    console.log("check")
     return "check";
   }
 

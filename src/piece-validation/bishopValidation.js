@@ -22,8 +22,15 @@ export const getBishopPathway = (sourceCoords, destinationCoords) => {
         ? (i = i + 9)
         : (i = i + 11)
     ) {
-      let coords = i.toString();
-      pathway.push(coords);
+      // do not include initial square
+      if (i !== sourceCoords) {
+        let coords = i.toString();
+        // Convert single digit to 2 (1 to 01)
+        if (coords.length === 1) {
+          coords = "0" + coords;
+        }
+        pathway.push(coords);
+      }
     }
   }
   return pathway;
@@ -43,20 +50,13 @@ export const bishopValidation = ({
       // square is outside of board boundary
       return false;
     }
-    // Convert single digit to 2 (1 to 01)
-    if (coords.length === 1) {
-      coords = "0" + coords;
-    }
-    // dont check first square
-    if (coords !== sourceCoords) {
-      // if piece is on this square
 
-      if (square.pieceId && coords !== destinationCoords) {
-        return false;
-      }
-      if (coords === destinationCoords) {
-        return true;
-      }
+    // if piece is on this square
+    if (square.pieceId && coords !== destinationCoords) {
+      return false;
+    }
+    if (coords === destinationCoords) {
+      return true;
     }
   }
 
