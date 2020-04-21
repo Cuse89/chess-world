@@ -64,17 +64,16 @@ export const getKingStatus = (
     });
 
     // filter available coords and take away any that could be threatened if landed on by king
-    availableCoords = availableCoords.filter(destinationCoords => {
-      return (
+    availableCoords = availableCoords.filter(
+      destinationCoords =>
         getDirectThreats(
           kingPlayer,
           destinationCoords,
           getNextBoard(board, kingPos, destinationCoords),
           boardVariant
         ).length < 1
-      );
-    });
-    
+    );
+
     if (availableCoords.length > 0) {
       return false;
     }
@@ -146,7 +145,7 @@ export const getKingStatus = (
       return false;
     }
 
-    // availableCoords.length must be < 1
+    // availableCoords.length must be 0
     return true;
   };
 

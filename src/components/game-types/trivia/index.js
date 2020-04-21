@@ -50,7 +50,7 @@ const TriviaChess = ({ history }) => {
   useEffect(() => {
     const handleNextTurn = () => {
       if (isOnePlayer && turn === "black" && !inCheckmate && !pendingMove) {
-        const selectedMove = decideBotMove(getBotMoves(board));
+        const selectedMove = decideBotMove(getBotMoves(board, boardVariant));
         const { source, destination } = selectedMove;
         const sourceCoords = source.coords;
         const destinationCoords = destination.coords;

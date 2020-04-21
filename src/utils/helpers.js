@@ -127,6 +127,7 @@ export const performValidation = ({
     return false;
     // else perform validation
   }
+  console.log("performValidation", boardVariant)
   if (
     !getPieceProps(sourceSquare.pieceId).validateMove({
       sourceCoords,
