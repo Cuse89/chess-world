@@ -19,6 +19,7 @@
     "firebase": "^7.11.0",
     "node-sass": "^4.13.1",
     "react": "^16.12.0",
+    "react-app-polyfill": "^1.0.6",
     "react-beautiful-dnd": "^12.2.0",
     "react-dom": "^16.12.0",
     "react-responsive-modal": "^5.0.2",
@@ -38,7 +39,6 @@
     "extends": "react-app"
   },
   "devDependencies": {
-    "@babel/plugin-transform-object-assign": "^7.8.3",
     "firebase-tools": "^8.0.0",
     "prettier": "1.19.1"
   },

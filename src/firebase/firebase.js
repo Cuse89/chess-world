@@ -11,8 +11,10 @@ class Firebase {
     firebaseApp.analytics();
     this.auth = firebaseApp.auth;
     this.database = firebaseApp.database();
-    this.messaging = firebaseApp.messaging();
-    this.messaging.usePublicVapidKey(publicVapidKey);
+    if (firebaseApp.messaging.isSupported()) {
+      this.messaging = firebaseApp.messaging();
+      this.messaging.usePublicVapidKey(publicVapidKey);
+    }
   }
 
   async login() {

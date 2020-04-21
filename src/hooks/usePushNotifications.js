@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import firebase from "../firebase";
+import * as firebaseApp from "firebase";
 
 const usePushNotifications = userId => {
   const [isSubscribed, setIsSubscribed] = useState(false);
@@ -62,7 +63,7 @@ const usePushNotifications = userId => {
         }
       );
     };
-    if (userId) {
+    if (userId && firebase.messaging) {
       listenToNotificationsSubscribe();
     }
     return () =>
