@@ -44,9 +44,11 @@ const UserProfile = () => {
         <div className={styles.section}>
           <UserAvailabilitySetting userId={userId} />
         </div>
-        <div className={styles.section}>
-          <PushNotificationSetting userId={userId} />
-        </div>
+        {firebase.messaging && (
+          <div className={styles.section}>
+            <PushNotificationSetting userId={userId} />
+          </div>
+        )}
         <div className={styles.section}>
           <GameStats />
         </div>
