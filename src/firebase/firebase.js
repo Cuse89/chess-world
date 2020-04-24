@@ -63,7 +63,7 @@ class Firebase {
   }
 
   listenerUnsubscribe(path) {
-    this.database.ref(path).off()
+    this.database.ref(path).off();
   }
 
   async setUser(userId, key, value) {
@@ -80,6 +80,10 @@ class Firebase {
     } catch (err) {
       console.log(err);
     }
+  }
+
+  async setGame(gameId, value) {
+    await this.database.ref(`games/${gameId}`).set(value);
   }
 
   async updateGame(gameId, value) {

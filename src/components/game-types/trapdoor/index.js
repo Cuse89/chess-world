@@ -37,7 +37,8 @@ const TrapdoorChess = ({ history }) => {
     canMovePiece,
     validateMove,
     performMove,
-    handleGameEnded
+    handleGameEnded,
+    removeGame
   } = useGameState({
     gameMode,
     userId,
@@ -228,7 +229,7 @@ const TrapdoorChess = ({ history }) => {
         message={message}
         onSquareSelect={setTrapdoor}
       />
-      <GameFooter />
+      <GameFooter resignGame={removeGame}/>
     </Fragment>
   );
 };

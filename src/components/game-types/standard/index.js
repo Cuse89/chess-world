@@ -20,7 +20,8 @@ const StandardChess = ({ history }) => {
     handlePerformMove,
     performBotMove,
     canMovePiece,
-    handleGameEnded
+    handleGameEnded,
+    removeGame
   } = useGameState({
     gameMode,
     userId,
@@ -99,7 +100,7 @@ const StandardChess = ({ history }) => {
         onDrop={onDrop}
         message={message}
       />
-      <GameFooter/>
+      <GameFooter resignGame={removeGame}/>
     </Fragment>
   );
 };

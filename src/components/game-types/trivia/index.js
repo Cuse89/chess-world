@@ -37,7 +37,8 @@ const TriviaChess = ({ history }) => {
     performMove,
     switchTurns,
     handlePerformMove,
-    handleGameEnded
+    handleGameEnded,
+    removeGame
   } = useGameState({
     gameMode,
     userId,
@@ -158,7 +159,7 @@ const TriviaChess = ({ history }) => {
           onAnswerIncorrect={() => handleAnswer(false)}
         />
       )}
-      <GameFooter />
+      <GameFooter resignGame={removeGame}/>
     </div>
   );
 };

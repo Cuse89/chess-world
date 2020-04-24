@@ -154,6 +154,15 @@ const useGameState = ({ gameMode, gameId, userId, boardVariant }) => {
     }
   }
 
+  async function removeGame() {
+    if (isOnlinePlay) {
+      // remove game
+      await firebase.setGame(gameId, null)
+      // remove game from user
+      await firebase.updateUser(userId, "games", { [gameId]: null });
+    }
+  }
+
   async function handleGameEnded() {
     navigator.vibrate([1000, 300, 1000]);
     if (isOnlinePlay) {
@@ -165,8 +174,7 @@ const useGameState = ({ gameMode, gameId, userId, boardVariant }) => {
       const gamesWon = user.gameStats ? user.gameStats.won : 0;
       const gamesLost = user.gameStats ? user.gameStats.lost : 0;
       try {
-        // remove game from user
-        await firebase.updateUser(userId, "games", { [gameId]: null });
+        await removeGame();
         // update wins or losses
         await firebase.updateUser(userId, "gameStats", {
           played: user.gameStats ? user.gameStats.played + 1 : 1,
@@ -224,7 +232,8 @@ const useGameState = ({ gameMode, gameId, userId, boardVariant }) => {
     performMove,
     updateBoard,
     switchTurns,
-    handleGameEnded
+    handleGameEnded,
+    removeGame
   };
 };
 

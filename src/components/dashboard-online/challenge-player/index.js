@@ -40,7 +40,7 @@ const ChallengePlayer = ({ availableUser }) => {
   const handleStartNewGame = async gameSettings => {
     const newGameId = `game-${uuid().split("-")[0]}`;
     try {
-      await firebase.updateGame(newGameId, {
+      await firebase.setGame(newGameId, {
         ...gameSettings,
         board: BOARDS[gameSettings.boardVariant].board,
         users: {
