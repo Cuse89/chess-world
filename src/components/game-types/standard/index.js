@@ -1,16 +1,16 @@
-import React, { useContext, useState, useEffect } from "react";
+import React, { useContext, useState, useEffect, Fragment } from "react";
 import Context from "context";
-import firebase from "../../../firebase";
-import Board from "components/board";
 import { Piece } from "components/piece";
 import useGameState from "hooks/useGameState";
-import Fallen from "components/fallen";
 import { GAME_MODES } from "utils/constants";
-import { getOpponent, getPieceProps, getUrlParam } from "utils/helpers";
+import { getPieceProps, getUrlParam } from "utils/helpers";
+import GameFooter from "components/game-footer";
+import Game from "components/game";
+
 
 const StandardChess = ({ history }) => {
   const { user, gameSettings } = useContext(Context);
-  const { gameMode, setGameId, boardVariant} = gameSettings;
+  const { gameMode, setGameId, boardVariant } = gameSettings;
   const gameId = getUrlParam("game");
   const userId = user && user.id;
   const [message, setMessage] = useState("");
@@ -44,6 +44,7 @@ const StandardChess = ({ history }) => {
         performBotMove();
       }
     };
+
     const handleSetMessage = () => {
       let newMessage = "";
       if (inCheck) {
@@ -56,6 +57,7 @@ const StandardChess = ({ history }) => {
         setMessage(newMessage);
       }
     };
+
     if (inCheckmate) {
       handleGameEnded();
     }
@@ -89,28 +91,16 @@ const StandardChess = ({ history }) => {
     ) : null;
   }
 
-  function getFallen(baseline) {
-    if (isOnlinePlay && users) {
-      const playerColor = users[userId].color;
-      return baseline ? fallen[getOpponent(playerColor)] : fallen[playerColor];
-    } else {
-      return baseline ? fallen.black : fallen.white;
-    }
-  }
-
   return (
-    <div>
-      {message && <div>{message}</div>}
-      <Fallen fallen={getFallen()} />
-      <Board
-        board={board}
+    <Fragment>
+      <Game
+        gameState={gameState}
         getSquaresChild={getPiece}
-        onDragEnd={onDrop}
-        turn={turn}
-        users={users}
+        onDrop={onDrop}
+        message={message}
       />
-      <Fallen fallen={getFallen(true)} />
-    </div>
+      <GameFooter/>
+    </Fragment>
   );
 };
 

@@ -13,10 +13,18 @@ import { GAME_MODES } from "utils/constants";
 import Fallen from "components/fallen";
 import TriviaBox from "components/trivia-box";
 import { decideBotMove, getBotMoves } from "utils/onePlayerHelpers";
+import Game from "components/game";
+import GameFooter from "components/game-footer";
 
 const TriviaChess = ({ history }) => {
   const { user, gameSettings } = useContext(Context);
-  const { gameMode, setGameId, triviaDifficulty, triviaCategory, boardVariant } = gameSettings;
+  const {
+    gameMode,
+    setGameId,
+    triviaDifficulty,
+    triviaCategory,
+    boardVariant
+  } = gameSettings;
   const gameId = getUrlParam("game");
   const userId = user && user.id;
   const [message, setMessage] = useState("");
@@ -134,27 +142,14 @@ const TriviaChess = ({ history }) => {
     ) : null;
   }
 
-  function getFallen(baseline) {
-    if (isOnlinePlay && users) {
-      const playerColor = users[userId].color;
-      return baseline ? fallen[getOpponent(playerColor)] : fallen[playerColor];
-    } else {
-      return baseline ? fallen.black : fallen.white;
-    }
-  }
-
   return (
     <div>
-      {message && <div>{message}</div>}
-      <Fallen fallen={getFallen()} />
-      <Board
-        board={board}
+      <Game
+        gameState={gameState}
         getSquaresChild={getPiece}
-        onDragEnd={onDrop}
-        turn={turn}
-        users={users}
+        onDrop={onDrop}
+        message={message}
       />
-      <Fallen fallen={getFallen(true)} />
       {pendingMove && (
         <TriviaBox
           difficulty={triviaDifficulty}
@@ -163,6 +158,7 @@ const TriviaChess = ({ history }) => {
           onAnswerIncorrect={() => handleAnswer(false)}
         />
       )}
+      <GameFooter />
     </div>
   );
 };

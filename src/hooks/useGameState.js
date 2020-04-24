@@ -46,7 +46,7 @@ const useGameState = ({ gameMode, gameId, userId, boardVariant }) => {
     if (validateMove(sourceCoords, destinationCoords)) {
       performMove(sourceCoords, destinationCoords);
     } else {
-      window.navigator.vibrate([100, 50, 100]);
+      navigator.vibrate([100, 50, 100]);
     }
   }
 
@@ -155,7 +155,7 @@ const useGameState = ({ gameMode, gameId, userId, boardVariant }) => {
   }
 
   async function handleGameEnded() {
-    window.navigator.vibrate([1000, 300, 1000]);
+    navigator.vibrate([1000, 300, 1000]);
     if (isOnlinePlay) {
       const lostGame = users[userId].color === inCheckmate;
       const user = await firebase.getFromDatabaseOnce(

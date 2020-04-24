@@ -28,7 +28,6 @@ const App = () => {
               <Route path="/trapdoor" component={TrapdoorChess} />
               <Route path="/trivia" component={TriviaChess} />
             </Switch>
-            <Footer />
           </Loader>
         </div>
       </Context.Provider>

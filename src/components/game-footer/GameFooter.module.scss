@@ -1,0 +1,21 @@
+@import "src/styles/base/variables";
+
+
+.root {
+  position: absolute;
+  bottom: 0;
+  height: 50px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: $dark-blue;
+  padding: 0 20px;
+  margin: 0 -20px 0 -20px;
+
+  .icon {
+    cursor: pointer;
+    color: $off-white;
+    margin-right: 20px;
+  }
+}

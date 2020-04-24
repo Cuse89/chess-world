@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect } from "react";
+import React, { useContext, useState, useEffect, Fragment } from "react";
 import Board from "components/board";
 import { Piece } from "components/piece";
 import {
@@ -19,6 +19,8 @@ import firebase from "../../../firebase";
 import { decideBotMove, getBotMoves } from "utils/onePlayerHelpers";
 
 import styles from "./TrapdoorChess.module.scss";
+import Game from "components/game";
+import GameFooter from "components/game-footer";
 
 const TrapdoorChess = ({ history }) => {
   const { user, gameSettings } = useContext(Context);
@@ -58,7 +60,7 @@ const TrapdoorChess = ({ history }) => {
   useEffect(() => {
     const handleNextTurn = () => {
       if (isOnePlayer && turn === "black" && !inCheckmate) {
-        const selectedMove = decideBotMove(getBotMoves(board));
+        const selectedMove = decideBotMove(getBotMoves(board, boardVariant));
         const { source, destination } = selectedMove;
         handleTrapdoor(source.coords, destination.coords);
       }
@@ -217,29 +219,17 @@ const TrapdoorChess = ({ history }) => {
     }
   }
 
-  function getFallen(baseline) {
-    if (isOnlinePlay && users) {
-      const playerColor = users[userId].color;
-      return baseline ? fallen[getOpponent(playerColor)] : fallen[playerColor];
-    } else {
-      return baseline ? fallen.black : fallen.white;
-    }
-  }
-
   return (
-    <div className={styles.root}>
-      {message && <div>{message}</div>}
-      <Fallen fallen={getFallen()} />
-      <Board
-        board={board}
+    <Fragment>
+      <Game
+        gameState={gameState}
         getSquaresChild={getSquare}
-        onDragEnd={onDrop}
-        turn={turn}
-        users={users}
+        onDrop={onDrop}
+        message={message}
         onSquareSelect={setTrapdoor}
       />
-      <Fallen fallen={getFallen(true)} />
-    </div>
+      <GameFooter />
+    </Fragment>
   );
 };
 
