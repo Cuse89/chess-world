@@ -13,9 +13,8 @@ import { defaultGameSettings } from "hooks/useGameSettings";
 import styles from "./Header.module.scss";
 
 const Header = () => {
-  const { gameSettings } = useContext(Context);
-  const { user } = useContext(Context);
-  const { updateGameSettings, gameType } = gameSettings;
+  const { gameSettings, updateGameSettings, user } = useContext(Context);
+  const { gameType } = gameSettings;
   const [showUserSettings, setShowUserSettings] = useState(false);
   const [showHelp, setShowHelp] = useState(false);
   const onHomeClick = () => {

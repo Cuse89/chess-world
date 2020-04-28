@@ -7,11 +7,10 @@ import { getPieceProps, getUrlParam } from "utils/helpers";
 import GameFooter from "components/game-footer";
 import Game from "components/game";
 
-
 const StandardChess = ({ history }) => {
-  const { user, gameSettings } = useContext(Context);
-  const { gameMode, setGameId, boardVariant } = gameSettings;
-  const gameId = getUrlParam("game");
+  const { user, gameSettings, setGameId  } = useContext(Context);
+  const { gameMode, boardVariant } = gameSettings;
+  const gameId = getUrlParam("gameId");
   const userId = user && user.id;
   const [message, setMessage] = useState("");
 
@@ -30,8 +29,7 @@ const StandardChess = ({ history }) => {
   });
 
   const isOnePlayer = gameMode === GAME_MODES.ONE_PLAYER.TECHNICAL_NAME;
-  const isOnlinePlay = gameMode === GAME_MODES.ONLINE_PLAY.TECHNICAL_NAME;
-  const { board, turn, fallen, users, inCheck, inCheckmate } = gameState;
+  const { turn, inCheck, inCheckmate } = gameState;
 
   useEffect(() => {
     if (gameId) {
@@ -100,7 +98,7 @@ const StandardChess = ({ history }) => {
         onDrop={onDrop}
         message={message}
       />
-      <GameFooter resignGame={removeGame}/>
+      <GameFooter resignGame={removeGame} />
     </Fragment>
   );
 };

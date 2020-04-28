@@ -8,6 +8,7 @@ import { v4 as uuid } from "uuid";
 import Modal from "components/modal";
 import { BOARDS } from "utils/constants";
 import styles from "./ChallengePlayer.module.scss";
+import { createUrlParams } from "utils/helpers";
 
 const ChallengePlayer = ({ availableUser }) => {
   let history = useHistory();
@@ -29,7 +30,7 @@ const ChallengePlayer = ({ availableUser }) => {
   };
 
   const joinGame = (gameType, gameId) => {
-    history.push(`/${gameType}?game=${gameId}`);
+    history.push(`/${gameType}?gameId=${gameId}`);
   };
 
   const onCreateGameSubmit = async (settings, opponentId) => {

@@ -12,8 +12,12 @@ const ChallengeButton = ({
   toggleShowCreateGame,
   handleStartNewGame
 }) => {
-  const { user, gameSettings } = useContext(Context);
-  const { setGameId, boardVariant } = gameSettings;
+  const {
+    user,
+    gameSettings,
+    setGameId,
+  } = useContext(Context);
+  const { boardVariant } = gameSettings;
 
   const gameId =
     user.games &&
@@ -62,7 +66,7 @@ const ChallengeButton = ({
   }
 
   if (gameState.users) {
-    const gameType = gameState.gameType;
+    const { gameType } = gameState;
     button = (
       <DashboardButton
         onClick={() => joinGame(gameType, gameId)}

@@ -183,6 +183,14 @@ export const getUrlParam = key => {
   return urlParams.get(key);
 };
 
+export const createUrlParams = params => {
+  console.log("params", params)
+  return  Object.keys(params)
+    .map(paramKey => `${paramKey}=${params[paramKey]}`)
+    .join("&");
+}
+
+
 export const mirrorBoard = board => {
   let boardCopy = JSON.parse(JSON.stringify(board));
   const boardMirrored = [...boardCopy].reverse();

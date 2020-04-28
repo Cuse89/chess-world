@@ -10,22 +10,17 @@ import BoardOptions from "components/create-game/board-options";
 import styles from "./CreateGame.module.scss";
 
 const CreateGame = ({ onSubmit, submitText }) => {
+  const { updateGameSettings, gameSettings } = useGameSettings();
+  console.log("create game gameSettings", gameSettings)
   const {
-    updateGameSettings,
     gameType,
     trapdoorsAmount,
     triviaDifficulty,
     triviaCategory,
     boardVariant
-  } = useGameSettings();
+  } = gameSettings;
   const handleOnSubmit = () => {
-    onSubmit({
-      gameType,
-      trapdoorsAmount,
-      triviaDifficulty,
-      triviaCategory,
-      boardVariant
-    });
+    onSubmit(gameSettings);
   };
 
   return (
@@ -35,7 +30,10 @@ const CreateGame = ({ onSubmit, submitText }) => {
         gameType={gameType}
       />
       {gameType && (
-        <BoardOptions onChange={updateGameSettings} selectedBoard={boardVariant} />
+        <BoardOptions
+          onChange={updateGameSettings}
+          selectedBoard={boardVariant}
+        />
       )}
       {gameType === GAME_TYPES.TRAPDOOR.TECHNICAL_NAME && (
         <TrapdoorOptions

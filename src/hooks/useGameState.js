@@ -21,7 +21,7 @@ const useGameState = ({ gameMode, gameId, userId, boardVariant }) => {
     fallen: DEFAULT_FALLEN,
     inCheck: "",
     inCheckmate: "",
-    status: "ready"
+    status: ""
   });
 
   console.log({ gameState });
@@ -106,6 +106,7 @@ const useGameState = ({ gameMode, gameId, userId, boardVariant }) => {
   }
 
   function canMovePiece(pieceColor) {
+
     if (turn === pieceColor) {
       if (isOnePlayer) {
         return turn === "white";

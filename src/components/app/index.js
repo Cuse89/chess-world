@@ -9,16 +9,23 @@ import TriviaChess from "components/game-types/trivia";
 import Header from "components/header";
 import useGameSettings from "hooks/useGameSettings";
 import useUser from "hooks/useUser";
-import Footer from "components/footer";
 import Loader from "components/loader";
 import styles from "./App.module.scss";
 
 const App = () => {
-  const gameSettings = useGameSettings();
+  const { gameSettings, setGameId, updateGameSettings } = useGameSettings();
   const { user, isFetching, userOnline } = useUser();
   return (
     <BrowserRouter>
-      <Context.Provider value={{ gameSettings, user, userOnline }}>
+      <Context.Provider
+        value={{
+          gameSettings,
+          setGameId,
+          updateGameSettings,
+          user,
+          userOnline
+        }}
+      >
         <div className={styles.root}>
           <Loader show={isFetching} size="large" delay={0}>
             <Header />

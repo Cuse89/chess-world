@@ -1,31 +1,24 @@
 import React, { useContext, useState, useEffect } from "react";
-import Board from "components/board";
 import { Piece } from "components/piece";
-import {
-  getOpponent,
-  getPieceProps,
-  getSquareDetails,
-  getUrlParam
-} from "utils/helpers";
+import { getPieceProps, getSquareDetails, getUrlParam } from "utils/helpers";
 import useGameState from "hooks/useGameState";
 import Context from "context";
 import { GAME_MODES } from "utils/constants";
-import Fallen from "components/fallen";
 import TriviaBox from "components/trivia-box";
 import { decideBotMove, getBotMoves } from "utils/onePlayerHelpers";
 import Game from "components/game";
 import GameFooter from "components/game-footer";
 
 const TriviaChess = ({ history }) => {
-  const { user, gameSettings } = useContext(Context);
+  const { user, gameSettings, setGameId } = useContext(Context);
   const {
     gameMode,
-    setGameId,
     triviaDifficulty,
     triviaCategory,
     boardVariant
   } = gameSettings;
-  const gameId = getUrlParam("game");
+  console.log("trivia gameSettings", gameSettings)
+  const gameId = getUrlParam("gameId");
   const userId = user && user.id;
   const [message, setMessage] = useState("");
   const [pendingMove, setPendingMove] = useState(null);
@@ -47,8 +40,7 @@ const TriviaChess = ({ history }) => {
   });
 
   const isOnePlayer = gameMode === GAME_MODES.ONE_PLAYER.TECHNICAL_NAME;
-  const isOnlinePlay = gameMode === GAME_MODES.ONLINE_PLAY.TECHNICAL_NAME;
-  const { board, turn, fallen, users, inCheck, inCheckmate } = gameState;
+  const { board, turn, inCheck, inCheckmate } = gameState;
 
   useEffect(() => {
     if (gameId) {
@@ -159,7 +151,7 @@ const TriviaChess = ({ history }) => {
           onAnswerIncorrect={() => handleAnswer(false)}
         />
       )}
-      <GameFooter resignGame={removeGame}/>
+      <GameFooter resignGame={removeGame} />
     </div>
   );
 };

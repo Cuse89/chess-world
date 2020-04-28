@@ -1,5 +1,4 @@
 import React, { useContext, useState, useEffect, Fragment } from "react";
-import Board from "components/board";
 import { Piece } from "components/piece";
 import {
   getOpponent,
@@ -14,18 +13,16 @@ import {
 import useGameState from "hooks/useGameState";
 import Context from "context";
 import { EMPTY_SQUARE, GAME_MODES } from "utils/constants";
-import Fallen from "components/fallen";
 import firebase from "../../../firebase";
 import { decideBotMove, getBotMoves } from "utils/onePlayerHelpers";
-
-import styles from "./TrapdoorChess.module.scss";
 import Game from "components/game";
 import GameFooter from "components/game-footer";
+import styles from "./TrapdoorChess.module.scss";
 
 const TrapdoorChess = ({ history }) => {
-  const { user, gameSettings } = useContext(Context);
-  const { gameMode, trapdoorsAmount, setGameId, boardVariant } = gameSettings;
-  const gameId = getUrlParam("game");
+  const { user, gameSettings, setGameId  } = useContext(Context);
+  const { gameMode, trapdoorsAmount, boardVariant } = gameSettings;
+  const gameId = getUrlParam("gameId");
   const userId = user && user.id;
   const [message, setMessage] = useState("");
 
@@ -48,7 +45,7 @@ const TrapdoorChess = ({ history }) => {
 
   const isOnePlayer = gameMode === GAME_MODES.ONE_PLAYER.TECHNICAL_NAME;
   const isOnlinePlay = gameMode === GAME_MODES.ONLINE_PLAY.TECHNICAL_NAME;
-  const { board, turn, fallen, users, inCheck, inCheckmate } = gameState;
+  const { board, turn, users, inCheck, inCheckmate } = gameState;
   const trapdoorsSet = countTrapdoors();
   const trapdoorsLeft = trapdoorsAmount - trapdoorsSet;
 
@@ -229,7 +226,7 @@ const TrapdoorChess = ({ history }) => {
         message={message}
         onSquareSelect={setTrapdoor}
       />
-      <GameFooter resignGame={removeGame}/>
+      <GameFooter resignGame={removeGame} />
     </Fragment>
   );
 };
