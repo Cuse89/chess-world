@@ -6,13 +6,7 @@
   padding: 5px;
   cursor: pointer;
   border-radius: 4px;
-}
 
-.fullLength {
-  width: fit-content;
-}
-
-.default {
   border: 1px $dark-grey solid;
   color: $dark-grey;
 
@@ -22,6 +16,21 @@
     color: white;
   }
 }
+
+.fullLength {
+  width: fit-content;
+}
+
+//.default {
+//  border: 1px $dark-grey solid;
+//  color: $dark-grey;
+//
+//  &:hover,
+//  &.selected {
+//    background: $dark-grey;
+//    color: white;
+//  }
+//}
 
 .error {
   border: 1px $red-50 solid;

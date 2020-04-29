@@ -1,16 +1,19 @@
-import React, { useContext, Fragment } from "react";
+import React, { useContext } from "react";
 import Fallen from "components/fallen";
 import Board from "components/board";
 import { getOpponent } from "utils/helpers";
 import { GAME_MODES } from "utils/constants";
 import Context from "context";
+import Banner from "components/banner";
+
+import styles from "./Game.module.scss";
 
 const Game = ({
   gameState,
   getSquaresChild,
   onDrop,
-  message,
-  onSquareSelect
+  onSquareSelect,
+  message
 }) => {
   const { user, gameSettings } = useContext(Context);
   const { gameMode } = gameSettings;
@@ -28,8 +31,13 @@ const Game = ({
   };
 
   return (
-    <Fragment>
-      {message && <div>{message}</div>}
+    <div className={styles.root}>
+      {message && (
+        <div className={styles.banner}>
+          <Banner message={message} />
+        </div>
+      )}
+
       <Fallen fallen={getFallen()} />
       <Board
         board={board}
@@ -40,7 +48,7 @@ const Game = ({
         onSquareSelect={onSquareSelect}
       />
       <Fallen fallen={getFallen(true)} />
-    </Fragment>
+    </div>
   );
 };
 

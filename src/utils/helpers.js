@@ -184,12 +184,11 @@ export const getUrlParam = key => {
 };
 
 export const createUrlParams = params => {
-  console.log("params", params)
-  return  Object.keys(params)
+  console.log("params", params);
+  return Object.keys(params)
     .map(paramKey => `${paramKey}=${params[paramKey]}`)
     .join("&");
-}
-
+};
 
 export const mirrorBoard = board => {
   let boardCopy = JSON.parse(JSON.stringify(board));
@@ -226,3 +225,6 @@ export const getDirectThreats = (
   });
   return threats;
 };
+
+export const uppercaseFirstLetter = str =>
+  str.charAt(0).toUpperCase() + str.slice(1);

@@ -23,7 +23,6 @@ const DashboardButton = ({
   const rootClassName = cx({
     [className]: className,
     [styles.root]: true,
-    [styles.default]: type === "default",
     [styles.error]: type === "error",
     [styles.warning]: type === "warning",
     [styles.accept]: type === "accept",
@@ -53,14 +52,12 @@ const DashboardButton = ({
 };
 
 DashboardButton.defaultProps = {
-  type: "default",
   isLoading: false
 };
 
 DashboardButton.propTypes = {
   id: PropTypes.string,
   type: PropTypes.oneOf([
-    "default",
     "error",
     "warning",
     "accept",

@@ -3,7 +3,7 @@ import Context from "context";
 import { Piece } from "components/piece";
 import useGameState from "hooks/useGameState";
 import { GAME_MODES } from "utils/constants";
-import { getPieceProps, getUrlParam } from "utils/helpers";
+import { getPieceProps, getUrlParam, uppercaseFirstLetter } from "utils/helpers";
 import GameFooter from "components/game-footer";
 import Game from "components/game";
 
@@ -47,7 +47,7 @@ const StandardChess = ({ history }) => {
     const handleSetMessage = () => {
       let newMessage = "";
       if (inCheck) {
-        newMessage = `${turn} in check`;
+        newMessage = `${uppercaseFirstLetter(turn)} in check`;
       }
       if (inCheckmate) {
         newMessage = `Checkmate. ${turn} wins`;
