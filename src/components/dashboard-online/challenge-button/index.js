@@ -40,30 +40,35 @@ const ChallengeButton = ({
     </DashboardButton>
   );
   if (user.requestsOutgoing && user.requestsOutgoing[opponentId]) {
+    const gameSettings = user.requestsOutgoing[opponentId];
     button = (
-      <DashboardButton
-        onClick={() => updateGameRequest(user.id, opponentId, null)}
-        type={"warning"}
-        fullLength
+      <ConfirmModal
+        title="Challenge sent"
+        onConfirm={() => updateGameRequest(user.id, opponentId, null)}
+        acceptText="Remove challenge"
+        cancelText="Back"
+        content={<GameSettings settings={gameSettings} />}
       >
-        Challenge request sent
-      </DashboardButton>
+        <DashboardButton type={"warning"} fullLength>
+          Challenge request sent
+        </DashboardButton>
+      </ConfirmModal>
     );
   }
   if (user.requestsIncoming && user.requestsIncoming[opponentId]) {
     const gameSettings = user.requestsIncoming[opponentId];
     button = (
       <ConfirmModal
-        title={"Incoming challenge"}
+        title="Incoming challenge"
         onConfirm={() => handleStartNewGame(gameSettings)}
-        acceptText={"Play game"}
-        cancelText={"Remove challenge"}
+        onCancel={() => updateGameRequest(opponentId, user.id, null)}
+        acceptText="Play game"
+        cancelText="Remove challenge"
         content={<GameSettings settings={gameSettings} />}
       >
-        <DashboardButton
-          type={"accept"}
-          fullLength
-        >{`Incoming challenge`}</DashboardButton>
+        <DashboardButton type="accept" fullLength>
+          Incoming Challenge
+        </DashboardButton>
       </ConfirmModal>
     );
   }

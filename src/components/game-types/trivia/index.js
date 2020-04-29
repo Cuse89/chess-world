@@ -17,7 +17,6 @@ const TriviaChess = ({ history }) => {
     triviaCategory,
     boardVariant
   } = gameSettings;
-  console.log("trivia gameSettings", gameSettings)
   const gameId = getUrlParam("gameId");
   const userId = user && user.id;
   const [message, setMessage] = useState("");

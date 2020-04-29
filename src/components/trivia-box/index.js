@@ -8,7 +8,8 @@ const TriviaBox = ({
   difficulty,
   category,
   onAnswerCorrect,
-  onAnswerIncorrect
+  onAnswerIncorrect,
+  sessionToken
 }) => {
   const [trivia, setTrivia] = useState({});
   const [options, setOptions] = useState([]);
@@ -20,7 +21,7 @@ const TriviaBox = ({
       const difficultyParams = difficulty === "random" ? "" : `&difficulty=${difficulty}`;
       const categoryParams = category === "random" ? "" : `&category=${category}`;
       fetch(
-        `https://opentdb.com/api.php?amount=10&type=multiple&amount=1${difficultyParams}${categoryParams}`,
+        `https://opentdb.com/api.php?&type=multiple&amount=1${difficultyParams}${categoryParams}`,
         {
           method: "GET"
         }

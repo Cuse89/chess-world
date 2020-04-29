@@ -8,6 +8,7 @@ import styles from "./Confirm.module.scss";
 const ConfirmModal = ({
   children,
   onConfirm,
+  onCancel,
   title,
   content,
   open,
@@ -20,12 +21,21 @@ const ConfirmModal = ({
     setShowConfirm(true);
   };
 
+  const onClose = () => {
+    setShowConfirm(false);
+  };
+
   const handleCancel = () => {
+    if (onCancel) {
+      onCancel();
+    }
     setShowConfirm(false);
   };
 
   const handleConfirm = () => {
-    onConfirm();
+    if (onConfirm) {
+      onConfirm();
+    }
     setShowConfirm(false);
   };
 
@@ -37,7 +47,7 @@ const ConfirmModal = ({
 
   return (
     <Fragment>
-      <Modal open={showConfirm} onClose={handleCancel} showCloseIcon={false}>
+      <Modal open={showConfirm} onClose={onClose} showCloseIcon={false}>
         {title && <h3 className={styles.title}>{title}</h3>}
         {content}
         <div className={styles.buttons}>
@@ -68,7 +78,8 @@ ConfirmModal.defaultProps = {
 };
 
 ConfirmModal.propTypes = {
-  onConfirm: PropTypes.func.isRequired,
+  onConfirm: PropTypes.func,
+  onCancel: PropTypes.func,
   title: PropTypes.string,
   content: PropTypes.node,
   open: PropTypes.bool,
