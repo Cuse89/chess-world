@@ -34,9 +34,9 @@ const useGameState = ({ gameMode, gameId, userId, boardVariant }) => {
     inCheckmate
   } = gameState;
 
-  const isOnePlayer = gameMode === GAME_MODES.ONE_PLAYER.TECHNICAL_NAME;
-  const isTwoPlayer = gameMode === GAME_MODES.TWO_PLAYER.TECHNICAL_NAME;
-  const isOnlinePlay = gameMode === GAME_MODES.ONLINE_PLAY.TECHNICAL_NAME;
+  const isOnePlayer = gameMode === GAME_MODES.onePlayer.technicalName;
+  const isTwoPlayer = gameMode === GAME_MODES.twoPlayer.technicalName;
+  const isOnlinePlay = gameMode === GAME_MODES.onlinePlay.technicalName;
   const opponent = getOpponent(turn);
   const playerColorOnline = users && users[userId].color;
   const baselinePlayer =

@@ -28,7 +28,7 @@ const StandardChess = ({ history }) => {
     boardVariant
   });
 
-  const isOnePlayer = gameMode === GAME_MODES.ONE_PLAYER.TECHNICAL_NAME;
+  const isOnePlayer = gameMode === GAME_MODES.onePlayer.technicalName;
   const { turn, inCheck, inCheckmate } = gameState;
 
   useEffect(() => {

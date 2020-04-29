@@ -1,11 +1,11 @@
 import React, { Fragment } from "react";
-import { TRIVIA_CATEGORIES, TRIVIA_DIFFICULTIES } from "utils/constants";
+import { GAME_SETTINGS, TRIVIA_CATEGORIES, TRIVIA_DIFFICULTIES } from "utils/constants";
 import DashboardButton from "components/dashboard-button";
 import styles from "./TriviaOptions.module.scss";
 
 const TriviaOptions = ({ onChange, triviaDifficulty, triviaCategory }) => (
   <Fragment>
-    <h4>Question difficulty:</h4>
+    <h4>{GAME_SETTINGS.triviaDifficulty.pretty}:</h4>
     <div className={styles.options}>
       {TRIVIA_DIFFICULTIES.map(difficulty => (
         <DashboardButton
@@ -22,7 +22,7 @@ const TriviaOptions = ({ onChange, triviaDifficulty, triviaCategory }) => (
         </DashboardButton>
       ))}
     </div>
-    <h4>Question category:</h4>
+    <h4>{GAME_SETTINGS.triviaCategory.pretty}:</h4>
     <div className={styles.options}>
       {TRIVIA_CATEGORIES.map(category => (
         <DashboardButton

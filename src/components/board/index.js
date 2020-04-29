@@ -93,10 +93,10 @@ const Board = ({
       const playerColor = users[user.id].color;
       return baseline ? playerColor === turn : playerColor !== turn;
     }
-    if (gameMode === GAME_MODES.ONE_PLAYER.TECHNICAL_NAME) {
+    if (gameMode === GAME_MODES.onePlayer.technicalName) {
       return false;
     }
-    if (gameMode === GAME_MODES.TWO_PLAYER.TECHNICAL_NAME) {
+    if (gameMode === GAME_MODES.twoPlayer.technicalName) {
       return baseline ? turn === "white" : turn === "black";
     }
   }

@@ -172,9 +172,9 @@ export const getTargetPiece = (board, destinationCoords) =>
 
 export const getPrettyFromTechnicalName = (obj, technicalName) => {
   const key = Object.keys(obj).filter(
-    key => obj[key].TECHNICAL_NAME === technicalName
+    key => obj[key].technicalName === technicalName
   );
-  return obj[key].PRETTY;
+  return obj[key].pretty;
 };
 
 export const getUrlParam = key => {

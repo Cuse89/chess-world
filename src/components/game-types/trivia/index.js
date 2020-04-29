@@ -39,7 +39,7 @@ const TriviaChess = ({ history }) => {
     boardVariant
   });
 
-  const isOnePlayer = gameMode === GAME_MODES.ONE_PLAYER.TECHNICAL_NAME;
+  const isOnePlayer = gameMode === GAME_MODES.onePlayer.technicalName;
   const { board, turn, inCheck, inCheckmate } = gameState;
 
   useEffect(() => {

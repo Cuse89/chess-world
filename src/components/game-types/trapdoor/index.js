@@ -43,8 +43,8 @@ const TrapdoorChess = ({ history }) => {
     boardVariant
   });
 
-  const isOnePlayer = gameMode === GAME_MODES.ONE_PLAYER.TECHNICAL_NAME;
-  const isOnlinePlay = gameMode === GAME_MODES.ONLINE_PLAY.TECHNICAL_NAME;
+  const isOnePlayer = gameMode === GAME_MODES.onePlayer.technicalName;
+  const isOnlinePlay = gameMode === GAME_MODES.onlinePlay.technicalName;
   const { board, turn, users, inCheck, inCheckmate } = gameState;
   const trapdoorsSet = countTrapdoors();
   const trapdoorsLeft = trapdoorsAmount - trapdoorsSet;

@@ -1,5 +1,4 @@
 import React, { useContext } from "react";
-import PropTypes from "prop-types";
 import { GAME_MODES, GAME_TYPES } from "utils/constants";
 import Context from "context";
 
@@ -10,15 +9,15 @@ const Instructions = () => {
   const { gameType, gameMode } = gameSettings;
   return (
     <div>
-      {gameType === GAME_TYPES.STANDARD.TECHNICAL_NAME && (
+      {gameType === GAME_TYPES.standard.technicalName && (
         <div>
-          <h3 className={styles.title}>{GAME_TYPES.STANDARD.PRETTY}</h3>
+          <h3 className={styles.title}>{GAME_TYPES.standard.pretty}</h3>
           Just a good old game of chess. No thrills.
         </div>
       )}
-      {gameType === GAME_TYPES.TRAPDOOR.TECHNICAL_NAME && (
+      {gameType === GAME_TYPES.trapdoor.technicalName && (
         <div>
-          <h3 className={styles.title}>{GAME_TYPES.TRAPDOOR.PRETTY}</h3>
+          <h3 className={styles.title}>{GAME_TYPES.trapdoor.pretty}</h3>
           <h4>Before the game:</h4>
           <ul>
             <li>
@@ -43,15 +42,15 @@ const Instructions = () => {
           </ul>
         </div>
       )}
-      {gameType === GAME_TYPES.TRIVIA.TECHNICAL_NAME && (
+      {gameType === GAME_TYPES.trivia.technicalName && (
         <div>
-          <h3 className={styles.title}>{GAME_TYPES.TRIVIA.PRETTY}</h3>
+          <h3 className={styles.title}>{GAME_TYPES.trivia.pretty}</h3>
           <ul>
             <li>
               In order to take an opponents' piece you must answer a trivia
               question correctly. Get it wrong? You're staying where you are.
             </li>
-            {gameMode === GAME_MODES.ONE_PLAYER.TECHNICAL_NAME && (
+            {gameMode === GAME_MODES.onePlayer.technicalName && (
               <li>
                 In order for the computer to take your piece, you must answer a
                 question incorrectly.

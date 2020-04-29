@@ -4,19 +4,17 @@ import { getPrettyFromTechnicalName } from "utils/helpers";
 import { GAME_MODES, GAME_TYPES } from "utils/constants";
 import Context from "context";
 import useGameState from "hooks/useGameState";
+import ConfirmModal from "components/confirm";
+import GameSettings from "components/game-settings";
 
 const ChallengeButton = ({
   opponentId,
   updateGameRequest,
   joinGame,
-  toggleShowCreateGame,
+  setShowCreateGame,
   handleStartNewGame
 }) => {
-  const {
-    user,
-    gameSettings,
-    setGameId,
-  } = useContext(Context);
+  const { user, gameSettings, setGameId } = useContext(Context);
   const { boardVariant } = gameSettings;
 
   const gameId =
@@ -24,7 +22,7 @@ const ChallengeButton = ({
     Object.keys(user.games).filter(id => user.games[id] === opponentId)[0];
 
   const { gameState } = useGameState({
-    gameMode: GAME_MODES.ONLINE_PLAY.TECHNICAL_NAME,
+    gameMode: GAME_MODES.onlinePlay.technicalName,
     gameId,
     userId: user.id,
     boardVariant
@@ -37,7 +35,7 @@ const ChallengeButton = ({
   }, [setGameId, gameId]);
 
   let button = (
-    <DashboardButton onClick={() => toggleShowCreateGame(true)} fullLength>
+    <DashboardButton onClick={() => setShowCreateGame(true)} fullLength>
       Challenge
     </DashboardButton>
   );
@@ -54,14 +52,19 @@ const ChallengeButton = ({
   }
   if (user.requestsIncoming && user.requestsIncoming[opponentId]) {
     const gameSettings = user.requestsIncoming[opponentId];
-    const gameType = gameSettings.gameType;
-    const gameTypeText = getPrettyFromTechnicalName(GAME_TYPES, gameType);
     button = (
-      <DashboardButton
-        onClick={() => handleStartNewGame(gameSettings)}
-        type={"accept"}
-        fullLength
-      >{`Incoming ${gameTypeText} request. Click to play!`}</DashboardButton>
+      <ConfirmModal
+        title={"Incoming challenge"}
+        onConfirm={() => handleStartNewGame(gameSettings)}
+        acceptText={"Play game"}
+        cancelText={"Remove challenge"}
+        content={<GameSettings settings={gameSettings} />}
+      >
+        <DashboardButton
+          type={"accept"}
+          fullLength
+        >{`Incoming challenge`}</DashboardButton>
+      </ConfirmModal>
     );
   }
 

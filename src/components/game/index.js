@@ -15,7 +15,7 @@ const Game = ({
   const { user, gameSettings } = useContext(Context);
   const { gameMode } = gameSettings;
   const { board, turn, fallen, users } = gameState;
-  const isOnlinePlay = gameMode === GAME_MODES.ONLINE_PLAY.TECHNICAL_NAME;
+  const isOnlinePlay = gameMode === GAME_MODES.onlinePlay.technicalName;
   const userId = user && user.id;
 
   const getFallen = baseline => {

@@ -11,42 +11,42 @@ const SelectGameType = ({ onChange, gameType }) => {
   return (
     <div className={styles.root}>
       {GAME_MODE_HAS_GAME_TYPE[gameMode].includes(
-        GAME_TYPES.STANDARD.TECHNICAL_NAME
+        GAME_TYPES.standard.technicalName
       ) && (
         <DashboardButton
-          onClick={() => onChange(GAME_TYPES.STANDARD.TECHNICAL_NAME)}
-          selected={gameType === GAME_TYPES.STANDARD.TECHNICAL_NAME}
-          faded={gameType && gameType !== GAME_TYPES.STANDARD.TECHNICAL_NAME}
+          onClick={() => onChange(GAME_TYPES.standard.technicalName)}
+          selected={gameType === GAME_TYPES.standard.technicalName}
+          faded={gameType && gameType !== GAME_TYPES.standard.technicalName}
           spaceRight
           spaceBottom
         >
-          {GAME_TYPES.STANDARD.PRETTY}
+          {GAME_TYPES.standard.pretty}
         </DashboardButton>
       )}
       {GAME_MODE_HAS_GAME_TYPE[gameMode].includes(
-        GAME_TYPES.TRAPDOOR.TECHNICAL_NAME
+        GAME_TYPES.trapdoor.technicalName
       ) && (
         <DashboardButton
-          onClick={() => onChange(GAME_TYPES.TRAPDOOR.TECHNICAL_NAME)}
-          selected={gameType === GAME_TYPES.TRAPDOOR.TECHNICAL_NAME}
-          faded={gameType && gameType !== GAME_TYPES.TRAPDOOR.TECHNICAL_NAME}
+          onClick={() => onChange(GAME_TYPES.trapdoor.technicalName)}
+          selected={gameType === GAME_TYPES.trapdoor.technicalName}
+          faded={gameType && gameType !== GAME_TYPES.trapdoor.technicalName}
           spaceRight
           spaceBottom
         >
-          {GAME_TYPES.TRAPDOOR.PRETTY}
+          {GAME_TYPES.trapdoor.pretty}
         </DashboardButton>
       )}
       {GAME_MODE_HAS_GAME_TYPE[gameMode].includes(
-        GAME_TYPES.TRIVIA.TECHNICAL_NAME
+        GAME_TYPES.trivia.technicalName
       ) && (
         <DashboardButton
-          onClick={() => onChange(GAME_TYPES.TRIVIA.TECHNICAL_NAME)}
-          selected={gameType === GAME_TYPES.TRIVIA.TECHNICAL_NAME}
-          faded={gameType && gameType !== GAME_TYPES.TRIVIA.TECHNICAL_NAME}
+          onClick={() => onChange(GAME_TYPES.trivia.technicalName)}
+          selected={gameType === GAME_TYPES.trivia.technicalName}
+          faded={gameType && gameType !== GAME_TYPES.trivia.technicalName}
           spaceRight
           spaceBottom
         >
-          {GAME_TYPES.TRIVIA.PRETTY}
+          {GAME_TYPES.trivia.pretty}
         </DashboardButton>
       )}
     </div>

@@ -7,31 +7,31 @@ const SelectGameMode = ({ onGameModeClick, gameMode }) => (
   <div className={styles.root}>
     <div className={styles.selects}>
       <DashboardButton
-        onClick={() => onGameModeClick(GAME_MODES.ONE_PLAYER.TECHNICAL_NAME)}
-        selected={gameMode === GAME_MODES.ONE_PLAYER.TECHNICAL_NAME}
+        onClick={() => onGameModeClick(GAME_MODES.onePlayer.technicalName)}
+        selected={gameMode === GAME_MODES.onePlayer.technicalName}
         spaceRight
         spaceBottom
-        faded={gameMode && gameMode !== GAME_MODES.ONE_PLAYER.TECHNICAL_NAME}
+        faded={gameMode && gameMode !== GAME_MODES.onePlayer.technicalName}
       >
-        {GAME_MODES.ONE_PLAYER.PRETTY}
+        {GAME_MODES.onePlayer.pretty}
       </DashboardButton>
       <DashboardButton
-        onClick={() => onGameModeClick(GAME_MODES.TWO_PLAYER.TECHNICAL_NAME)}
-        selected={gameMode === GAME_MODES.TWO_PLAYER.TECHNICAL_NAME}
+        onClick={() => onGameModeClick(GAME_MODES.twoPlayer.technicalName)}
+        selected={gameMode === GAME_MODES.twoPlayer.technicalName}
         spaceRight
         spaceBottom
-        faded={gameMode && gameMode !== GAME_MODES.TWO_PLAYER.TECHNICAL_NAME}
+        faded={gameMode && gameMode !== GAME_MODES.twoPlayer.technicalName}
       >
-        {GAME_MODES.TWO_PLAYER.PRETTY}
+        {GAME_MODES.twoPlayer.pretty}
       </DashboardButton>
       <DashboardButton
-        onClick={() => onGameModeClick(GAME_MODES.ONLINE_PLAY.TECHNICAL_NAME)}
-        selected={gameMode === GAME_MODES.ONLINE_PLAY.TECHNICAL_NAME}
+        onClick={() => onGameModeClick(GAME_MODES.onlinePlay.technicalName)}
+        selected={gameMode === GAME_MODES.onlinePlay.technicalName}
         spaceRight
         spaceBottom
-        faded={gameMode && gameMode !== GAME_MODES.ONLINE_PLAY.TECHNICAL_NAME}
+        faded={gameMode && gameMode !== GAME_MODES.onlinePlay.technicalName}
       >
-        {GAME_MODES.ONLINE_PLAY.PRETTY}
+        {GAME_MODES.onlinePlay.pretty}
       </DashboardButton>
     </div>
   </div>

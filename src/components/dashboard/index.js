@@ -33,10 +33,10 @@ const Dashboard = ({ history }) => {
         onGameModeClick={onGameModeClick}
         gameMode={gameSettings.gameMode}
       />
-      {gameMode === GAME_MODES.ONLINE_PLAY.TECHNICAL_NAME && (
+      {gameMode === GAME_MODES.onlinePlay.technicalName && (
         <DashboardOnline />
       )}
-      {gameMode !== GAME_MODES.ONLINE_PLAY.TECHNICAL_NAME &&
+      {gameMode !== GAME_MODES.onlinePlay.technicalName &&
         gameMode !== "" && (
           <CreateGame onSubmit={onCreateGameSubmit} submitText="Play game!" />
         )}

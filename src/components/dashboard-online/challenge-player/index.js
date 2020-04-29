@@ -8,12 +8,11 @@ import { v4 as uuid } from "uuid";
 import Modal from "components/modal";
 import { BOARDS } from "utils/constants";
 import styles from "./ChallengePlayer.module.scss";
-import { createUrlParams } from "utils/helpers";
 
 const ChallengePlayer = ({ availableUser }) => {
   let history = useHistory();
   const { user } = useContext(Context);
-  const [showCreateGame, toggleShowCreateGame] = useState(false);
+  const [showCreateGame, setShowCreateGame] = useState(false);
 
   const updateGameRequest = async (outgoingUserId, incomingUserId, value) => {
     try {
@@ -34,7 +33,7 @@ const ChallengePlayer = ({ availableUser }) => {
   };
 
   const onCreateGameSubmit = async (settings, opponentId) => {
-    toggleShowCreateGame(false);
+    setShowCreateGame(false);
     await updateGameRequest(user.id, opponentId, { ...settings });
   };
 
@@ -73,13 +72,13 @@ const ChallengePlayer = ({ availableUser }) => {
 
       <ChallengeButton
         opponentId={availableUser.id}
-        toggleShowCreateGame={toggleShowCreateGame}
+        setShowCreateGame={setShowCreateGame}
         updateGameRequest={updateGameRequest}
         joinGame={joinGame}
         handleStartNewGame={handleStartNewGame}
       />
 
-      <Modal open={showCreateGame} onClose={() => toggleShowCreateGame(false)}>
+      <Modal open={showCreateGame} onClose={() => setShowCreateGame(false)}>
         <h3>Challenge {availableUser.name}</h3>
         <CreateGame
           onSubmit={settings => onCreateGameSubmit(settings, availableUser.id)}

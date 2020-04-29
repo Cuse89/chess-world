@@ -42,7 +42,7 @@ const useGameSettings = () => {
       firebase.getFromDatabaseListener(`games/${gameId}`, gameSettings => {
         updateGameSettings({
           ...gameSettings,
-          gameMode: GAME_MODES.ONLINE_PLAY.TECHNICAL_NAME
+          gameMode: GAME_MODES.onlinePlay.technicalName
         });
       });
     };
@@ -53,10 +53,10 @@ const useGameSettings = () => {
   }, [gameId]);
 
   function getGameTypeSpecificSettings() {
-    if (gameType === GAME_TYPES.TRAPDOOR.TECHNICAL_NAME) {
+    if (gameType === GAME_TYPES.trapdoor.technicalName) {
       return { trapdoorsAmount };
     }
-    if (gameType === GAME_TYPES.TRIVIA.TECHNICAL_NAME) {
+    if (gameType === GAME_TYPES.trivia.technicalName) {
       return { triviaCategory, triviaDifficulty };
     }
   }

@@ -3,32 +3,32 @@ import withoutPartners from "boards/withoutPartners";
 import royalFrontline from "boards/royalFrontline";
 
 export const GAME_MODES = {
-  ONE_PLAYER: {
-    TECHNICAL_NAME: "onePlayer",
-    PRETTY: "One Player"
+  onePlayer: {
+    technicalName: "onePlayer",
+    pretty: "One player"
   },
-  TWO_PLAYER: {
-    TECHNICAL_NAME: "twoPlayer",
-    PRETTY: "Two Player"
+  twoPlayer: {
+    technicalName: "twoPlayer",
+    pretty: "Two player"
   },
-  ONLINE_PLAY: {
-    TECHNICAL_NAME: "onlinePlay",
-    PRETTY: "Online Play"
+  onlinePlay: {
+    technicalName: "onlinePlay",
+    pretty: "Online play"
   }
 };
 
 export const GAME_TYPES = {
-  STANDARD: {
-    TECHNICAL_NAME: "standard",
-    PRETTY: "Standard Chess"
+  standard: {
+    technicalName: "standard",
+    pretty: "Standard chess"
   },
-  TRAPDOOR: {
-    TECHNICAL_NAME: "trapdoor",
-    PRETTY: "Trapdoor Chess"
+  trapdoor: {
+    technicalName: "trapdoor",
+    pretty: "Trapdoor chess"
   },
-  TRIVIA: {
-    TECHNICAL_NAME: "trivia",
-    PRETTY: "Trivia Chess"
+  trivia: {
+    technicalName: "trivia",
+    pretty: "Trivia chess"
   }
 };
 
@@ -72,19 +72,19 @@ export const TRIVIA_CATEGORIES = [
 export const DEFAULT_TRIVIA_CATEGORY = "random";
 
 export const GAME_MODE_HAS_GAME_TYPE = {
-  [GAME_MODES.ONE_PLAYER.TECHNICAL_NAME]: [
-    GAME_TYPES.STANDARD.TECHNICAL_NAME,
-    GAME_TYPES.TRAPDOOR.TECHNICAL_NAME,
-    GAME_TYPES.TRIVIA.TECHNICAL_NAME
+  [GAME_MODES.onePlayer.technicalName]: [
+    GAME_TYPES.standard.technicalName,
+    GAME_TYPES.trapdoor.technicalName,
+    GAME_TYPES.trivia.technicalName
   ],
-  [GAME_MODES.TWO_PLAYER.TECHNICAL_NAME]: [
-    GAME_TYPES.STANDARD.TECHNICAL_NAME,
-    GAME_TYPES.TRIVIA.TECHNICAL_NAME
+  [GAME_MODES.twoPlayer.technicalName]: [
+    GAME_TYPES.standard.technicalName,
+    GAME_TYPES.trivia.technicalName
   ],
-  [GAME_MODES.ONLINE_PLAY.TECHNICAL_NAME]: [
-    GAME_TYPES.STANDARD.TECHNICAL_NAME,
-    GAME_TYPES.TRAPDOOR.TECHNICAL_NAME,
-    GAME_TYPES.TRIVIA.TECHNICAL_NAME
+  [GAME_MODES.onlinePlay.technicalName]: [
+    GAME_TYPES.standard.technicalName,
+    GAME_TYPES.trapdoor.technicalName,
+    GAME_TYPES.trivia.technicalName
   ]
 };
 
@@ -108,3 +108,26 @@ export const BOARDS = {
     board: royalFrontline
   }
 };
+
+export const GAME_SETTINGS = {
+  gameType: {
+    pretty: "Game",
+    options: GAME_TYPES
+  },
+  boardVariant: {
+    pretty: "Board",
+    options: BOARDS
+  },
+  trapdoorsAmount: {
+    pretty: "Amount of trapdoors per player",
+    options: TRAPDOOR_AMOUNTS
+  },
+  triviaCategory: {
+    pretty: "Question category",
+    options: TRIVIA_CATEGORIES
+  },
+  triviaDifficulty: {
+    pretty: "Question difficulty",
+    options: TRIVIA_DIFFICULTIES
+  }
+}

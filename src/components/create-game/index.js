@@ -35,13 +35,13 @@ const CreateGame = ({ onSubmit, submitText }) => {
           selectedBoard={boardVariant}
         />
       )}
-      {gameType === GAME_TYPES.TRAPDOOR.TECHNICAL_NAME && (
+      {gameType === GAME_TYPES.trapdoor.technicalName && (
         <TrapdoorOptions
           onChange={updateGameSettings}
           trapdoorsAmount={trapdoorsAmount}
         />
       )}
-      {gameType === GAME_TYPES.TRIVIA.TECHNICAL_NAME && (
+      {gameType === GAME_TYPES.trivia.technicalName && (
         <TriviaOptions
           onChange={updateGameSettings}
           triviaDifficulty={triviaDifficulty}
