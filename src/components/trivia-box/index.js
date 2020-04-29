@@ -15,13 +15,15 @@ const TriviaBox = ({
   const [options, setOptions] = useState([]);
   const [answer, setAnswer] = useState("");
 
-
   useEffect(() => {
     const getQuestion = () => {
-      const difficultyParams = difficulty === "random" ? "" : `&difficulty=${difficulty}`;
-      const categoryParams = category === "random" ? "" : `&category=${category}`;
+      const difficultyParams =
+        difficulty === "random" ? "" : `&difficulty=${difficulty}`;
+      const categoryParams =
+        category === "random" ? "" : `&category=${category}`;
+      const tokenParams = sessionToken ? `&token=${sessionToken}` : "";
       fetch(
-        `https://opentdb.com/api.php?&type=multiple&amount=1${difficultyParams}${categoryParams}`,
+        `https://opentdb.com/api.php?&type=multiple&amount=1${difficultyParams}${categoryParams}${tokenParams}`,
         {
           method: "GET"
         }

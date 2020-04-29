@@ -40,12 +40,21 @@ const TriviaChess = ({ history }) => {
 
   const isOnePlayer = gameMode === GAME_MODES.onePlayer.technicalName;
   const { board, turn, inCheck, inCheckmate } = gameState;
+  const [sessionToken, setSessionToken] = useState("");
 
   useEffect(() => {
     if (gameId) {
       setGameId(gameId);
     }
   }, [setGameId, gameId]);
+
+  useEffect(() => {
+    const url = "https://opentdb.com/api_token.php?command=request";
+    fetch(url)
+      .then(res => res.json())
+      .then(response => setSessionToken(response.token))
+      .catch(err => console.log(err));
+  }, []);
 
   useEffect(() => {
     const handleNextTurn = () => {
@@ -148,6 +157,7 @@ const TriviaChess = ({ history }) => {
           category={triviaCategory}
           onAnswerCorrect={() => handleAnswer(true)}
           onAnswerIncorrect={() => handleAnswer(false)}
+          sessionToken={sessionToken}
         />
       )}
       <GameFooter resignGame={removeGame} />
