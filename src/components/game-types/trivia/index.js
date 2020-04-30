@@ -1,6 +1,6 @@
 import React, { useContext, useState, useEffect } from "react";
 import { Piece } from "components/piece";
-import { getPieceProps, getSquareDetails, getUrlParam } from "utils/helpers";
+import { getOpponent, getPieceProps, getSquareDetails, getUrlParam } from "utils/helpers";
 import useGameState from "hooks/useGameState";
 import Context from "context";
 import { GAME_MODES } from "utils/constants";
@@ -89,7 +89,7 @@ const TriviaChess = ({ history }) => {
     };
     handleSetMessage();
     if (inCheckmate) {
-      handleGameEnded();
+      handleGameEnded(turn);
     }
   }, [turn, inCheck, inCheckmate]);
 

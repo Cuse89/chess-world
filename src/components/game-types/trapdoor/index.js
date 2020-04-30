@@ -82,7 +82,7 @@ const TrapdoorChess = ({ history }) => {
     handleNextTurn();
     handleSetMessage();
     if (inCheckmate) {
-      handleGameEnded();
+      handleGameEnded(getOpponent(turn));
     }
     // eslint-disable-next-line
   }, [turn, inCheck, inCheckmate, trapdoorsLeft]);

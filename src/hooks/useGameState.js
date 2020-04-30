@@ -31,7 +31,6 @@ const useGameState = ({ gameMode, gameId, userId, boardVariant }) => {
     turn,
     fallen,
     users,
-    inCheckmate
   } = gameState;
 
   const isOnePlayer = gameMode === GAME_MODES.onePlayer.technicalName;
@@ -106,7 +105,6 @@ const useGameState = ({ gameMode, gameId, userId, boardVariant }) => {
   }
 
   function canMovePiece(pieceColor) {
-
     if (turn === pieceColor) {
       if (isOnePlayer) {
         return turn === "white";
@@ -164,10 +162,10 @@ const useGameState = ({ gameMode, gameId, userId, boardVariant }) => {
     }
   }
 
-  async function handleGameEnded() {
+  async function handleGameEnded(winner) {
     navigator.vibrate([1000, 300, 1000]);
     if (isOnlinePlay) {
-      const lostGame = users[userId].color === inCheckmate;
+      const lostGame = users[userId].color !== winner;
       const user = await firebase.getFromDatabaseOnce(
         `users/${userId}`,
         user => user

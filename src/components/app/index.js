@@ -6,6 +6,7 @@ import Dashboard from "components/dashboard";
 import StandardChess from "components/game-types/standard";
 import TrapdoorChess from "components/game-types/trapdoor";
 import TriviaChess from "components/game-types/trivia";
+import RoyalBlood from "components/game-types/royal-blood";
 import Header from "components/header";
 import useGameSettings from "hooks/useGameSettings";
 import useUser from "hooks/useUser";
@@ -34,6 +35,7 @@ const App = () => {
               <Route path="/standard" component={StandardChess} />
               <Route path="/trapdoor" component={TrapdoorChess} />
               <Route path="/trivia" component={TriviaChess} />
+              <Route path="/royalBlood" component={RoyalBlood} />
             </Switch>
           </Loader>
         </div>

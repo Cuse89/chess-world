@@ -1,7 +1,7 @@
 import React from "react";
 import { GAME_SETTINGS } from "utils/constants";
 
-import styles from "./GameSettings.module.scss"
+import styles from "./GameSettings.module.scss";
 
 const GameSettings = ({ settings }) => {
   const getPretty = (key, value) => {
@@ -25,16 +25,21 @@ const GameSettings = ({ settings }) => {
     }
   };
 
+  const getSetting = setting => {
+    const prettyText = getPretty(setting, settings[setting]);
+    if (prettyText) {
+      return (
+        <div key={setting} className={styles.setting}>
+          {GAME_SETTINGS[setting] && GAME_SETTINGS[setting].pretty}:{" "}
+          <b>{prettyText}</b>
+        </div>
+      );
+    }
+  };
+
   return (
     <div className={styles.root}>
-      {Object.keys(settings).map(setting => {
-        return settings[setting] && (
-          <div key={setting} className={styles.setting}>
-            {GAME_SETTINGS[setting] && GAME_SETTINGS[setting].pretty}:{" "}
-            <b>{getPretty(setting, settings[setting])}</b>
-          </div>
-        );
-      })}
+      {Object.keys(settings).map(setting => getSetting(setting))}
     </div>
   );
 };

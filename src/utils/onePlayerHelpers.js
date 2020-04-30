@@ -135,7 +135,7 @@ export const decideBotMove = moves => {
     const targetIsDefended = move.destination.defenders.length > 0;
     const scoreLog = [];
 
-    // if the black piece is currently threatened, add points to escape threat
+    // if the piece is currently threatened, add points to escape threat
     if (move.source.threats.length > 0) {
       score += move.source.strength;
       scoreLog.push(
@@ -170,7 +170,6 @@ export const decideBotMove = moves => {
         } (own strength score) target square is threatened by ${move.destination.threats.join()}`
       );
 
-      // only add points for targetIsDefended if also targetIsThreatened
       if (targetIsDefended) {
         score += move.source.strength;
         scoreLog.push(

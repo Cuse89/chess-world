@@ -11,7 +11,6 @@ import styles from "./CreateGame.module.scss";
 
 const CreateGame = ({ onSubmit, submitText }) => {
   const { updateGameSettings, gameSettings } = useGameSettings();
-  console.log("create game gameSettings", gameSettings)
   const {
     gameType,
     trapdoorsAmount,
@@ -27,12 +26,13 @@ const CreateGame = ({ onSubmit, submitText }) => {
     <div>
       <SelectGameType
         onChange={gameType => updateGameSettings({ gameType })}
-        gameType={gameType}
+        selectedGameType={gameType}
       />
       {gameType && (
         <BoardOptions
           onChange={updateGameSettings}
           selectedBoard={boardVariant}
+          gameType={gameType}
         />
       )}
       {gameType === GAME_TYPES.trapdoor.technicalName && (

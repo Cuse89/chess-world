@@ -3,7 +3,7 @@ import Context from "context";
 import { Piece } from "components/piece";
 import useGameState from "hooks/useGameState";
 import { GAME_MODES } from "utils/constants";
-import { getPieceProps, getUrlParam, uppercaseFirstLetter } from "utils/helpers";
+import { getOpponent, getPieceProps, getUrlParam, uppercaseFirstLetter } from "utils/helpers";
 import GameFooter from "components/game-footer";
 import Game from "components/game";
 
@@ -58,7 +58,7 @@ const StandardChess = ({ history }) => {
     };
 
     if (inCheckmate) {
-      handleGameEnded();
+      handleGameEnded(turn);
     }
     handleNextTurn();
     handleSetMessage();

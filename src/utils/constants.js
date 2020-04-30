@@ -9,7 +9,8 @@ export const GAME_MODES = {
   },
   twoPlayer: {
     technicalName: "twoPlayer",
-    pretty: "Two player"
+    pretty: "Two player",
+    doesNotUseGameType: ["trapdoor"]
   },
   onlinePlay: {
     technicalName: "onlinePlay",
@@ -29,6 +30,11 @@ export const GAME_TYPES = {
   trivia: {
     technicalName: "trivia",
     pretty: "Trivia chess"
+  },
+  royalBlood: {
+    technicalName: "royalBlood",
+    pretty: "Royal blood",
+    doesNotUseBoard: ["royalFrontline"]
   }
 };
 
@@ -70,23 +76,6 @@ export const TRIVIA_CATEGORIES = [
   { pretty: "Animals", id: 27 }
 ];
 export const DEFAULT_TRIVIA_CATEGORY = "random";
-
-export const GAME_MODE_HAS_GAME_TYPE = {
-  [GAME_MODES.onePlayer.technicalName]: [
-    GAME_TYPES.standard.technicalName,
-    GAME_TYPES.trapdoor.technicalName,
-    GAME_TYPES.trivia.technicalName
-  ],
-  [GAME_MODES.twoPlayer.technicalName]: [
-    GAME_TYPES.standard.technicalName,
-    GAME_TYPES.trivia.technicalName
-  ],
-  [GAME_MODES.onlinePlay.technicalName]: [
-    GAME_TYPES.standard.technicalName,
-    GAME_TYPES.trapdoor.technicalName,
-    GAME_TYPES.trivia.technicalName
-  ]
-};
 
 export const BOARDS = {
   default: {
@@ -130,4 +119,4 @@ export const GAME_SETTINGS = {
     pretty: "Question difficulty",
     options: TRIVIA_DIFFICULTIES
   }
-}
+};
