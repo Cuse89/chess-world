@@ -9,8 +9,12 @@ import TriviaOptions from "components/create-game/trivia-options";
 import BoardOptions from "components/create-game/board-options";
 import styles from "./CreateGame.module.scss";
 
-const CreateGame = ({ onSubmit, submitText }) => {
-  const { updateGameSettings, gameSettings } = useGameSettings();
+const CreateGame = ({
+  onSubmit,
+  submitText,
+  onSettingChange,
+  gameSettings
+}) => {
   const {
     gameType,
     trapdoorsAmount,
@@ -25,25 +29,25 @@ const CreateGame = ({ onSubmit, submitText }) => {
   return (
     <div>
       <SelectGameType
-        onChange={gameType => updateGameSettings({ gameType })}
+        onChange={gameType => onSettingChange({ gameType })}
         selectedGameType={gameType}
       />
       {gameType && (
         <BoardOptions
-          onChange={updateGameSettings}
+          onChange={onSettingChange}
           selectedBoard={boardVariant}
           gameType={gameType}
         />
       )}
       {gameType === GAME_TYPES.trapdoor.technicalName && (
         <TrapdoorOptions
-          onChange={updateGameSettings}
+          onChange={onSettingChange}
           trapdoorsAmount={trapdoorsAmount}
         />
       )}
       {gameType === GAME_TYPES.trivia.technicalName && (
         <TriviaOptions
-          onChange={updateGameSettings}
+          onChange={onSettingChange}
           triviaDifficulty={triviaDifficulty}
           triviaCategory={triviaCategory}
         />

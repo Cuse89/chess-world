@@ -48,7 +48,6 @@ export const getBotMoves = (board, boardVariant) => {
       // loop through board and see if this piece can move there
       loopBoard(board, ({ coords, square: nextSquare }) => {
         const destinationCoords = coords;
-        // console.log('next coords', destinationCoords)
 
         if (
           performValidation({
@@ -111,7 +110,6 @@ export const getBotMoves = (board, boardVariant) => {
             }
           };
 
-          // console.log('bot move handlePerformMove returned true', square && square.player)
           if (move.destination.strength > 0 || move.destination.checkmate) {
             moves.push(move);
           } else if (!nextSquare.player) {

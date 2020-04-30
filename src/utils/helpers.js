@@ -20,7 +20,10 @@ import { kingValidation } from "piece-validation/kingValidation";
 import { getKingStatus } from "piece-validation/getKingStatus";
 import { EMPTY_SQUARE } from "utils/constants";
 import { pawnValidation } from "piece-validation/pawnValidation";
-import { getQueenPathway, queenValidation } from "piece-validation/queenValidation";
+import {
+  getQueenPathway,
+  queenValidation
+} from "piece-validation/queenValidation";
 
 export const getPieceProps = pieceId => {
   switch (pieceId && pieceId.split("-")[0]) {
@@ -181,12 +184,10 @@ export const getUrlParam = key => {
   return urlParams.get(key);
 };
 
-export const createUrlParams = params => {
-  console.log("params", params);
-  return Object.keys(params)
+export const createUrlParams = params =>
+  Object.keys(params)
     .map(paramKey => `${paramKey}=${params[paramKey]}`)
     .join("&");
-};
 
 export const mirrorBoard = board => {
   let boardCopy = JSON.parse(JSON.stringify(board));

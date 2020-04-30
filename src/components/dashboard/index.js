@@ -18,7 +18,6 @@ const Dashboard = ({ history }) => {
   };
 
   const onCreateGameSubmit = gameSettings => {
-    updateGameSettings({ ...gameSettings, gameMode});
     history.push(
       `/${gameSettings.gameType}?${createUrlParams({
         ...gameSettings,
@@ -33,13 +32,15 @@ const Dashboard = ({ history }) => {
         onGameModeClick={onGameModeClick}
         gameMode={gameSettings.gameMode}
       />
-      {gameMode === GAME_MODES.onlinePlay.technicalName && (
-        <DashboardOnline />
+      {gameMode === GAME_MODES.onlinePlay.technicalName && <DashboardOnline />}
+      {gameMode !== GAME_MODES.onlinePlay.technicalName && gameMode !== "" && (
+        <CreateGame
+          onSubmit={onCreateGameSubmit}
+          submitText="Play game!"
+          onSettingChange={updateGameSettings}
+          gameSettings={gameSettings}
+        />
       )}
-      {gameMode !== GAME_MODES.onlinePlay.technicalName &&
-        gameMode !== "" && (
-          <CreateGame onSubmit={onCreateGameSubmit} submitText="Play game!" />
-        )}
     </div>
   );
 };

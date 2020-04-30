@@ -7,12 +7,14 @@ import firebase from "../../../firebase";
 import { v4 as uuid } from "uuid";
 import Modal from "components/modal";
 import { BOARDS } from "utils/constants";
+import useGameSettings from "hooks/useGameSettings";
 import styles from "./ChallengePlayer.module.scss";
 
 const ChallengePlayer = ({ availableUser }) => {
   let history = useHistory();
   const { user } = useContext(Context);
   const [showCreateGame, setShowCreateGame] = useState(false);
+  const { updateGameSettings, gameSettings } = useGameSettings();
 
   const updateGameRequest = async (outgoingUserId, incomingUserId, value) => {
     try {
@@ -32,9 +34,9 @@ const ChallengePlayer = ({ availableUser }) => {
     history.push(`/${gameType}?gameId=${gameId}`);
   };
 
-  const onCreateGameSubmit = async (settings, opponentId) => {
+  const onCreateGameSubmit = async (settings) => {
     setShowCreateGame(false);
-    await updateGameRequest(user.id, opponentId, { ...settings });
+    await updateGameRequest(user.id, availableUser.id, { ...settings });
   };
 
   const handleStartNewGame = async gameSettings => {
@@ -81,8 +83,10 @@ const ChallengePlayer = ({ availableUser }) => {
       <Modal open={showCreateGame} onClose={() => setShowCreateGame(false)}>
         <h3>Challenge {availableUser.name}</h3>
         <CreateGame
-          onSubmit={settings => onCreateGameSubmit(settings, availableUser.id)}
+          onSubmit={onCreateGameSubmit}
           submitText="Click here to challenge"
+          onSettingChange={updateGameSettings}
+          gameSettings={gameSettings}
         />
       </Modal>
     </div>
