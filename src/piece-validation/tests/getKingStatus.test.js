@@ -50,7 +50,6 @@ describe("getKingStatus", () => {
         getKingStatus(inCheckCanBlockThreat, "black", "white", "default")
       ).toBe("check");
     });
-
   });
   describe("it should return 'checkmate'", () => {
     it("when king is in check, cannot take any threats", () => {

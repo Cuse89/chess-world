@@ -593,7 +593,7 @@ export const inCheckCanBlockThreat = [
     EMPTY_SQUARE,
     EMPTY_SQUARE,
     EMPTY_SQUARE,
-    { player: "white", pieceId: "rook-1" },
+    { player: "white", pieceId: "queen" },
     EMPTY_SQUARE,
     EMPTY_SQUARE,
     EMPTY_SQUARE,

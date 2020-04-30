@@ -20,6 +20,7 @@ import { kingValidation } from "piece-validation/kingValidation";
 import { getKingStatus } from "piece-validation/getKingStatus";
 import { EMPTY_SQUARE } from "utils/constants";
 import { pawnValidation } from "piece-validation/pawnValidation";
+import { getQueenPathway, queenValidation } from "piece-validation/queenValidation";
 
 export const getPieceProps = pieceId => {
   switch (pieceId && pieceId.split("-")[0]) {
@@ -58,11 +59,8 @@ export const getPieceProps = pieceId => {
     case "queen":
       return {
         icon: faChessQueen,
-        validateMove: params => {
-          if (rookValidation(params) || bishopValidation(params)) {
-            return true;
-          }
-        },
+        validateMove: queenValidation,
+        getPathway: getQueenPathway,
         strength: 9
       };
     default:
