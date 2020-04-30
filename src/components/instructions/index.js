@@ -64,9 +64,12 @@ const Instructions = () => {
           <h3 className={styles.title}>{GAME_TYPES.royalBlood.pretty}</h3>
           <ul>
             <li>
-              Just a standard game of chess, but royalty must be treated like
-              royalty. Lose one royal piece and its game over. (That's any of
-              the back pieces by the way).
+              Just a standard game of chess, however royalty must be treated
+              like royalty.
+            </li>
+            <li>
+              Lose one royal piece and its game over. (That's any of the back
+              pieces by the way).
             </li>
           </ul>
         </div>

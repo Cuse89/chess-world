@@ -119,8 +119,6 @@ const RoyalBlood = ({ history }) => {
 
   const isOnePlayer = gameMode === GAME_MODES.onePlayer.technicalName;
   const { board, turn, inCheck, inCheckmate, fallen } = gameState;
-  const whiteWinsRoyalBlood = fallen.black.length > 0;
-  const blackWinsRoyalBlood = fallen.white.length > 0;
 
   useEffect(() => {
     if (gameId) {
@@ -137,6 +135,14 @@ const RoyalBlood = ({ history }) => {
       }
     };
 
+    const whiteWinsByRoyalBlood =
+      fallen.black.filter(blackFallen => isRoyalty(blackFallen.pieceId))
+        .length > 0;
+
+    const blackWinsByRoyalBlood =
+      fallen.white.filter(whiteFallen => isRoyalty(whiteFallen.pieceId))
+        .length > 0;
+
     const handleSetMessage = () => {
       let newMessage = "";
       if (inCheck) {
@@ -145,10 +151,10 @@ const RoyalBlood = ({ history }) => {
       if (inCheckmate) {
         newMessage = `Checkmate. ${turn} wins`;
       }
-      if (blackWinsRoyalBlood) {
+      if (blackWinsByRoyalBlood) {
         newMessage = "Black wins";
       }
-      if (whiteWinsRoyalBlood) {
+      if (whiteWinsByRoyalBlood) {
         newMessage = "White wins";
       }
       if (message !== newMessage) {
@@ -156,7 +162,7 @@ const RoyalBlood = ({ history }) => {
       }
     };
 
-    if (whiteWinsRoyalBlood || blackWinsRoyalBlood) {
+    if (whiteWinsByRoyalBlood || blackWinsByRoyalBlood) {
       handleGameEnded(getOpponent(turn));
     }
     if (inCheckmate) {
