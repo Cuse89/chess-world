@@ -9,6 +9,7 @@ import UserAvailabilitySetting from "components/user-profile/user-availability-s
 import PushNotificationSetting from "components/user-profile/push-notification-setting";
 import DashboardButton from "components/dashboard-button";
 import GameStats from "components/user-profile/game-stats";
+import DragDropSetting from "./drag-drop-setting";
 
 import styles from "./UserProfile.module.scss";
 
@@ -49,6 +50,9 @@ const UserProfile = () => {
             <PushNotificationSetting userId={userId} />
           </div>
         )}
+        <div className={styles.section}>
+            <DragDropSetting />
+        </div>
         <div className={styles.section}>
           <GameStats />
         </div>
