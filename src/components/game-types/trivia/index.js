@@ -1,6 +1,6 @@
 import React, { useContext, useState, useEffect } from "react";
 import { Piece } from "components/piece";
-import { getOpponent, getPieceProps, getSquareDetails, getUrlParam } from "utils/helpers";
+import { getPieceProps, getSquareDetails, getUrlParam } from "utils/helpers";
 import useGameState from "hooks/useGameState";
 import Context from "context";
 import { GAME_MODES } from "utils/constants";
