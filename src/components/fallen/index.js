@@ -14,7 +14,7 @@ const Fallen = ({ fallen }) => (
           player={piece.player}
           pieceId={piece.pieceId}
           pieceColor={piece.player}
-          isDraggable={false}
+          available={false}
         />
       </div>
     ))}

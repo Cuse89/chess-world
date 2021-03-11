@@ -78,6 +78,8 @@ const Board = ({
                   position={getPosition(coords)}
                 >
                   {getSquaresChild(square)}
+                  {/* provide invisible placeholder to keep dnd happy*/}
+                  {provided.placeholder}
                 </Square>
               </div>
             );
